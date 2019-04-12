@@ -144,7 +144,7 @@ The tutorial will cover the following functions: `ggseg()` for plotting 2D polyg
 By default, the function automatically plots the DKT atlas (see Figure \@ref(fig:init)). 
 `ggseg` function is a wrapper for `geom_polygon` from `ggplot2` and it can be built upon and combined like any ggplot object. 
 The image plot consists of a simple brain representation containing no extra information. 
-Hence, `ggseg` plots can be easily complemented with any of the available ggplot features and options.
+Hence, `ggseg` plots can be easily complemented with any of the available ggplot features and options. We recommend users to get familiarized with [ggplot2](https://ggplot2.tidyverse.org/) grammar. 
 
 ```{r "init", fig.width=3, message=FALSE, fig.cap="By default `ggseg` will plot the dkt atlas in shaded polygons."}
 library(ggseg)
@@ -329,12 +329,12 @@ ggseg(atlas="aseg", mapping=aes(fill=area))
 ## Plotting 3D mesh data
 
 Representing brains as 2D polygons is a good solution for fast, efficient and flexible plotting, based on ggplot (a powerful tool for visualization) and that can be easily combined with interactive apps such as in shiny.
-Yet brains are intrinsically 3D and it can be challenging to recognize the location of a region. This problem exacerbated in atlases representing subcortical structures – after all, cortical surfaces are 2D – such as grey matter structures or white matter tracts. 
+Yet brains are intrinsically 3D and it can be challenging to recognize the location of a region. This problem exacerbates in atlases that represent subcortical features – after all, cortical surfaces are 2D – such as grey matter structures or white matter tracts. 
 Hence, here we also provide the ggseg3D function to plot, view and print 3D atlases in R. 
 ggseg3D is based on tri-surface mesh plots using plotly. 
 The data structure is somewhat more complex than the 2D ggplot polygon version and includes additional options for brain inflation, glass brains, camera locations, etc.  
 As ggseg3D is based on plotly, the resulting brain atlases are interactive, which guides interpretation, and is useful for public dissemination. 
-We recommend users to get a little familiarized with with [plotly](https://plotly-book.cpsievert.me/). 
+We recommend users to familiarize with [plotly](https://plotly-book.cpsievert.me/). 
 
 Out-of-the-box, `ggseg3d()` works without supplying any extra information, and plots the `dkt_3d` atlas in 'LCBC' surface.
 The 'LCBC' surface is the white matter surface, inflated in 10 steps, to increase visibility within folds of the brain, while still maintining curvature to indicate where folds have been.
