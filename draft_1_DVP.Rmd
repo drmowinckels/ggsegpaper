@@ -144,7 +144,8 @@ The tutorial will cover the following functions: `ggseg()` for plotting 2D polyg
 By default, the function automatically plots the DKT atlas (see Figure \@ref(fig:init)). 
 `ggseg` function is a wrapper for `geom_polygon` from `ggplot2` and it can be built upon and combined like any ggplot object. 
 The image plot consists of a simple brain representation containing no extra information. 
-Hence, `ggseg` plots can be easily complemented with any of the available ggplot features and options. We recommend users to get familiarized with [ggplot2](https://ggplot2.tidyverse.org/) grammar. 
+Hence, `ggseg` plots can be easily complemented with any of the available ggplot features and options. 
+We recommend users to get familiarized with [ggplot2](https://ggplot2.tidyverse.org/) grammar. 
 
 ```{r "init", fig.width=3, message=FALSE, fig.cap="By default `ggseg` will plot the dkt atlas in shaded polygons."}
 library(ggseg)
