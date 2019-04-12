@@ -135,16 +135,16 @@ dd %>%
 ```
 
 # Tutorial
-The aim of this tutorial is to familiarize the reader with the main package functions and the general use of the package.  
-It will cover the two main functions: `ggseg()` which plots 2D polygons,  and `ggseg3d()` which plots tri-surface mesh plots.
+This tutorial will introduce the `ggseg` and `ggsegExtra` packages and familiarize the reader with the main functions and the general use of the package. 
+The tutorial will cover the following functions: `ggseg()` for plotting 2D polygons and `ggseg3d()` for plotting 3D brains based on tri-surface mesh plots.
 
-## Plotting polygon data
+## Plotting 2D polygon data with `ggseg` 
 
-The function to plot two-dimensional polygon data is the `ggseg`-function. 
-This function will automatically plot the dkt-atlas by default (see Figure \@ref(fig:init)). 
-As this function is a wrapper for `geom_polygon` from `ggplot2` it can be built upon like all ggplot objects. 
-The plot is kept as simple as possible, with as little extra information to ggplot as possible. 
-This is done for it to be easy to extend the plot with the many ggplot options available.
+`ggseg` is the main function for plotting 2D data.  
+By default, the function automatically plots the DKT atlas (see Figure \@ref(fig:init)). 
+`ggseg` function is a wrapper for `geom_polygon` from `ggplot2` and it can be built upon and combined like any ggplot object. 
+The image plot consists of a simple brain representation containing no extra information. 
+Hence, `ggseg` plots can be easily complemented with any of the available ggplot features and options.
 
 ```{r "init", fig.width=3, message=FALSE, fig.cap="By default `ggseg` will plot the dkt atlas in shaded polygons."}
 library(ggseg)
@@ -152,8 +152,10 @@ library(tidyverse)
 ggseg()
 ```
 
-Because of the way `ggseg` is implemented, you should be able to safely use the function together with other ggplot functions, like themes, scales, and such (see Figure \@ref(fig:void)). 
-There are many extra options to ggseg, to alter the plot as you wish.
+[comment]: <> (Figure 2 and 3 can be merged together. We can then use the figure legend to specify a little bit more. Not modified depending on your opinion)
+`ggseg` is implemented as a fully-functional part of ggplot. 
+Thus one should be able to use the function together with any other ggplot function such as themes or scales. 
+See Figure \@ref(fig:void) for an example.
 
 ```{r void, fig.width=5, fig.cap="ggseg plots can be used with most standard scales, themes and such that work with ggplot. The special ggseg options for hemispheres, view etc. depend on the atlas used, and some options are only available for certain atlases. There is no 'lateral' or 'medial' views of subcortical atlases. "}
 p1 <- ggseg(position = "stacked") + 
@@ -173,10 +175,10 @@ p3 <- ggseg(atlas=aseg) +
 cowplot::plot_grid(pp, p3, nrow = 1)
 ```
 
-You can stack the hemispheres, view only the medial or lateral side, choose either or both of the hemispheres, or a combination of any of these (see Figure \@ref(fig:stacked)).
-The possibilities of altering the plot depends on the atlas used. 
-There are generally more options available for cortical atlases than subcortical ones, as the atlases have more meaningful ways of viewing the polygons.
-Subcortical atlases also tend to have structures that span the hemispheres or other typically used referece points of the brain, and as such it is more difficult to label all segments as either, e.g., left or right. 
+One have several options for plotting the main brain representations.
+These options are atlas-specific. 
+For cortical atlases, such as the DKT, one can stack the hemispheres, plot one or both hemisphere, or view only the medial or lateral side (or any combination of these; see Figure \@ref(fig:stacked)).
+For subcortical atlases, such as the aseg, the options are more limited but one can often choose between axial, sagital, and coronal views.  
 
 ```{r stacked, fig.width=5, fig.cap="There are several ggseg-special options that may be supplied to control how the plots looks and is organised. Top left: plot using medial view. Bottom left: plot using left hemisphere. Right: plot combining both the options. "}
 lat <- ggseg(view = "medial") + 
