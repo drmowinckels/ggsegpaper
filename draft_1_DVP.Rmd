@@ -337,9 +337,9 @@ The data structure is somewhat more complex than the 2D ggplot polygon version a
 As ggseg3D is based on plotly, the resulting brain atlases are interactive, which guides interpretation, and is useful for public dissemination. 
 We recommend users to familiarize with [plotly](https://plotly-book.cpsievert.me/). 
 
-Out-of-the-box, `ggseg3d()` works without supplying any extra information, and plots the `dkt_3d` atlas in 'LCBC' surface.
-The 'LCBC' surface is the white matter surface, inflated in 10 steps, to increase visibility within folds of the brain, while still maintining curvature to indicate where folds have been.
-All `[...]_3d` atlases have a built in `colour` column for default colour plotting of the segments.
+Out-of-the-box, `ggseg3d()` plots the `dkt_3d` atlas in 'LCBC' surface.
+The 'LCBC' surface consists on a semi-inflated white matter surface based on the _fsaverage_ template subject. See *SCRIPT* for reproducibility.
+All `[...]_3d` atlases have a built in `colour` column for default colour plotting of the regions, based on the colorlut used in the neuroimaging sofware.
 
 
 ```{r ggseg3d_1_out, message=FALSE, echo=F, eval=TRUE, out.width='30%'}
@@ -359,13 +359,18 @@ p <- ggseg3d(surface = "inflated") %>%
 add_plotly(p, "png/ggseg3d_inflated.png")
 ```
 
-The cortical atlas data is stored in nested tibbles, which have datasets for three different surfaces and the two hemispheres.
-The 'data'-column within includes all necessary information to `ggseg3d()` to create a mesh-plot. 
+The cortical atlas data is stored in nested tibbles. Each atlas have datasets for three different surfaces (see Figure X) and the two hemispheres.
+The 'ggseg3d' column includes all necessary information to `ggseg3d()` to create a mesh-plot. 
+The additional `[..._3d]` atlases in the ggsegExtra contain identical structures except for the subcortical atlases in which surface and hemisphere do not apply. 
+
 ```{r, out.width='90%', size='small'}
 dkt_3d
 ```
 
-To grab all the data for a surface and hemisphere, you should reduce the data to one line, and then `unnest()`
+### External data supply
+Similarly as in the 2D-atlas, the user will use ggseg3D to display through a color scale some descriptive or inferential statistics.
+First, one needs to grab the data for a specific surface (and hemisphere, if desired) and then `unnest()` it. 
+
 ```{r out.width='40%', linewidth=70}
 dkt_3d %>% 
   filter(surf == "inflated" & hemi == "right") %>% 
@@ -373,12 +378,13 @@ dkt_3d %>%
   select(-lobe, -acronym)
 ```
 
-### External data supply
-Particularly notice the `mesh` column, which is a list column of lists. 
-In there is all the 6 vectors needed to create the mesh of the tri-surface plot. 
-You'll also need to notice the `label`, `annot` and `area` columns, which are likely the columns you will be matching on when proviging with your own data for colours. 
-You need to be meticulous when fixing your data, be sure it matches.
-The function _should_ give you a warning if it's struggling to match something. 
+Note the `mesh` column, which contains lists.
+Each list corresponds to a regio and contains 6 vectors required to create the mesh of the tri-surface plot. 
+
+Note als the `label`, `annot` and `area` columns which provide matching values for your own data. 
+Similarly to ggseg function, the label column should match the region names used in the original neuroimaging software while area and annot provide alternative/ secundary names. 
+It is thus important to match your identifiers for region with those used in the atlas. 
+A warning will be issued in case of any mismatch.
 
 The column you want to use for colour, needs to be supplied to the `colour` option, and you'll likely want to supply it to the `text` option, as this will add another line to the plotly hover information.
 
@@ -441,10 +447,10 @@ p <-   ggseg3d(.data = someData, atlas = dkt_3d,
 add_plotly(p, "png/ggseg3d_nacolour.png")
 ```
 
-If you are plotting the sub-cortical structures, you might want to reduce the opacity of the `NA` structures, so that you can see the more medial structures. 
-You may also want to add the `glassbrain` option, any value above 0 and up to 1 increases the opacity of a glass brain overlay.
-The glassbrain option provides a frame of reference for the subcortical structures, and as such it is recommended to add this when viewing these structures.
-There are three glassbrain options, controlling the opacity, which hemispheres to add, and the colour.
+Subcortical atlases include cortical surfaces and other landmark structures to visualization purposes only. 
+One can control the opacity of the these `NA` structures, to improve visualization. 
+Additionaly, one can add the `glassbrain` option, which provides a frame of reference for the subcortical structures.
+Glassbrain can be controlled with thre different arguments: opacity (0-1), hemisphere (left, right), and colour.
 
 ```{r, out.width='40%', warning=F, message=FALSE, eval=FALSE}
 somData_aseg = aseg_3d %>% 
@@ -472,8 +478,9 @@ p <- ggseg3d(.data = somData_aseg, atlas = aseg_3d,
 add_plotly(p, "png/ggseg3d_glass.png")
 ```
 
-There are many plotly options that may help you adapt the plot to look the way you wish. 
-In addition to Carson Sievert's [book on plotly in R](https://plotly-book.cpsievert.me/), we recommend resources for [modifying axes in 3D plots](https://plot.ly/r/axes/#modifying-axes-for-3D-plots), the [basic introduction to tri-surface plots](https://plot.ly/r/trisurf/), and this tutorial on [tri-surface plots with plotly in R](https://moderndata.plot.ly/trisurf-plots-in-r-using-plotly/). 
+ggsed3d() are based on plotly and thus can be additional plotly functionalities will can be used to modify and improve the 3D atlas representations. 
+In addition to Carson Sievert's [book on plotly in R](https://plotly-book.cpsievert.me/), we recommend resources for [modifying axes in 3D plots](https://plot.ly/r/axes/#modifying-axes-for-3D-plots), the [basic introduction to tri-surface plots](https://plot.ly/r/trisurf/), and this tutorial on [tri-surface plots with plotly in R](https://moderndata.plot.ly/trisurf-plots-in-r-using-plotly/).
+Finally, we recommend [orca](https://github.com/plotly/orca#installation) command line to save ggseg3d atlas snapshots.  
 
 # Summary
 The aim of the `ggseg`-package is to aid researchers easily disseminate analysis results in an easier and more stream-lined fashion. 
