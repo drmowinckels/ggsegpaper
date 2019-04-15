@@ -96,6 +96,8 @@
 % \corrauthor[1]{First Author}{f.author@email.com}
 
 % 
+\usepackage{natbib}
+\bibliographystyle{plainnat}
 
 \begin{abstract}
 The abstract of the article. It can also be on \emph{multiple} lines.
@@ -115,9 +117,9 @@ Neuroscientific analysis usually requires the use of multiple tools to analyse, 
 This often makes the process of preparing results for publication laborious, as results must be exported and imported in various formats.
 In neuroimaging, images of probands' brains are collected and merged together to provide three dimensional representations.
 Much of the neuroimaging analyses are not necessarily done on the individual voxel level (3-dimensional pixels), but rather on pre-defined brain segmentations, called brain atlases.
-These brain atlases are plentiful and represent different ways of segmenting the brain into functionally or structurally similar regions (REF).
-The use of these is wide-spread, as these atlases provide larger meaningful divisions of the brain (REF).
-While neuroimaging analyses on the voxel-level are usually computed by special software for such analyses, analyses of brain atlas data is usually done in standard statistical software, like R (REF), python (REF), or Matlab (REF).
+These brain atlases are plentiful and represent different ways of segmenting the brain into functionally or structurally similar regions (\citet{dkt}).
+The use of these is wide-spread, as these atlases provide larger meaningful divisions of the brain.
+While neuroimaging analyses on the voxel-level are usually computed by special software for such analyses, analyses of brain atlas data is usually done in standard statistical software, like R (\citet{R}), python (\citet{python}), or MATLAB (\citet{MATLAB}).
 
 A key part of understanding and disseminating analysis results, is the visualization of these in a meaningful way.
 With regards to results from brain atlas analyses, it is most meaningfully represented if projected onto a representation of the brain, rather than other common types of charts (like bar-charts) accompanied by a diagram of the brain label positions.
@@ -125,20 +127,20 @@ Each atlas has its own labelling depending on what is meaningful for the type of
 As such, for the reader to fully understand a bar chart with atlas labels, they need to be very familiar with the location of each label to have a clear comprehension of the results.
 A projection directly onto a brain shape, eases the readability of the results for the reader, and provides clear point of reference even if the used atlas is unfamiliar.
 
-There are several tools that aid R-users in plotting neuroimaging data directly through R using the grammar of graphics as implemented in ggplot2 (REF), such as ggBrain(REF) and ggneuro(REF)(see \href{https://neuroconductor.org/}{neuroconductor} for compiled neuroimaging packages for R).
+There are several tools that aid R-users in plotting neuroimaging data directly through R using the grammar of graphics as implemented in ggplot2 (\citet{ggplot}), such as ggBrain (\citet{ggBrain}) and ggneuro (\citet{ggneuro}; see neuroconductor \citeyearpar{neuroconductor} for curated neuroimaging packages for R).
 These are based on plotting imaging files, not results from analyses of brain atlases.
 Here we introduce the ggseg-package for visualizing results from brain atlas analyses.
 The ggseg-package was developed to create templates that others might use to project their brain atlas results on to.
 While its plotting functions are what the users are drawn to, it is the pre-compiled number of data sets for different brain atlases that provides the real functionality needed for this visualization.
-The package also includes functions to plot atlases in tri-surface mesh plots using plotly (REF).
+The package also includes functions to plot atlases in tri-surface mesh plots using plotly (\citet{plotly}).
 
 \hypertarget{brain-atlas-selection}{%
 \subsection{Brain atlas selection}\label{brain-atlas-selection}}
 
 There is a multitude of brain atlases to chose from, all with different purposes and segmented based on different criteria.
 We have initially focused on commonly used and well-established atlases with manageable numbers of segmentations.
-The ggseg-package thus features data for two well-established parcellations, as implemented in the neuroimaging software Freesurfer (REF); dkt and aseg.
-The Desikan-Killany cortical atlas (dkt) (REF) and the Automatic Segmentation of Subcortical Structures (aseg) (REF) together cover all grey matter of the brain, and are commonly used in analyses elucidating the associations between thickness, volume, or area of these segments and mental health and cognitive function.
+The ggseg-package thus features data for two well-established parcellations, as implemented in the neuroimaging software Freesurfer \citep{fischl:99}; dkt and aseg.
+The Desikan-Killany cortical atlas (dkt; \citet{dkt}) and the Automatic Segmentation of Subcortical Structures (aseg; \citet{aseg}) together cover all grey matter of the brain, and are commonly used in analyses elucidating the associations between thickness, volume, or area of these segments and mental health and cognitive function.
 
 While functions and base data can be found in the main \texttt{ggseg}-package, a companion package called \texttt{ggsegExtra} has numerous other atlases, and is continuously expanded.
 We encourage the community to help build and expand the atlases available, and to create a repository of established and often used atlases.
@@ -514,12 +516,12 @@ Again, inspecting the atlas data directly will be of aid when preparing data to 
 
 Creating plots of the brain as 2-dimensional can at times make it difficult to properly understand where an atlas segment is located in the true 3-dimensional brain.
 This is particularly true when looking within the brain as subcortical structures or white matter tracts.
-To provide the option of viewing and printing the plots in 3-dimensional space, another function was created using \href{https://plotly-book.cpsievert.me/}{plotly}.
+To provide the option of viewing and printing the plots in 3-dimensional space, another function was created using plotly \citep{plotly}.
 The data is somewhat more complex than the 2D ggplot polygon version \texttt{ggseg}, as it includes options for brain inflation, glass brains and much more, to ease viewing and understanding.
 Another positive effect of basing this function on plotly, is the interactivity of the plot, which also makes it nice for public dissemination.
-A lot of credit goes to A.M.Winkler and his \href{https://brainder.org/}{Brainder} work, which supplied us with the first examples of going from Freesurfer \texttt{.srf}-files to \texttt{.ply}-files, and whose scripts massively aided us in making this work.
+A lot of credit goes to A.M.Winkler and his Brainder (\citet{brainder}) work, which supplied us with the first examples of going from Freesurfer \texttt{.srf}-files to \texttt{.ply}-files, and whose scripts massively aided us in making this work.
 
-The function \texttt{ggseg3d()}, is based in the plotly, it is recommended to get a little familiarized with with \href{https://plotly-book.cpsievert.me/}{plotly}.
+The function \texttt{ggseg3d()}, is based in the plotly, it is recommended to get a little familiarized with with plotly (\citet{plotly}).
 
 Out-of-the-box, \texttt{ggseg3d()} works without supplying any extra information, and plots the \texttt{dkt\_3d} atlas in `LCBC' surface.
 The `LCBC' surface is the white matter surface, inflated in 10 steps, to increase visibility within folds of the brain, while still maintining curvature to indicate where folds have been.
@@ -669,7 +671,7 @@ There are three glassbrain options, controlling the opacity, which hemispheres t
 \includegraphics[width=0.4\linewidth]{png/ggseg3d_glass}
 
 There are many plotly options that may help you adapt the plot to look the way you wish.
-In addition to Carson Sievert's \href{https://plotly-book.cpsievert.me/}{book on plotly in R}, we recommend resources for \href{https://plot.ly/r/axes/\#modifying-axes-for-3D-plots}{modifying axes in 3D plots}, the \href{https://plot.ly/r/trisurf/}{basic introduction to tri-surface plots}, and this tutorial on \href{https://moderndata.plot.ly/trisurf-plots-in-r-using-plotly/}{tri-surface plots with plotly in R}.
+In addition to Carson Sievert's book on plotly in R (\citeyearpar{plotly}) we recommend resources for modifying axes in 3D plots (\citet{plotly-ax}), the basic introduction to tri-surface plots (\citet{plotly-tri}), and this tutorial on tri-surface plots with plotly in R (\citet{plotly-trisurf}).
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
@@ -679,6 +681,39 @@ This tutorial should provide instructions on how to use the main package functio
 The two main functions in the package, \texttt{ggseg()} and \texttt{ggseg3d()}, create polygon and mesh-plots of brain atlases, using the accompanying package data.
 In addition to the two default atlases available in \texttt{ggseg}, the \texttt{ggsegExtra} package includes 12 more atlases.
 We encourage users of this package to contribute more atlases they find uses for, and help build an extensive repository of brain atlases.
+
+\hypertarget{author-contributions}{%
+\section{Author Contributions}\label{author-contributions}}
+
+Didac Vidal-Piñeiro generated the idea for the plotting tool, and the initial scripts that made the plots.
+He has also been responsible for converting images from neuroimaging software into the type of data necessary for plotting polygons and mesh plots in R.
+Athanasia M. Mowinckel adapted the initial scripts and made the functions into package format and making the functions more user-friendly.
+She also was responsible for adding the mesh-plot functionality through plotly, and developing the pipeline for making that possible.
+A. M. Mowinckel wrote the first draft of the paper, and both have since critically edited it.
+
+\hypertarget{conflicts-of-interest}{%
+\section{Conflicts of Interest}\label{conflicts-of-interest}}
+
+The authors declare that there were no conflicts of interest with respect to the authorship or the publication of this article.
+
+\hypertarget{acknowledgements}{%
+\section{Acknowledgements}\label{acknowledgements}}
+
+We also thanks John Muschelli for his initial improvements in the package code and preparing it for incorporation in neuroconductor (\citeyearpar{neuroconductor}), and Richard Beare for submitting the first community created atlas, and providing helpful comments to the base code.
+
+\hypertarget{funding}{%
+\section{Funding}\label{funding}}
+
+This work is funded by EU Horizon 2020 Grant `Healthy minds 0-100 years: Optimising the use of European brain imaging cohorts (Lifebrain)', with grant agreement number 732592.
+
+\hypertarget{prior-versions}{%
+\section{Prior versions}\label{prior-versions}}
+
+Some of the content presented here also apprears in the package vignette of \texttt{ggseg}, which may be accessed through R or in the package website (\citet{ggseg}).
+Athanasia Monika Mowinckel also has several tutorials on her blog regarding ggseg creationg and functionality (\citet{ggsegAnim}, \citet{ggsegIntro}).
+
+\renewcommand\refname{References}
+\bibliography{references.bib}
 
 
 
