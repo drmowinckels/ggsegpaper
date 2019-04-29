@@ -199,7 +199,8 @@ cowplot::plot_grid(pp, combo, nrow=1)
 ### Using own data with fill and colour
 `ggseg` accepts any argument you can supply to `geom_polygon` and therefore is easy to work with for those familiar with ggplot functionality. 
 Standard arguments like `fill` to flood the segments with a colour, or `colour` to colour the edges around the segments are typical arguments to provide to the function either as a single value or within the ggplot mapping option `aes`.
-To use color palettes corresponding to those used in the original neuroimaging softwares one can use atlas-specific 'brain' palette scales. See an example in Figure \@ref(fig:fill).
+To use color palettes corresponding to those used in the original neuroimaging softwares one can use atlas-specific 'brain' palette scales. 
+See an example in Figure \@ref(fig:fill).
 
 
 
