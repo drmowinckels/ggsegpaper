@@ -474,8 +474,7 @@ In addition to the two default atlases available in `ggseg`, the `ggsegExtra` pa
 We encourage users of this package to contribute more atlases they find uses for, and help build an extensive repository of brain atlases.
 
 # Author Contributions
-Didac Vidal-Piñeiro generated the idea for the plotting tool, and the initial scripts that made the plots. 
-He has also been responsible for converting images from neuroimaging software into the type of data necessary for plotting polygons and mesh plots in R. 
+DVP designed the earliest 2D polygon plotting functionality together with the initial scripts and contributed to the image-to-polygon and the image-to-mesh pipelines. 
 Athanasia M. Mowinckel adapted the initial scripts and made the functions into package format and making the functions more user-friendly.
 She also was responsible for adding the mesh-plot functionality through plotly, and developing the pipeline for making that possible. 
 A. M. Mowinckel wrote the first draft of the paper, and both have since critically edited it. 
@@ -484,13 +483,14 @@ A. M. Mowinckel wrote the first draft of the paper, and both have since critical
 The authors declare that there were no conflicts of interest with respect to the authorship or the publication of this article.
 
 # Acknowledgements
-We also thanks John Muschelli for his initial improvements in the package code and preparing it for incorporation in neuroconductor (-@neuroconductor), and Richard Beare for submitting the first community created atlas, and providing helpful comments to the base code.
+We particularly thank Anders M Fjell and Kristine B Walhovd for insightful discussion and funding support and Ingle K Amlien for inspiration and code comments. 
+We also thank John Muschelli for his initial improvements in the package code and preparing it for incorporation in neuroconductor (-@neuroconductor) and Richard Beare for submitting the first community created atlas, and providing helpful comments to the base code.
 
 # Funding 
-This work is funded by EU Horizon 2020 Grant 'Healthy minds 0-100 years: Optimising the use of European brain imaging cohorts (Lifebrain)', with grant agreement number 732592. 
+This work is funded by EU Horizon 2020 Grant 'Healthy minds 0-100 years: Optimising the use of European brain imaging cohorts (Lifebrain)', with grant agreement number 732592 and ERC Starting Grant schemes (grant agreements 283634, 725025, and 313440). 
 
 # Prior versions
-Some of the content presented here also apprears in the package vignette of `ggseg`, which may be accessed through R or in the package website (@ggseg). 
+Some of the content presented here also appears in the package vignette of `ggseg`, which may be accessed through R or in the package website (@ggseg). 
 Athanasia Monika Mowinckel also has several tutorials on her blog regarding ggseg creationg and functionality (@ggsegAnim, @ggsegIntro).
 
 # References
