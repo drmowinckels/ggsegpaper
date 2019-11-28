@@ -1,5 +1,5 @@
 ---
-title: Visualisation of Brain Statistics with R-package `ggseg`
+title: Visualisation of Brain Statistics with R-packages `ggseg` and `ggseg3d`
 preprint: true
 author: 
   - name: Athanasia M. Mowinckel
@@ -12,7 +12,7 @@ affiliation:
   - code: 1
     address: Center for Lifespan Changes in Brain and Cognition, Univeristy of Oslo, PO. box 1094 Blindern, 0317 Oslo, Norway
 abstract: >
-  There is an increasing emphasis on visualizing results from statistical analysis in more intuitive ways. Neuroimaging data already have, as a consequence of the source of the data, particular shapes and as such visualization of these data should reflect these same dimensional properties. The ggseg package makes it possible to visualize pre-defined brain segmentations of local/structural or connectivity features in both 2D polygons or 3D mesh. Presenting both relative position and size of segments in addition to statistical summary information aides interpretation and dissemination of results. In this tutorial, we present the data and functions in the ggseg and ggseg3d R-packages for brain atlas visualization. The tutorial highlights the main functions to create brain segmentation plots in R, and also introduces the accompanying package data that makes these visualizations possible. 
+  There is an increasing emphasis on visualizing results from statistical analysis in more intuitive ways. Neuroimaging data already have, as a consequence of the source of the data, particular shapes and as such visualization of these data should reflect these same dimensional properties. The ggseg-packages make it possible to visualize pre-defined brain segmentations of local/structural or connectivity features in both 2D polygons or 3D mesh. Presenting both relative position and size of segments in addition to statistical summary information aides interpretation and dissemination of results. In this tutorial, we present the data and functions in the ggseg and ggseg3d R-packages for brain atlas visualization. The tutorial highlights the main functions to create brain segmentation plots in R, and also introduces the accompanying package data that makes these visualizations possible. 
 bibliography: references.bib
 output:
   bookdown::pdf_book:
