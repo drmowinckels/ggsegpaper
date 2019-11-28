@@ -1,0 +1,116 @@
+---
+  title: Visualisation of Brain Statistics with R-package `ggseg`
+preprint: true
+author: 
+  - name: Athanasia M. Mowinckel
+affiliation: 1
+corresponding: true
+email: a.m.mowinckel@psykologi.uio.no
+- name: Didac Vidal Piñeiro
+affiliation: 1
+affiliation:
+  - code: 1
+address: Center for Lifespan Changes in Brain and Cognition, Univeristy of Oslo, PO. box 1094 Blindern, 0317 Oslo, Norway
+abstract: >
+  There is an increasing emphasis on visualising results from statistical analysis in more intuitive ways. Neuroimaging data already have, as a consequence of the source of the data, particular shapes and as such visualisation of these data should reflect these same dimensional properties. The ggseg package makes it possible to visualise pre-defined brain segmentations of local/structural or connectivity features in both 2D polygons or 3D mesh. Presenting both relative position and size of segments in addition to statistical summary information aides interpretation and dissemination of results. In this tutorial, we present the data and functions in the ggseg R-package for brain atlas visualisation. The tutorial highlights the main functions to create brain segmentation plots in R, and also introduces the accompanying package data that makes these visualisations possible. 
+bibliography: references.bib
+output:
+  bookdown::pdf_book:
+  base_format: rticles::peerj_article # for using bookdown features like \@ref()
+citation_package: natbib
+fig_caption: true
+includes:
+  in_header: preamble.tex
+rticles::peerj_article: preprint
+---
+  ```{r setup, include=F}
+knitr::opts_chunk$set(eval=TRUE, echo=TRUE)
+options(tinytex.verbose = TRUE)
+
+library(kableExtra)
+library(tidyverse)
+library(plotly) 
+library(ggplot2)
+library(knitr)
+library(ggseg)
+
+include_plotly <- function(plot, file){
+  orca(plot, file = file, format = "png")
+  knitr::include_graphics(file)
+}
+
+# Hook for setting latex text sizes
+def.chunk.hook  <- knitr::knit_hooks$get("chunk") 
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+# Hook for setting code chunk wrapping
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+
+dt <- data(package='ggseg')
+dt <- as.data.frame(dt$results, stringsAsFactors = FALSE)
+
+dtE <- data(package='ggsegExtra')
+dtE <- as.data.frame(dtE$results, stringsAsFactors = FALSE)
+
+dd <- bind_rows(dt, dtE) %>% 
+  filter(!grepl("pal", Item)) %>% 
+  mutate(Type = ifelse(grepl("3d", Item), "Mesh", "Polygon"),
+         Item = gsub("_3d", "", Item),
+         val = "Yes") %>% 
+  select(Package, Title, Type, Item, val) %>% 
+  spread(Type, val, fill = "No") %>% 
+  mutate(Title = linebreak(stringr::str_wrap(Title, width = 40))) 
+rm(dt, dtE)
+options(warnPartialMatchAttr = FALSE,
+        warnPartialMatchDollar = FALSE,
+        warnPartialMatchArgs = FALSE)
+```
+
+# Introduction
+
+Visualization is increasingly important for accurate guidance and interpretation of neuroimaging results, as current research is able to generate a high amount of data and outcomes.
+For Magnetic Resonance Imaging (MRI), neuroimaging software provides whole-brain information by using many small units of space (>100.000).
+Nonetheless, this data is often grouped and summarized into a limited number of regions using predefined brain parcellation atlases.
+Brain parcellations segment the brain into a finite set of meaningful neurobiological components, which reflect one or more brain features either based on local/structural or on connectivity properties (@eickhoff_2018).
+The use of brain atlases is widespread as these facilitate interpretation and minimize the amount of data, hence reducing problems with multiple comparisons and facilitating replicability and data sharing in otherwise computationally expensive analyses, which are often performed in specialized software environments such as R (@R).
+
+MRI data provides good spatial resolution and thus an optimal representation has to respect spatial relationships across regions.
+Results from brain atlas analyses are most meaningfully visualized when projected onto a representation of the brain, rather than on other types of graphs (e.g. bar charts) alone.
+The projection of data onto brain representations provides clear points of reference - especially when the reader is unfamiliar with the atlas - eases readability, guides interpretation, and conveys the spatial patterns of the data.
+Adopting the grammar of graphics implemented in ggplot2 (@ggplot), one can plot neuroimaging data directly in R with several tools such as ggBrain (@ggBrain) and ggneuro (@ggneuro; see neuroconductor -@neuroconductor for curated neuroimaging packages for R).
+Yet these tools display whole-brain image files and are not well-suited for representing brain atlas data.
+
+In this tutorial, we introduce the ggseg-package for visualizing brain atlas data in R.
+The ggseg – and the complimentary ggsegExtra – package include pre-compiled data sets for different brain atlases that allow for 2D and 3D visualization.
+Two-dimensional functionality is based on polygons and ggplot-based grammar of graphics (@ggplot), while the 3D functionality is based on tri-surface mesh plots and plotly (@plotly).
+
+The ggseg package presents both compiled data sets, tailored scripts that allow brain data integration and plotting, and other minor features such as custom color palettes.
+The data featured in the ggseg package are derived from two well-known parcellations: the Desikan-Killany cortical atlas (DKT; @dkt), which covers the cortical surface of the brain, and the Automatic Segmentation of Subcortical Structures (aseg; @aseg), which covers the subcortical structures.
+Both atlases are implemented in several neuroimaging softwares, such as FreeSurfer (@fischl_99, @dale_99, @Fischl2000), and are commonly used in relation to developmental changes, disease biomarkers, genomic data, and cognition (@amlien_elaboration_2019, @WALHOVD20051261, @Pizzagalli).
+The ggsegExtra package includes a library of precompiled atlases (currently including `r dd %>% filter(Package == "ggsegExtra") %>% nrow()` additional atlases) and it is updated continuously.
+See Table \@ref(tab:atlasTab) for a summary of the available atlases (as for May 2019).
+We encourage users to contribute to the ggsegExtra brain atlas repository by including additional brain atlases.
+In SI text and [github wiki](https://github.com/LCBC-UiO/ggseg/wiki), we offer a pipeline to create and supply atlases for 2D plotting.
+See SI text and SI scripts for instruction to include atlases for 3D plotting.
+
+```{r "atlasTab", echo=F, warning=FALSE, message=FALSE}
+dd %>%
+  mutate(citation = case_when(grepl("dkt", Item) ~ "@dkt")) %>%
+  kable(format="latex", escape = TRUE, booktabs = TRUE,
+        caption = "Table of currently available atlases in the ggseg and the ggsegExtra R-packages. Polygon and mesh refer to 2D and 3D brain atlase representations.") %>%
+  #collapse_rows(1) %>% 
+  kable_styling(latex_options = c("scale_down"))
+```
