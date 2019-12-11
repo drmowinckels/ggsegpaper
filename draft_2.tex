@@ -77,6 +77,8 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -92,12 +94,12 @@
 \usepackage{makecell}
 \usepackage{xcolor}
 
-\title{Visualisation of Brain Statistics with R-packages \texttt{ggseg} and \texttt{ggseg3d}}
+\title{Visualisation of Brain Statistics with R-packages \emph{ggseg} and \emph{ggseg3d}}
 
 \author[1]{Athanasia M. Mowinckel}
 
 \corrauthor[1]{Athanasia M. Mowinckel}{\href{mailto:a.m.mowinckel@psykologi.uio.no}{\nolinkurl{a.m.mowinckel@psykologi.uio.no}}}
-\author[1]{Didac Vidal Piñeiro}
+\author[1]{Didac Vidal-Piñeiro}
 
 
 \affil[1]{Center for Lifespan Changes in Brain and Cognition, Univeristy of Oslo, PO. box 1094 Blindern, 0317 Oslo, Norway}
@@ -115,7 +117,7 @@
 \bibliographystyle{plainnat}
 
 \begin{abstract}
-There is an increasing emphasis on visualizing results from statistical analysis in more intuitive ways. Neuroimaging data already have, as a consequence of the source of the data, particular shapes and as such visualization of these data should reflect these same dimensional properties. The ggseg-packages make it possible to visualize pre-defined brain segmentations of local/structural or connectivity features in both 2D polygons or 3D mesh. Presenting both relative position and size of segments in addition to statistical summary information aides interpretation and dissemination of results. In this tutorial, we present the data and functions in the ggseg and ggseg3d R-packages for brain atlas visualization. The tutorial highlights the main functions to create brain segmentation plots in R, and also introduces the accompanying package data that makes these visualizations possible.
+There is increased emphasis on visualizing results from statistical analysis in more intuitive ways. Results from imaging data inherently have a spatial component. Commonly used tools to disseminate results (i.e.~bar-charts or similar) ignore this spatial component. A tool that easily integrates the spatial aspect of the data could greatly improve dissemination of results, and also increase efficiency of workflows. The ggseg-packages make it possible to visualize pre-defined brain segmentations as both 2D polygons or 3D meshes. Presenting both the relative position and size of segments in addition to the statistical summary information eases interpretation and dissemination of results. Here we present the main data and functions in the \emph{ggseg} and \emph{ggseg3d} R-packages for brain atlas visualization. The main highlighted functions create brain segmentation plots in R, and datasets included in the packages, as well as in the \emph{ggsegExtra} companion package, fascilitate these visualizations.
 % Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text.
 \end{abstract}
 
@@ -131,25 +133,25 @@ There is an increasing emphasis on visualizing results from statistical analysis
 Visualization is increasingly important for accurate guidance and interpretation of neuroimaging results, as current research is able to generate a high amount of data and outcomes.
 For Magnetic Resonance Imaging (MRI), neuroimaging software provides whole-brain information by using many small units of space (\textgreater100.000).
 Nonetheless, this data is often grouped and summarized into a limited number of regions using predefined brain parcellation atlases.
-Brain parcellations segment the brain into a finite set of meaningful neurobiological components, which reflect one or more brain features either based on local/structural or on connectivity properties (\citet{eickhoff_2018}).
+Brain parcellations segment the brain into a finite set of meaningful neurobiological components, which reflect one or more brain features either based on structural or connectivity properties (\citet{eickhoff_2018}).
 The use of brain atlases is widespread as these facilitate interpretation and minimize the amount of data, hence reducing problems with multiple comparisons.
-This facilitates replicability and data sharing in otherwise computationally expensive analyses, which are often performed in specialized software environments such as R (\citet{R}).
+This enables replicability and data sharing in otherwise computationally expensive analyses, which are often performed in specialized software environments such as R (\citet{R}).
 
 MRI data provides good spatial resolution and thus an optimal representation has to respect spatial relationships across regions.
-Results from brain atlas analyses are most meaningfully visualized when projected onto a representation of the brain, rather than on other types of graphs (e.g.~bar charts) alone.
+Results from brain atlas analyses are most meaningfully visualized when projected onto a representation of the brain, thus it is desirable that any visual representation respects this relation.
 The projection of data onto brain representations provides clear points of reference - especially when the reader is unfamiliar with the atlas - eases readability, guides interpretation, and conveys the spatial patterns of the data.
-Adopting the grammar of graphics implemented in ggplot2 (\citet{ggplot}), one can plot neuroimaging data directly in R with several tools such as ggBrain (\citet{ggBrain}) and ggneuro (\citet{ggneuro}; see neuroconductor \citeyearpar{neuroconductor} for curated neuroimaging packages for R).
+Adopting the grammar of graphics implemented in \emph{ggplot2} (\citet{ggplot}), one can plot neuroimaging data directly in R with several tools such as ggBrain (\citet{ggBrain}) and ggneuro (\citet{ggneuro}; see neuroconductor \citeyearpar{neuroconductor} for curated neuroimaging packages for R).
 Yet these tools display whole-brain image files and are not well-suited for representing brain atlas data.
 
 In this tutorial, we introduce two packages for visualizing brain atlas data in R.
-The ggseg and ggseg3d -- pluss the complimentary ggsegExtra -- packages include pre-compiled data sets for different brain atlases that allow for 2D and 3D visualization.
-Two-dimensional functionality in ggseg is based on polygons and ggplot2-based grammar of graphics (\citet{ggplot}), while the 3D functionality in ggseg3d is based on tri-surface mesh plots and plotly (\citet{plotly}).
+The \emph{ggseg} and \emph{ggseg3d} -- pluss the complimentary \emph{ggsegExtra} -- packages include pre-compiled datasets for different brain atlases that allow for 2D and 3D visualization.
+The two-dimensional functionality in \emph{ggseg} is based on polygons and \emph{ggplot2}-based grammar of graphics (\citet{ggplot}), while the 3D functionality in \emph{ggseg3d} is based on tri-surface mesh plots and \emph{plotly} (\citet{plotly}).
 
-Both packages present compiled data sets, tailored functions that allow brain data integration, and plotting, as well as other minor features such as custom colour palettes.
+Both packages present compiled datasets, tailored functions that allow brain data integration and plotting, and other minor features such as custom colour palettes.
 The data featured in the packages are derived from two well-known parcellations: the Desikan-Killany cortical atlas (DKT; \citet{dkt}), which covers the cortical surface of the brain, and the Automatic Segmentation of Subcortical Structures (aseg; \citet{aseg}), which covers the subcortical structures.
 Both atlases are implemented in several neuroimaging softwares, such as FreeSurfer (\citet{fischl_99}, \citet{dale_99}, \citet{Fischl2000}), and are commonly used in relation to developmental changes, disease biomarkers, genomic data, and cognition (\citet{amlien_elaboration_2019}, \citet{WALHOVD20051261}, \citet{Pizzagalli}).
-The ggsegExtra package includes a library of precompiled atlases (currently including 13 additional atlases) and it is updated continuously.
-See Table \ref{tab:atlasTab} for a summary of the available atlases (as of November 2019).
+The \emph{ggsegExtra} package contains a collection of precompiled atlases (currently 15 additional atlases) and it is updated frequently.
+A summary of all available atlases compatible with the \emph{ggseg}-packages as of December 2019 can be found in \ref{tab:atlasTab}.
 
 \begin{table}
 
@@ -160,21 +162,24 @@ See Table \ref{tab:atlasTab} for a summary of the available atlases (as of Novem
 \toprule
 Title & Item & Mesh & Polygon & citation\\
 \midrule
+Automated probabilistic reconstruction of white-matter pathways & tracula & None & ggsegExtra & \citet{tracula}\\
 Desikan-Killiany Cortical Atlas & dkt & ggseg3d & ggseg & \citet{dkt}\\
 Desterieux cortical parcellations & desterieux & ggsegExtra & None & \citet{desterieux}\\
 Freesurfer automatic subcortical segmentation of a brain volume & aseg & ggseg3d & ggseg & \citet{aseg}\\
 Genetic topography of brain area morphology & chenAr & None & ggsegExtra & \citet{chen}\\
+\addlinespace
 Genetic topography of brain thickness morphology & chenTh & None & ggsegExtra & \citet{chen}\\
-\addlinespace
 Harvard-Oxford Cortical atlas & hoCort & None & ggsegExtra & \citet{ho}\\
-Parcellation from a midsagittal slice & midsagittal & None & ggsegExtra & \\
-Parcellation from JHU & jhu & ggsegExtra & ggsegExtra & \citet{jhu}\\
-Parcellation from of white matter & icbm & ggsegExtra & None & \citet{icbm}\\
-Parcellation from the Human Connectome Project & glasser & ggsegExtra & ggsegExtra & \citet{glasser}\\
+HPC - Multi-modal parcellation of human cerebral cortex & glasser & None & ggsegExtra & \citet{glasser}\\
+ICBM white matter parcellation & icbm & ggsegExtra & None & \citet{icbm}\\
+JHU parcellation & jhu & None & ggsegExtra & \citet{jhu}\\
 \addlinespace
-Schaefer 17 Resting-state Cortical Parcellations & schaefer17 & ggsegExtra & None & \citet{schaefer}\\
-Schaefer 7 Resting-state Cortical Parcellations & schaefer7 & ggsegExtra & None & \citet{schaefer}\\
-White matter tract parcellations & tracula & ggsegExtra & ggsegExtra & \citet{tracula}\\
+Local-Global 17 Parcellation of the Human Cerebral Cortex & schaefer17 & ggsegExtra & None & \citet{schaefer}\\
+Local-Global 7 Parcellation of the Human Cerebral Cortex & schaefer7 & ggsegExtra & None & \citet{schaefer}\\
+Parcellation from JHU & jhu & ggsegExtra & None & \citet{jhu}\\
+Parcellation from the Human Connectome Project & glasser & ggsegExtra & None & \citet{glasser}\\
+White matter tract parcellations & tracula & ggsegExtra & None & \citet{tracula}\\
+\addlinespace
 Yeo 17 Resting-state Cortical Parcellations & yeo17 & ggsegExtra & ggsegExtra & \citet{yeo2011}\\
 Yeo 7 Resting-state Cortical Parcellations & yeo7 & ggsegExtra & ggsegExtra & \citet{yeo2011}\\
 \bottomrule
@@ -184,27 +189,28 @@ Yeo 7 Resting-state Cortical Parcellations & yeo7 & ggsegExtra & ggsegExtra & \c
 \hypertarget{tutorial}{%
 \section{Tutorial}\label{tutorial}}
 
-This tutorial will introduce the \texttt{ggseg}, \texttt{ggseg3d}, and \texttt{ggsegExtra} packages and familiarize the reader with the main functions and the general use of the packages.
+This tutorial will introduce the \emph{ggseg}, \emph{ggseg3d}, and \emph{ggsegExtra} packages and familiarize the reader with the main functions and the general use of the packages.
 The tutorial will focus on the two main functions: \texttt{ggseg()} for plotting 2D polygons and \texttt{ggseg3d()} for plotting 3D brains based on tri-surface mesh plots.
 
 \hypertarget{plotting-polygon-data-ggplot2}{%
 \subsection{Plotting polygon data (ggplot2)}\label{plotting-polygon-data-ggplot2}}
 
-\texttt{ggseg} is the main function for plotting 2D data.
+\emph{ggseg} is the main function for plotting 2D data.
 By default, the function automatically plots the DKT atlas (see Figure \ref{fig:init}).
-The \texttt{ggseg} function is a wrapper for \texttt{geom\_polygon} from \texttt{ggplot2}, and it can be built upon and combined like any ggplot object.
+The \texttt{ggseg()}-function is a wrapper for \texttt{geom\_polygon()} from \emph{ggplot2}, and it can be built upon and combined like any \emph{ggplot}-object.
 The image plot consists of a simple brain representation containing no extra information.
-Hence, \texttt{ggseg} plots can be easily complemented with any of the available ggplot features and options.
-We recommend users to get familiarized with ggplot2 grammar (\citet{ggplot}).
+Hence, \emph{ggseg} plots can be easily complemented with any of the available \emph{ggplot2} features and options.
+We recommend users to get familiarized with \emph{ggplot2} (\citet{ggplot}).
 The package is currently only available through github, but we expect to submit to The Comprehensive R Archive Network (\citet{cran}) some time during 2020.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# remotes::install_github("LCBC-UiO/ggseg")}
+\CommentTok{\# remotes::install\_github("LCBC{-}UiO/ggseg")}
 \KeywordTok{library}\NormalTok{(ggseg)}
-\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{library}\NormalTok{(dplyr)}
+\KeywordTok{library}\NormalTok{(tidyr)}
 
-\CommentTok{# Figure 1}
+\CommentTok{\# Figure 1}
 \KeywordTok{ggseg}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -212,202 +218,192 @@ The package is currently only available through github, but we expect to submit 
 \begin{figure}
 \centering
 \includegraphics{draft_2_files/figure-latex/init-1.pdf}
-\caption{\label{fig:init}By default \texttt{ggseg} will plot the dkt atlas in grey shaded polygons.}
+\caption{\label{fig:init}By default \texttt{ggseg()} will plot the dkt atlas in grey shaded polygons.}
 \end{figure}
 
-In addition to the standard options for ggplot polygon geoms, the function also has several options for plotting the main brain representations.
+In addition to the standard options for \emph{ggplot2} polygon geoms, the function also has several options for plotting the main brain representations.
 These options are atlas-specific.
-For cortical atlases, such as the `dkt', one can stack the hemispheres, view only the medial or lateral side, choose either one or both hemispheres, or any combination of hemisphere and view.
-See Figure \ref{fig:collection}) for examples.
-For subcortical atlases, such as the `aseg', the options are more limited but one can often choose between axial, sagittal, and coronal views.
+For cortical atlases, such as the \texttt{dkt}, one can stack the hemispheres, view only the medial or lateral side, choose either one or both hemispheres, or any combination of hemisphere and view (see Figure \ref{fig:collection} for examples).
+For subcortical atlases, such as the \texttt{aseg} atlas, the options are more limited but one can often choose between axial, sagittal, and coronal views.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# dkt dark theme}
-\NormalTok{p1 <-}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{position =} \StringTok{"stacked"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme_dark}\NormalTok{() }\OperatorTok{+}
+\CommentTok{\# dkt dark theme}
+\NormalTok{p1 <{-}}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{position =} \StringTok{"stacked"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_dark}\NormalTok{() }\OperatorTok{+}
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title=}\StringTok{" "}\NormalTok{)}
 
-\CommentTok{# dkt classic theme}
-\NormalTok{p2 <-}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{position =} \StringTok{"stacked"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme_classic}\NormalTok{() }\OperatorTok{+}
+\CommentTok{\# dkt classic theme}
+\NormalTok{p2 <{-}}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{position =} \StringTok{"stacked"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{" "}\NormalTok{)}
 
-\CommentTok{# dkt medial view}
-\NormalTok{med <-}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{view =} \StringTok{"medial"}\NormalTok{) }\OperatorTok{+}
+\CommentTok{\# dkt medial view}
+\NormalTok{med <{-}}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{view =} \StringTok{"medial"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{" "}\NormalTok{)}
 
-\CommentTok{# dkt left hemisphere}
-\NormalTok{left <-}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{hemisphere =} \StringTok{"left"}\NormalTok{) }\OperatorTok{+}
+\CommentTok{\# dkt left hemisphere}
+\NormalTok{left <{-}}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{hemisphere =} \StringTok{"left"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{" "}\NormalTok{)}
 
-
-\CommentTok{# aseg default theme}
-\NormalTok{p3 <-}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{atlas=}\NormalTok{aseg) }\OperatorTok{+}
+\CommentTok{\# aseg default theme}
+\NormalTok{p3 <{-}}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{atlas=}\NormalTok{aseg) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{" "}\NormalTok{)}
 
-
-\CommentTok{# dkt left medial alone}
-\NormalTok{combo <-}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{view =} \StringTok{"medial"}\NormalTok{,}
-      \DataTypeTok{hemisphere =} \StringTok{"left"}\NormalTok{) }\OperatorTok{+}
+\CommentTok{\# dkt left medial alone}
+\NormalTok{combo <{-}}\StringTok{ }\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{view =} \StringTok{"medial"}\NormalTok{,}
+               \DataTypeTok{hemisphere =} \StringTok{"left"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title=}\StringTok{" "}\NormalTok{)}
 
-\CommentTok{# Combine plots to Figure 2}
-\NormalTok{cowplot}\OperatorTok{::}\KeywordTok{plot_grid}\NormalTok{(p1, med, combo,  p2, left, p3,}
-                   \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"A: dkt - dark"}\NormalTok{, }\StringTok{"B: dkt - medial"}\NormalTok{,}
-                              \StringTok{"C: dkt - combo"}\NormalTok{, }\StringTok{"D: dkt - classic"}\NormalTok{,}
-                              \StringTok{"E: dkt - left"}\NormalTok{, }\StringTok{"F: aseg"}\NormalTok{),}
-                   \DataTypeTok{hjust =} \FloatTok{-.05}\NormalTok{)}
+\CommentTok{\# Combine plots to Figure 2}
+\NormalTok{cowplot}\OperatorTok{::}\KeywordTok{plot\_grid}\NormalTok{(p1, med, combo,  p2, left, p3,}
+                   \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"A: dkt {-} dark"}\NormalTok{, }\StringTok{"B: dkt {-} medial"}\NormalTok{,}
+                              \StringTok{"C: dkt {-} combo"}\NormalTok{, }\StringTok{"D: dkt {-} classic"}\NormalTok{,}
+                              \StringTok{"E: dkt {-} left"}\NormalTok{, }\StringTok{"F: aseg"}\NormalTok{),}
+                   \DataTypeTok{hjust =} \FloatTok{{-}.05}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}
 \centering
 \includegraphics{draft_2_files/figure-latex/collection-1.pdf}
-\caption{\label{fig:collection}ggseg plots can be used with any ggplot feasture such as standard scales and themes. For cortical atlases, one can supply special ggseg options to determine hemisphere or view, and control how the plots looks like and is organised. \textbf{A:} dkt atlas, stacked with dark theme ; \textbf{B:} dkt with medial view only; \textbf{C:} dkt atlas with only left medial display; \textbf{D:} dkt atlas, stacked, with classic theme; \textbf{E:} dkt atlas with left hemisphere only; \textbf{F:} complete aseg atlas}
+\caption{\label{fig:collection}\emph{ggseg} plots can be used with any \emph{ggplot2} feature such as standard scales and themes. For cortical atlases, one can supply special \emph{ggseg} options to determine hemisphere or view, and control how the plots looks like and is organised. \textbf{A:} \texttt{dkt} atlas, stacked with dark theme ; \textbf{B:} \texttt{dkt} with medial view only; \textbf{C:} \texttt{dkt} atlas with only left medial display; \textbf{D:} \texttt{dkt} atlas, stacked, with classic theme; \textbf{E:} \texttt{dkt} atlas with left hemisphere only; \textbf{F:} complete \texttt{aseg} atlas}
 \end{figure}
 
 \hypertarget{using-own-data-with-fill-and-colour}{%
 \subsubsection{Using own data with fill and colour}\label{using-own-data-with-fill-and-colour}}
 
-\texttt{ggseg} accepts any argument you can supply to \texttt{geom\_polygon} and therefore is easy to work with for those familiar with ggplot functionality.
-Standard arguments like \texttt{fill} that floods the segments with a colour, or \texttt{colour} that colours the edges around the segments are typical arguments to provide to the function either as a single setting value or within the ggplot mapping function \texttt{aes}.
-To use color palettes corresponding to those used in the original neuroimaging softwares one can use atlas-specific `brain' palette scales.
-See an example in Figure \ref{fig:fill}.
+\texttt{ggseg()} accepts any argument you can supply to \texttt{geom\_polygon()}, and therefore is easy to work with for those familiar with \emph{ggplot2} functionality.
+Standard arguments like \texttt{fill} that floods the segments with a colour, or \texttt{colour} that colours the edges around the segments are typical arguments to provide to the function either as a single setting value or within the \emph{ggplot2} mapping function \texttt{aes}.
+To use color palettes corresponding to those used in the original neuroimaging softwares one can use atlas-specific `brain' palette scales (Figure \ref{fig:fill}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# Figure 3}
+\CommentTok{\# Figure 3}
 \KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{mapping=}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill =}\NormalTok{ area), }\DataTypeTok{colour=}\StringTok{"black"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale_fill_brain}\NormalTok{(}\StringTok{"dkt"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_fill\_brain}\NormalTok{(}\StringTok{"dkt"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.justification=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{),}
         \DataTypeTok{legend.position=}\StringTok{"bottom"}\NormalTok{,}
-        \DataTypeTok{legend.text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size =} \DecValTok{5}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{guides}\NormalTok{(}\DataTypeTok{fill =} \KeywordTok{guide_legend}\NormalTok{(}\DataTypeTok{ncol =} \DecValTok{3}\NormalTok{))}
+        \DataTypeTok{legend.text =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{size =} \DecValTok{5}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{guides}\NormalTok{(}\DataTypeTok{fill =} \KeywordTok{guide\_legend}\NormalTok{(}\DataTypeTok{ncol =} \DecValTok{3}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}
 \centering
 \includegraphics{draft_2_files/figure-latex/fill-1.pdf}
-\caption{\label{fig:fill}Supplying `area' to the fill option in ggseg, will use the column `area' from the accompanying dataset to create a discrete colour palette over the segments in the atlas. The `dkt' atlas default palette corresponds to the FreeSurferColorLut scheme.}
+\caption{\label{fig:fill}Supplying `area' to the fill option in \texttt{ggseg()}, will use the column `area' from the accompanying dataset to create a discrete colour palette over the segments in the atlas. The \texttt{dkt} atlas default palette corresponds to the FreeSurferColorLut scheme.}
 \end{figure}
 
-Most users will use ggseg to display - using a color scale - some descriptive or inferential statistics, such as mean thickness or brain-cognition relationships across the different brain regions.
-Yet, before projecting the statistics onto the segments, we need to explore the structure of the atlas data sets.
-The atlas data set structure will help us understand what incoming statistical data needs to look like.
-Note that each atlas corresponds to a unique data set.
-All data sets have a similar structure and contain key information regarding the atlas, the region names, and the coordinates for the segment polygons.
+Most users will use \texttt{ggseg()} to display - using a color scale - some descriptive or inferential statistics, such as mean thickness or brain-cognition relationships across the different brain regions.
+Yet, before projecting the statistics onto the segments, one should explore the structure of the atlas datasets.
+The atlas dataset structure will help users understand what incoming statistical data needs to look like.
+Note that each atlas corresponds to a unique dataset.
+All datasets have a similar structure and contain key information regarding the atlas, the region names, and the coordinates for the segment polygons.
+
+In any atlas, the column `label' is particularly useful for combining the data of interest with the \emph{ggseg}-polygons.
+The column `label' contains the label (region) names as in the original neuroimaging software.
+For example, the DKT atlas label column matches the region names from Freesurfer statistics table outputs.
+Yet, the data in \emph{ggseg} is in a long format - that is each region has its own row - and any data of interest needs to be in this same format.
+Often datasets are organized in wide format, in which subjects are represented by rows and each different data variable is represented in a separate column, and thus need to be rearranged in order to work with ggseg.
+See below an example of wide-to-long conversion.
 
 \small
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{head}\NormalTok{(dkt, }\DecValTok{5}\NormalTok{)}
-\CommentTok{## # A tibble: 5 x 6}
-\CommentTok{##   atlas area               hemi  side    label              ggseg          }
-\CommentTok{##   <chr> <chr>              <chr> <chr>   <chr>              <list>         }
-\CommentTok{## 1 dkt   superior temporal  left  lateral lh_superiortempor~ <tibble [1,494~}
-\CommentTok{## 2 dkt   pre central        left  lateral lh_precentral      <tibble [1,314~}
-\CommentTok{## 3 dkt   post central       left  lateral lh_postcentral     <tibble [1,164~}
-\CommentTok{## 4 dkt   rostral middle fr~ left  lateral lh_rostralmiddlef~ <tibble [1,194~}
-\CommentTok{## 5 dkt   insula             left  lateral lh_insula          <tibble [870 x~}
+\CommentTok{\# Create a mock freesurfer output}
+\NormalTok{freesurfer\_stats <{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{id =} \KeywordTok{c}\NormalTok{(}\DecValTok{10}\OperatorTok{:}\DecValTok{12}\NormalTok{),}
+  \DataTypeTok{lh\_superiortemporal =} \KeywordTok{c}\NormalTok{(}\FloatTok{3.32}\NormalTok{, }\FloatTok{4.1}\NormalTok{, }\FloatTok{3.5}\NormalTok{),}
+  \DataTypeTok{lh\_precentral =} \KeywordTok{c}\NormalTok{(}\FloatTok{2.3}\NormalTok{, }\FloatTok{2.5}\NormalTok{, }\FloatTok{2.1}\NormalTok{),}
+  \DataTypeTok{lh\_rostralmiddlefrontal =} \KeywordTok{c}\NormalTok{(}\FloatTok{3.3}\NormalTok{, }\FloatTok{3.2}\NormalTok{, }\FloatTok{3.1}\NormalTok{)}
+\NormalTok{)}
+\NormalTok{freesurfer\_stats}
+
+\CommentTok{\# Wrangle wide format data into long format}
+\NormalTok{freesurfer\_long <{-}}\StringTok{ }\NormalTok{freesurfer\_stats }\OperatorTok{\%>\%}
+\StringTok{  }\KeywordTok{gather}\NormalTok{(label, thickness, }\OperatorTok{{-}}\NormalTok{id)}
+\NormalTok{freesurfer\_long}
+\CommentTok{\#\#   id lh\_superiortemporal lh\_precentral lh\_rostralmiddlefrontal}
+\CommentTok{\#\# 1 10                3.32           2.3                     3.3}
+\CommentTok{\#\# 2 11                4.10           2.5                     3.2}
+\CommentTok{\#\# 3 12                3.50           2.1                     3.1}
+\CommentTok{\#\#   id                   label thickness}
+\CommentTok{\#\# 1 10     lh\_superiortemporal      3.32}
+\CommentTok{\#\# 2 11     lh\_superiortemporal      4.10}
+\CommentTok{\#\# 3 12     lh\_superiortemporal      3.50}
+\CommentTok{\#\# 4 10           lh\_precentral      2.30}
+\CommentTok{\#\# 5 11           lh\_precentral      2.50}
+\CommentTok{\#\# 6 12           lh\_precentral      2.10}
+\CommentTok{\#\# 7 10 lh\_rostralmiddlefrontal      3.30}
+\CommentTok{\#\# 8 11 lh\_rostralmiddlefrontal      3.20}
+\CommentTok{\#\# 9 12 lh\_rostralmiddlefrontal      3.10}
 \end{Highlighting}
 \end{Shaded}
 
 \normalsize
 
-In any atlas, the column `label' is particularly useful for combining the data of interest with the \texttt{ggseg}-polygons.
-The column `label' contains the label (region) names as in the original neuroimaging software.
-For example, the DKT atlas label column matches the region names from Freesurfer statistics table outputs.
-Yet the data in \texttt{ggseg} is in a long format - that is each region has its own row - and any data of interest needs to be in this same format.
-Often data sets are organized in wide format, in which subjects are represented by rows and each different data variable is represented in a separate column, and thus need to be rearranged in order to work with ggseg.
-See below an example of wide-to-long conversion.
+Data in long format can then be used directly with the \texttt{ggseg()}-function, as the `label' column corresponds in name and content with the `label' column in the atlas data of \texttt{dkt}.
+The data \textbf{must} include a column that has the same column name and at least \emph{some} data matching the values in the corresponding column in the atlas data.
+In the next example we create some data with 4 rows, with an `area' and `p' column, representing the results of a hypothetical analysis.
+The \texttt{ggseg()}-function will recognise the matching column `area', and merge the supplied data into the atlas using \emph{dplyr}-joins.
+We use the `p' column as the column flooding the segment with colour.
+The appearance of the plot can then be modified similarly to any other \emph{ggplot2} graph using functions such as scales, labs, themes, etc., as seen in Figure \ref{fig:datasupp}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{freesurfer_stats <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
-  \DataTypeTok{id =} \KeywordTok{c}\NormalTok{(}\DecValTok{10}\OperatorTok{:}\DecValTok{12}\NormalTok{),}
-  \DataTypeTok{lh_superiortemporal =} \KeywordTok{c}\NormalTok{(}\FloatTok{3.32}\NormalTok{, }\FloatTok{4.1}\NormalTok{, }\FloatTok{3.5}\NormalTok{),}
-  \DataTypeTok{lh_precentral =} \KeywordTok{c}\NormalTok{(}\FloatTok{2.3}\NormalTok{, }\FloatTok{2.5}\NormalTok{, }\FloatTok{2.1}\NormalTok{),}
-  \DataTypeTok{lh_rostralmiddlefrontal =} \KeywordTok{c}\NormalTok{(}\FloatTok{3.3}\NormalTok{, }\FloatTok{3.2}\NormalTok{, }\FloatTok{3.1}\NormalTok{)}
-\NormalTok{  )}
-\NormalTok{freesurfer_stats}
-\CommentTok{##   id lh_superiortemporal lh_precentral lh_rostralmiddlefrontal}
-\CommentTok{## 1 10                3.32           2.3                     3.3}
-\CommentTok{## 2 11                4.10           2.5                     3.2}
-\CommentTok{## 3 12                3.50           2.1                     3.1}
-
-\NormalTok{freesurfer_long <-}\StringTok{ }\NormalTok{freesurfer_stats }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{gather}\NormalTok{(label, thickness, }\OperatorTok{-}\NormalTok{id)}
-\NormalTok{freesurfer_long}
-\CommentTok{##   id                   label thickness}
-\CommentTok{## 1 10     lh_superiortemporal      3.32}
-\CommentTok{## 2 11     lh_superiortemporal      4.10}
-\CommentTok{## 3 12     lh_superiortemporal      3.50}
-\CommentTok{## 4 10           lh_precentral      2.30}
-\CommentTok{## 5 11           lh_precentral      2.50}
-\CommentTok{## 6 12           lh_precentral      2.10}
-\CommentTok{## 7 10 lh_rostralmiddlefrontal      3.30}
-\CommentTok{## 8 11 lh_rostralmiddlefrontal      3.20}
-\CommentTok{## 9 12 lh_rostralmiddlefrontal      3.10}
-\end{Highlighting}
-\end{Shaded}
-
-Data in long format can then be used directly with the \texttt{ggseg} function, as the \texttt{label} column corresponds in name and content with the \texttt{label} column in the atlas data of dkt.
-The data \textbf{must} include a column that has the same name and at least \emph{some} data matching the values in the corresponding column in the atlas data.
-In the next example we create some data with 4 rows, and an `area' and `p' column, representing the results of a hypothetical analysis.
-The \texttt{ggseg} function will recognise the matching column `area', and merge the supplied data into the atlas using \texttt{dplyr} joins.
-We use the \texttt{p} column as the column flooding the segment with colour.
-The appearance of the plot can then be modified similarly to any other ggplot graph using functions such as scales, labs, themes, etc.
-
-\begin{Shaded}
-\begin{Highlighting}[]
+\CommentTok{\# Make some mock data}
 \NormalTok{someData =}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
   \DataTypeTok{area =} \KeywordTok{c}\NormalTok{(}\StringTok{"transverse temporal"}\NormalTok{, }\StringTok{"insula"}\NormalTok{,}
            \StringTok{"pre central"}\NormalTok{,}\StringTok{"superior parietal"}\NormalTok{),}
   \DataTypeTok{p =} \KeywordTok{sample}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{001}\NormalTok{), }\DecValTok{4}\NormalTok{),}
   \DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{)}
 
-\CommentTok{# Figure 4}
+\CommentTok{\# Figure 4}
 \KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{.data=}\NormalTok{someData, }\DataTypeTok{mapping=}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill=}\NormalTok{p))  }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title=}\StringTok{"A nice plot title"}\NormalTok{, }\DataTypeTok{fill=}\StringTok{"p-value"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale_fill_gradient}\NormalTok{(}\DataTypeTok{low=}\StringTok{"firebrick"}\NormalTok{,}\DataTypeTok{high=}\StringTok{"goldenrod"}\NormalTok{)}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title=}\StringTok{"A nice plot title"}\NormalTok{, }\DataTypeTok{fill=}\StringTok{"p{-}value"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_fill\_gradient}\NormalTok{(}\DataTypeTok{low=}\StringTok{"firebrick"}\NormalTok{,}\DataTypeTok{high=}\StringTok{"goldenrod"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}
 \centering
 \includegraphics{draft_2_files/figure-latex/datasupp-1.pdf}
-\caption{\label{fig:datasupp}Supplying data through the .data option in ggseg will make it possible to use columns in the supplied data to aestheticals (such as fill) in ggseg. The ggseg object can be used with any other polygon compatible function from ggplot or ggplot extentions, like here adding title, changing the legend name and the colour scheme with standard ggplot2 functions.}
+\caption{\label{fig:datasupp}Supplying data through the `.data' option in \texttt{ggseg()} will make it possible to use columns in the supplied data to aesthetical arguments (such as `fill'). The \emph{ggseg} plot can be used with any other polygon compatible function from \emph{ggplot2} or \emph{ggplot2} extentions, for instance adding title, changing the legend name and the colour scheme with standard \emph{ggplot2} functions.}
 \end{figure}
 
-If the results are only in one hemisphere, but you still want to plot both of them, make sure your data.frame includes the column \texttt{hemi} with either `right' or `left' for this to happen.
+If the results are only in one hemisphere, but you still want to plot both of them, make sure your data.frame includes the column `hemi' with either `right' or `left' for this to happen.
 In this case, data will be merged into the atlas both by `area' and by `hemi'.
 
 \hypertarget{creating-subplots}{%
 \subsubsection{Creating subplots}\label{creating-subplots}}
 
 There is often the need to plot a statistic of interest in different groups (e.g.~thickness or brain - cognition relationships in young or older adults).
-This may be obtained also with ggseg, using ggplot's \texttt{facet\_wrap} or \texttt{facet\_grid}, using two guiding rules:
-\textbf{1)} as before, data needs to be in long format (group data should appear in seperate rows, not in separate columns).
-\textbf{2)} The data needs to be grouped using \texttt{dplyr}'s \texttt{group\_by} function \emph{before} providing the data to the \texttt{ggseg} function.
-The ggseg function will detect grouped data, and adapt it to \texttt{facet}'s requirements.
+This may be obtained also with \texttt{ggseg()}, using \emph{ggplot2}'s \texttt{facet\_wrap} or \texttt{facet\_grid}, with three guiding rules:
+\textbf{1)} as before, data needs to be in long format with a column indexing which group the row corresponds to (group data should appear in seperate rows, not in separate columns).
+\textbf{2)} The data needs to be grouped using \emph{dplyr}'s \texttt{group\_by()} function \emph{before} providing the data to the \texttt{ggseg()}-function.
+The \texttt{ggseg()}-function will detect grouped data, and adapt it to \texttt{facet}`s requirements.
+\textbf{3)} Apply \texttt{facet\_wrap} or \texttt{facet\_grid} to the plot having used the above two rules.
+An example of this can be seen in Figure \ref{fig:datasupp3}, where a mock dataset including summary statistics for two groups ('Young' and `Old') is used when facetting a \emph{ggseg}-plot.
+
+All the concepts described above also work with the \texttt{aseg} atlas for subcortical structures, with the exception of `hemisphere' and `view' arguments that are superfluous in subcortical atlases (Figure \ref{fig:atlases}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# Make some mock data}
 \NormalTok{someData =}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
   \DataTypeTok{area =} \KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"transverse temporal"}\NormalTok{, }\StringTok{"insula"}\NormalTok{,}
                \StringTok{"pre central"}\NormalTok{,}\StringTok{"superior parietal"}\NormalTok{),}\DecValTok{2}\NormalTok{),}
   \DataTypeTok{p =} \KeywordTok{sample}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{001}\NormalTok{), }\DecValTok{8}\NormalTok{),}
   \DataTypeTok{AgeG =} \KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\StringTok{"Young"}\NormalTok{,}\DecValTok{4}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\StringTok{"Old"}\NormalTok{,}\DecValTok{4}\NormalTok{)),}
-  \DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{group_by}\NormalTok{(AgeG)}
+  \DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{\%>\%}
+\StringTok{  }\KeywordTok{group\_by}\NormalTok{(AgeG)}
 
-\CommentTok{# Figure 5}
+\CommentTok{\# Figure 5}
 \KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{.data=}\NormalTok{someData, }\DataTypeTok{colour=}\StringTok{"white"}\NormalTok{, }\DataTypeTok{position =} \StringTok{"stacked"}\NormalTok{,}
       \DataTypeTok{mapping=}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill=}\NormalTok{p)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{AgeG, }\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{AgeG, }\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -415,40 +411,24 @@ The ggseg function will detect grouped data, and adapt it to \texttt{facet}'s re
 \begin{figure}
 \centering
 \includegraphics{draft_2_files/figure-latex/datasupp3-1.pdf}
-\caption{\label{fig:datasupp3}Data with different groups need the data to be grouped\_by before providing the data to ggseg}
+\caption{\label{fig:datasupp3}Data including different groups need to be grouped using \texttt{group\_by()} \textbf{before} plottinh with \texttt{ggseg()} for facetting to work.}
 \end{figure}
 
-All the concepts described above also work with the `aseg' atlas for subcortical structures, with the exception of `hemisphere' and `view' arguments that are superfluous in subcortical atlases such as aseg.
-Again, inspecting the atlas data directly will be of aid when preparing data to use with the atlas.
-Note the equivalent structures between `aseg' and the `dkt' atlases.
-
-\small
-
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{head}\NormalTok{(aseg, }\DecValTok{5}\NormalTok{)}
-\CommentTok{## # A tibble: 5 x 6}
-\CommentTok{##   atlas area             hemi  side  label                ggseg            }
-\CommentTok{##   <chr> <chr>            <chr> <chr> <fct>                <list>           }
-\CommentTok{## 1 aseg  <NA>             right axial <NA>                 <tibble [808 x 5~}
-\CommentTok{## 2 aseg  <NA>             left  axial <NA>                 <tibble [1,014 x~}
-\CommentTok{## 3 aseg  thalamus proper  left  axial Left-Thalamus-Proper <tibble [56 x 5]>}
-\CommentTok{## 4 aseg  thalamus proper  right axial Right-Thalamus-Prop~ <tibble [61 x 5]>}
-\CommentTok{## 5 aseg  lateral ventric~ right axial Right-Lateral-Ventr~ <tibble [66 x 5]>}
-\end{Highlighting}
-\end{Shaded}
-
-\normalsize
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# Figure 6}
-\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{atlas=}\StringTok{"aseg"}\NormalTok{, }\DataTypeTok{mapping=}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill=}\NormalTok{area))}
+\CommentTok{\# Figure 6}
+\KeywordTok{ggseg}\NormalTok{(}\DataTypeTok{atlas=}\StringTok{"aseg"}\NormalTok{, }\DataTypeTok{mapping=}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill=}\NormalTok{area)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.justification=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{),}
+        \DataTypeTok{legend.position=}\StringTok{"bottom"}\NormalTok{,}
+        \DataTypeTok{legend.text =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{size =} \DecValTok{5}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{guides}\NormalTok{(}\DataTypeTok{fill =} \KeywordTok{guide\_legend}\NormalTok{(}\DataTypeTok{ncol =} \DecValTok{3}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}
-\includegraphics[width=0.6\linewidth]{draft_2_files/figure-latex/atlases-1} \caption{The first 10 rows of the `aseg` dataset, that has some specific differences from the dkt, like missing the option to not view both hemispheres, as the plot would be hard to understand that way.}\label{fig:atlases}
+\centering
+\includegraphics{draft_2_files/figure-latex/atlases-1.pdf}
+\caption{\label{fig:atlases}The \texttt{aseg} atlas, showing subcortical structures, has some distinct differences from the \texttt{dkt}. For instance, there is no option to show only a single hemisphere, as the resulting plot would be very difficult to understand. Furthermore, rather than showing lateral and medial surfaces, it shows an axial and sagittal slice.}
 \end{figure}
 
 \hypertarget{plotting-3d-mesh-data}{%
@@ -456,45 +436,34 @@ Note the equivalent structures between `aseg' and the `dkt' atlases.
 
 Representing brains as 2D polygons is a good solution for fast, efficient, and flexible plotting, and can be easily combined with interactive apps such as Shiny (\citet{shiny}).
 Yet, brains are intrinsically 3-dimensional and it can be challenging to recognize the location of a region as a flattened image.
-This problem is exacerbated in atlases that represent subcortical features -- after all, cortical surfaces are 2-dimensional -- such as grey matter structures or white matter tracts.
-Hence, here we also provide the \texttt{ggseg3d} package to plot, view, and print 3D-atlases in R.
-\texttt{ggseg3d} is based on tri-surface mesh plots using plotly (\citet{plotly}).
-The data structure is somewhat more complex than the ggplot polygons, and includes additional options for brain inflation, glass brains, camera locations, etc.
-As \texttt{ggseg3d} is based on plotly, the resulting brain atlases are interactive, which guides interpretation, and is useful for public dissemination.
-We recommend users to familiarize themselves with plotly (\citet{plotly}) when using this function.
+This problem is exacerbated in atlases that represent subcortical features as they are 3-dimensional, while cortical strucctures, such as grey matter structures or white matter tracts, can be flattened to 2-dimensions.
+Hence, here we also provide the \emph{ggseg3d} package to plot, view, and print 3D-atlases in R.
+\emph{ggseg3d} is based on tri-surface mesh plots using \emph{plotly} (\citet{plotly}).
+The data structure is more complex than the \emph{ggplot2} polygons, and includes additional options for brain inflation, glass brains, camera locations, etc.
+As \emph{ggseg3d} is based on plotly, the resulting brain atlases are interactive, which guides interpretation, and is useful for public dissemination.
+We recommend users to familiarize themselves with \emph{plotly} (\citet{plotly}) when using this function.
 
-Out-of-the-box, \texttt{ggseg3d()} plots the \texttt{dkt\_3d} atlas in `LCBC' surface.
+Out-of-the-box, \texttt{ggseg3d()} plots the \texttt{dkt\_3d} atlas in `LCBC' surface, but there are two more surfaces available for cortical atlases (Figure \ref{fig:ggseg3d-1-out})
 The `LCBC' surface consists on a semi-inflated white matter surface based on the \emph{fsaverage} template subject.
-See \emph{SI SCRIPT} for reproducibility.
-All \texttt{{[}...{]}\_3d} atlases have a built in \texttt{colour} column for default colour plotting of the regions, based on the color scheme used in the neuroimaging software.
+All \texttt{{[}...{]}\_3d} atlases include a \texttt{colour} column for default colour plotting of the regions, based on the color scheme used in the neuroimaging software.
 
-\begin{figure}
-\includegraphics[width=0.3\linewidth]{png/ggseg3d_white} \includegraphics[width=0.3\linewidth]{png/ggseg3d} \includegraphics[width=0.3\linewidth]{png/ggseg3d_inflated} \caption{The three surface options provided in ggseg 3d atlases. From left: the 'white' surface is the white matter surface, 'LCBC' surface is the semi-inflated white matter surface (inflated over 10 iterations), and the 'inflated' surface is a fully inflated grey matter cortical surface.}\label{fig:ggseg3d-1-out}
+\begin{figure}[H]
+\includegraphics[width=0.3\linewidth]{png/ggseg3d_white} \includegraphics[width=0.3\linewidth]{png/ggseg3d} \includegraphics[width=0.3\linewidth]{png/ggseg3d_inflated} \caption{The three surface options provided in *ggseg3d* atlases. **From left:** the 'white' surface is the white matter surface, 'LCBC' surface is the semi-inflated white matter surface (inflated over 10 iterations), and the 'inflated' surface is a fully inflated grey matter cortical surface.}\label{fig:ggseg3d-1-out}
 \end{figure}
 
 The 3D-atlas data is stored in nested tibbles.
-Each cortical atlas has data sets for three different surfaces (see Figure \ref{fig:ggseg3d-1-out}) and the two hemispheres.
+Each cortical atlas has datasets for three different surfaces (see Figure \ref{fig:ggseg3d-1-out}) and the two hemispheres.
 Only one surface is available for subcortical atlases as inflation procedures do not yield better representations.
-The `ggseg\_3d' column includes all necessary information for \texttt{ggseg3d()} to create a 3D mesh-plot, but that the user should not attempt to alter.
-The additional 3D-atlases in ggsegExtra have the same data structure.
-It is important to note that the coordinates in the plot (X, Y, Z) are \textbf{not} any type of radiological coordinate system, but rather Cartesian plot coordinates without further meaning.
+The `ggseg\_3d' column includes all necessary information for \texttt{ggseg3d()} to create a 3D mesh-plot, and should not be modified by the user.
+The additional 3D-atlases in \emph{ggsegExtra} have the same data structure.
+It is important to note that the coordinates in the plot (X, Y, Z) are \textbf{not} any type of radiological coordinate system, but arbitrary Cartesian plot coordinates.
 
 \small
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# remotes::install_github("LCBC-UiO/ggseg")}
+\CommentTok{\# remotes::install\_github("LCBC{-}UiO/ggseg3d")}
 \KeywordTok{library}\NormalTok{(ggseg3d)}
-\NormalTok{dkt_3d}
-\CommentTok{## # A tibble: 6 x 4}
-\CommentTok{##   atlas  surf     hemi  ggseg_3d         }
-\CommentTok{##   <chr>  <chr>    <chr> <list>           }
-\CommentTok{## 1 dkt_3d inflated left  <tibble [36 x 8]>}
-\CommentTok{## 2 dkt_3d inflated right <tibble [36 x 8]>}
-\CommentTok{## 3 dkt_3d LCBC     left  <tibble [36 x 8]>}
-\CommentTok{## 4 dkt_3d LCBC     right <tibble [36 x 8]>}
-\CommentTok{## 5 dkt_3d white    left  <tibble [36 x 8]>}
-\CommentTok{## 6 dkt_3d white    right <tibble [36 x 8]>}
 \end{Highlighting}
 \end{Shaded}
 
@@ -503,30 +472,18 @@ It is important to note that the coordinates in the plot (X, Y, Z) are \textbf{n
 \hypertarget{external-data-supply}{%
 \subsubsection{External data supply}\label{external-data-supply}}
 
-Similarly as in the 2D-atlas, the user will use \texttt{ggseg3d} to display through a colour scale some descriptive or inferential statistics.
-If the data is not already in the correct long format, or uses similar naming as the atlas, one needs to grab the data for a specific surface (and hemisphere, if desired) and then \texttt{unnest(ggseg\_3d)} it to see what the atlas expects.
+Similarly as in the 2D-atlas, the user will use \texttt{ggseg3d()} to display through a colour scale some descriptive or inferential statistic.
+If the data is not already in the correct long format, or uses similar naming as the atlas, The users should inspect the atlas data for a specific surface (and hemisphere, if desired) and then \texttt{unnest(ggseg\_3d)} it to see how the atlas data is organised.
 
 \small
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{dkt_3d }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{filter}\NormalTok{(surf }\OperatorTok{==}\StringTok{ "inflated"} \OperatorTok{&}\StringTok{ }\NormalTok{hemi }\OperatorTok{==}\StringTok{ "right"}\NormalTok{) }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{unnest}\NormalTok{(ggseg_3d) }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{lobe, }\OperatorTok{-}\NormalTok{acronym, }\OperatorTok{-}\NormalTok{roi, }\OperatorTok{-}\NormalTok{annot) }\OperatorTok{%>%}\StringTok{ }
+\CommentTok{\# Select surface and hemisphere, and then unnest to inspect the atlas data}
+\NormalTok{dkt\_3d }\OperatorTok{\%>\%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(surf }\OperatorTok{==}\StringTok{ "inflated"} \OperatorTok{\&}\StringTok{ }\NormalTok{hemi }\OperatorTok{==}\StringTok{ "right"}\NormalTok{) }\OperatorTok{\%>\%}
+\StringTok{  }\KeywordTok{unnest}\NormalTok{(ggseg\_3d) }\OperatorTok{\%>\%}
 \StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{5}\NormalTok{)}
-\CommentTok{## # A tibble: 5 x 7}
-\CommentTok{## atlas surf hemi area colour mesh label}
-\CommentTok{## <chr> <chr> <chr> <chr> <chr> <list> <chr>}
-\CommentTok{## 1 dkt_3d inflat~ right <NA> <NA> <named li~ rh_medialwall}
-\CommentTok{## 2 dkt_3d inflat~ right banks superior ~ #196428 <named li~}
-\NormalTok{rh_bankssts}
-\CommentTok{## 3 dkt_3d inflat~ right caudal anterior~ #7D64A0 <named li~}
-\NormalTok{rh_caudalanteri}\OperatorTok{~}
-\CommentTok{## 4 dkt_3d inflat~ right caudal middle f~ #641900 <named li~}
-\NormalTok{rh_caudalmiddle}\OperatorTok{~}
-\CommentTok{## 5 dkt_3d inflat~ right corpus callosum <NA> <named li~}
-\NormalTok{rh_corpuscallos}\OperatorTok{~}
 \end{Highlighting}
 \end{Shaded}
 
@@ -535,136 +492,138 @@ If the data is not already in the correct long format, or uses similar naming as
 Note the \texttt{mesh} column, which contains lists.
 Each list corresponds to a region and contains 6 vectors required to create the mesh of the tri-surface plot.
 It should also be noted that the `label', `annot' and `area' columns could provide matching values for your own data.
-Similarly to the \texttt{ggseg}-function, the `label' column should match the region names used in the original neuroimaging software while `area' and `annot' provide alternative/secondary names.
+Similarly to the \texttt{ggseg()}-function, the `label' column should match the region names used in the original neuroimaging software while `area' and `annot' provide alternative/secondary names.
 It is thus important to match your regional identifiers with those used in the atlas.
-A warning will be issued in case of any mismatch.
-The column you want to use for colour, needs to be supplied to the \texttt{colour} option, and you'll likely want to supply it to the \texttt{text} option, as this will add another line to the plotly hover information.
+To colour the segments using a column from the data, that column name needs to be supplied to the \texttt{colour} option, and providing it to the \texttt{text} option will add another line to the \emph{plotly} hover information.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{someData =}\StringTok{ }\NormalTok{dkt_3d }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{filter}\NormalTok{(surf }\OperatorTok{==}\StringTok{ "inflated"} \OperatorTok{&}
-\StringTok{         }\NormalTok{hemi }\OperatorTok{==}\StringTok{ "right"}\NormalTok{) }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{unnest}\NormalTok{(ggseg_3d) }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(area) }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{na.omit}\NormalTok{() }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{p =} \KeywordTok{sample}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{5}\NormalTok{, }\DataTypeTok{length.out =} \DecValTok{100}\NormalTok{ ), }\KeywordTok{nrow}\NormalTok{(.)) }\OperatorTok{%>%}
-\StringTok{           }\KeywordTok{round}\NormalTok{(}\DecValTok{2}\NormalTok{))}
-  \CommentTok{# Figure 8}
-  \KeywordTok{ggseg3d}\NormalTok{(}\DataTypeTok{.data =}\NormalTok{ someData, }\DataTypeTok{atlas =}\NormalTok{ dkt_3d, }\DataTypeTok{colour =} \StringTok{"p"}\NormalTok{, }\DataTypeTok{text =} \StringTok{"p"}\NormalTok{)}
+\CommentTok{\# Figure 8 left}
+\KeywordTok{ggseg3d}\NormalTok{(}\DataTypeTok{.data =}\NormalTok{ someData, }\DataTypeTok{atlas =}\NormalTok{ dkt\_3d, }\DataTypeTok{colour =} \StringTok{"p"}\NormalTok{, }\DataTypeTok{text =} \StringTok{"p"}\NormalTok{)}
+
+\CommentTok{\# Figure 8 middle}
+\KeywordTok{ggseg3d}\NormalTok{(}\DataTypeTok{.data =}\NormalTok{ someData, }
+        \DataTypeTok{atlas =}\NormalTok{ dkt\_3d,}
+        \DataTypeTok{colour =} \StringTok{"p"}\NormalTok{, }\DataTypeTok{text =} \StringTok{"p"}\NormalTok{,}
+        \DataTypeTok{palette =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#ff0000"}\NormalTok{, }\StringTok{"\#00ff00"}\NormalTok{, }\StringTok{"\#0000ff"}\NormalTok{)) }\OperatorTok{\%>\%}\StringTok{   }
+\StringTok{  }\KeywordTok{pan\_camera}\NormalTok{(}\StringTok{"right lateral"}\NormalTok{) }\OperatorTok{\%>\%}\StringTok{ }
+\StringTok{  }\KeywordTok{remove\_axes}\NormalTok{()}
+
+\CommentTok{\# Figure 8 right}
+\KeywordTok{ggseg3d}\NormalTok{(}\DataTypeTok{.data =}\NormalTok{ someData, }
+        \DataTypeTok{atlas =}\NormalTok{ dkt\_3d,}
+        \DataTypeTok{colour =} \StringTok{"p"}\NormalTok{, }\DataTypeTok{text =} \StringTok{"p"}\NormalTok{,}
+        \DataTypeTok{na.colour =} \StringTok{"black"}\NormalTok{) }\OperatorTok{\%>\%}\StringTok{   }
+\StringTok{  }\KeywordTok{pan\_camera}\NormalTok{(}\StringTok{"right lateral"}\NormalTok{) }\OperatorTok{\%>\%}\StringTok{ }
+\StringTok{  }\KeywordTok{remove\_axes}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}
-\includegraphics[width=0.6\linewidth]{png/ggseg3d_data} \caption{Supplying data so ggseg3d works in much the same way as for ggseg. Since ggseg3d is based on plotly rather than ggplot, much adaptation of the plots aesthetics must be done immediately in the main function. Here we set the parcellation colours with `colour` and accompanying mouse-hover text with `text`.}\label{fig:ggseg3d-data1}
+\begin{figure}[H]
+\includegraphics[width=0.3\linewidth]{png/ggseg3d_data} \includegraphics[width=0.3\linewidth]{png/ggseg3d_colour} \includegraphics[width=0.3\linewidth]{png/ggseg3d_nacolour} \caption{**Left:** Supplying data to `ggseg3d()` works in much the same way as for `ggseg()`. Since `ggseg3d()` is based on *plotly* rather than *ggplot2*, most aesthetic adaptations must be set in the main function. Here we set the parcellation colours with the 'colour' column and accompanying mouse-hover text with the 'text' column. **Middle:** Specifying the palette for `ggseg3d()` must be done directly in the main call to the plot. The 'palette' option takes vectors of colours either as HEX-codes or R-colour names, but not a combination of these. **Right:** The colour of the `NA` values can also be changed through the option 'na.colour', which is here set to be 'black'}\label{fig:ggseg3d-data1}
 \end{figure}
 
 \hypertarget{colours}{%
 \subsubsection{Colours}\label{colours}}
 
-You can provide custom colour palettes either in hex or R-names.
-Colours will be evenly spaced when creating the colour-scale, and you may provide as many colours as you wish.
-If you want to alter the colour of \texttt{NA} regions, supply \texttt{na.colour}, either as HEX colour or colour name.
+You can provide custom colour palettes either in hex or R-names, as seen in Figure \ref{fig:ggseg3d-data1}.
+Colours will be evenly spaced when creating the colour-scale.
+A palette may also be supplied as a \emph{named numeric vector}, where the vector names are the colours that users wish to use, and the numeric values are the breakpoint for each colour (e.g.~\texttt{c("red"\ =\ 0,\ "white"\ =\ 0.5,\ "blue"\ =\ 1)}).
+This way the users can control the minimum and maximum values of the colour scale, and also how the gradient is applied.
+If another colour than the default gray is wanted for the \texttt{NA} regions, supply `na.colour', either as HEX colour or colour name.
 This option only takes a single colour.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# Figure 9 left}
-\KeywordTok{ggseg3d}\NormalTok{(}\DataTypeTok{.data =}\NormalTok{ someData, }\DataTypeTok{atlas =}\NormalTok{ dkt_3d,}
-          \DataTypeTok{colour =} \StringTok{"p"}\NormalTok{, }\DataTypeTok{text =} \StringTok{"p"}\NormalTok{,}
-          \DataTypeTok{palette =} \KeywordTok{c}\NormalTok{(}\StringTok{"#ff0000"}\NormalTok{, }\StringTok{"#00ff00"}\NormalTok{, }\StringTok{"#0000ff"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{   }
-\StringTok{  }\KeywordTok{pan_camera}\NormalTok{(}\StringTok{"lateral"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\KeywordTok{remove_axes}\NormalTok{()}
-
-\CommentTok{# Figure 9 right}
-\KeywordTok{ggseg3d}\NormalTok{(}\DataTypeTok{.data =}\NormalTok{ someData, }\DataTypeTok{atlas =}\NormalTok{ dkt_3d,}
-          \DataTypeTok{colour =} \StringTok{"p"}\NormalTok{, }\DataTypeTok{text =} \StringTok{"p"}\NormalTok{,}
-          \DataTypeTok{na.colour =} \StringTok{"black"}\NormalTok{) }\OperatorTok{%>%}\StringTok{   }
-\StringTok{  }\KeywordTok{pan_camera}\NormalTok{(}\StringTok{"lateral"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\KeywordTok{remove_axes}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}
-\includegraphics[width=0.4\linewidth]{png/ggseg3d_colour} \includegraphics[width=0.4\linewidth]{png/ggseg3d_nacolour} \caption{Left: Specifying the palette for ggseg3d must be done directly in the main call to the plot, rather than a separate function later like in ggseg. The `palette` option takes vectors of colours either as HEX-codes or R-colour names, but not a combination of these. Right: The colour of the `NA` values can also be changed through the option `na.colour`. Here the medial wall (which is `NA`), has been coloured black using this option.}\label{fig:ggseg3d-nacol}
-\end{figure}
-
 \hypertarget{glass-brain}{%
-\subsection{Glass brain}\label{glass-brain}}
+\subsubsection{Glass brain}\label{glass-brain}}
 
 Subcortical atlases include cortical surfaces and other landmark structures for visualization purposes only.
 One can control the opacity of the these \texttt{NA} structures, to improve visualization.
-Additionally, one can add the \texttt{glassbrain} option, which provides a frame of reference for the subcortical structures.
-Glass brains can be added with the function \texttt{add\_glassbrain()} which takes three extra arguments: hemisphere, colour, and opacity.
+Glassbrains can be added provides a frame of reference for the subcortical structures with the function \texttt{add\_glassbrain()} (Figure \ref{fig:glassbrain1}) , which takes three extra arguments: hemisphere, colour, and opacity.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# Figure 10}
-\KeywordTok{ggseg3d}\NormalTok{(}\DataTypeTok{atlas =}\NormalTok{ aseg_3d,}
-          \DataTypeTok{na.alpha=} \FloatTok{.5}\NormalTok{) }\OperatorTok{%>%}\StringTok{   }
-\StringTok{  }\KeywordTok{add_glassbrain}\NormalTok{(}\StringTok{"left"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\KeywordTok{pan_camera}\NormalTok{(}\StringTok{"lateral"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\KeywordTok{remove_axes}\NormalTok{()}
+\CommentTok{\# Figure 9}
+\KeywordTok{ggseg3d}\NormalTok{(}\DataTypeTok{atlas =}\NormalTok{ aseg\_3d,}
+        \DataTypeTok{na.alpha=} \FloatTok{.5}\NormalTok{) }\OperatorTok{\%>\%}\StringTok{   }
+\StringTok{  }\KeywordTok{add\_glassbrain}\NormalTok{(}\StringTok{"left"}\NormalTok{) }\OperatorTok{\%>\%}\StringTok{ }
+\StringTok{  }\KeywordTok{pan\_camera}\NormalTok{(}\StringTok{"left lateral"}\NormalTok{) }\OperatorTok{\%>\%}\StringTok{ }
+\StringTok{  }\KeywordTok{remove\_axes}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}
-\includegraphics[width=0.6\linewidth]{png/ggseg3d_glass} \caption{When visualising subcortical structures, it might be an idea to add a glassbrain to the plot. This will help with understanding structure locations in the brain and make the plot easier to interpret. The glassbrain is controlled by three options: opacity:0-1, hemisphere left, right or both, and colour.}\label{fig:glassbrain1}
+\begin{figure}[H]
+\includegraphics[width=0.6\linewidth]{png/ggseg3d_glass} \caption{For subcortical structure visualisation, one can add a glassbrain to the plot. This will help with understanding structure locations relative to the cortex and make the plot easier to interpret. The glassbrain is controlled by three options: opacity, hemisphere, and colour.}\label{fig:glassbrain1}
 \end{figure}
 
-\texttt{ggsed3d()} is based on plotly and thus additional plotly functionalities can be used to modify and improve the 3D atlas representations.
-In addition to Carson Sievert's book on plotly in R (\citeyearpar{plotly}), we recommend resources for modifying axes in 3D plots (\citet{plotly-ax}), the basic introduction to tri-surface plots (\citet{plotly-tri}), and this tutorial on tri-surface plots with plotly in R (\citet{plotly-trisurf}).
-Finally, we recommend \href{https://github.com/plotly/orca\#installation}{orca} command line tool to save ggseg3d atlas snapshots.
+\texttt{ggsed3d()} is based on \emph{plotly} and thus additional \emph{plotly} functionalities can be used to modify and improve the 3D atlas representations.
+In addition to Carson Sievert's book on \emph{plotly} in R (\citeyearpar{plotly}), we recommend resources for modifying axes in 3D plots (\citet{plotly-ax}), the basic introduction to tri-surface plots (\citet{plotly-tri}), and this tutorial on tri-surface plots with \emph{plotly} in R (\citet{plotly-trisurf}).
+Finally, we recommend \href{https://github.com/plotly/orca\#installation}{orca} command line tool to save \emph{ggseg3d} atlas snapshots.
+
+\hypertarget{additional-atlases}{%
+\subsection{Additional atlases}\label{additional-atlases}}
+
+The \emph{ggseg} and \emph{ggseg3d} packages have two atlases each, which are 2D and 3D variations of the same main atlases: the \texttt{dkt} (\citet{dkt}) and \texttt{aseg} (\citet{aseg}) atlases, default atlases used by the commonly used imaging software Freesurfer (@\citet{fischl_99}, \citet{dale_99}, \citet{Fischl2000}).
+These are, however, only two among many meaningful ways of segmenting the brain into different regions.
+Thus, the \emph{ggsegExtra} package is library with additional datasets for plotting with the \emph{ggseg} and \emph{ggseg3d} packages.
+We hope to expand this library through a combination of our own and community effort, as the need arises for new atlases, as brain new brain atlases are continuously being released.
+A small collection of the atlases currently in the \emph{ggsegExtra} package may be viewed in Figure \ref{fig:ggsegExtra}
+
+\begin{figure}[H]
+\includegraphics[width=0.8\linewidth]{png/ggseg_extra} \includegraphics[width=0.4\linewidth]{png/ggseg3d_extra1} \includegraphics[width=0.4\linewidth]{png/ggseg3d_extra2} \caption{Four example datasets from the *ggsegExtra* library, plotted with the `ggseg()` and `ggseg3d()` functions.}\label{fig:ggsegExtra}
+\end{figure}
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
-The main aim of the ggseg, ggseg3d, and ggsegExtra packages is to ease and streamline visualization of brain atlas data in R, by gathering a collection of atlases from several scientific sources and providing plotting functions adapted to these atlases.
-In this tutorial, we introduce the packages to the readers by presenting some use examples and highlighting the main functions and options that are available.
-As a visualization tool, this package adds up to manifold functionalities such as ggBrain (\citet{ggBrain}) and ggneuro (\citet{ggneuro}) in R, and software-specific image viewers such as FSLeyes (\citet{fsleyes}) and Freeview (\citet{dale_99}).
-In this regard, we do not aim to compete with software-specific visualizations or advocate for the superiority of the ggseg-packages as visualization tools.
+The main aim of the \emph{ggseg}, \emph{ggseg3d}, and \emph{ggsegExtra} packages is to ease and streamline visualization of brain atlas data in R, by gathering a collection of atlases from several scientific sources and providing customized plotting functions.
+In this tutorial, we introduced the packages to the readers by presenting some use examples and highlighting the main functions and options that are available.
+As visualization tools, these packages add up to manifold functionalities such as ggBrain (\citet{ggBrain}) and ggneuro (\citet{ggneuro}) in R, and software-specific image viewers such as FSLeyes (\citet{fsleyes}) and Freeview (\citet{dale_99}).
+In this regard, we do not aim to compete with software-specific visualizations or advocate for the superiority of the \emph{ggseg}-packages as visualization tools.
 After all, flattened 2D polygons do not rely on a meaningful brain coordinate system and the units of information in 3D meshes are limited to the number of parcellations.
-On the contrary, we believe the ggseg niche among visualization tools resides in its simplicity and its ability to be combined with statistical analysis pipelines.
+On the contrary, we believe the \emph{ggseg} niche among visualization tools resides in its simplicity and its ability to be combined with statistical analysis pipelines.
 The possibility to serve as an interactive tool for dissemination and reproducibility when combined with other technologies, such as Binder (\citet{binder}) or Shiny (\citet{shiny}), is an added benefit.
 An example of this is in the online supplementary information of Vidal-Piñeiro et al.~(\citeyearpar{vidal_2019}).
 
-The ggseg, ggseg3d, and ggsegExtra packages contain three main features:
-\textbf{1)} a collection of 2D-polygon and 3D mesh brain parcellation atlases. The atlas data are necessary to create the coordinate system for the brain atlas plotting, but are made in such a way to make it easy to use for ones own purposes.
+The \emph{ggseg}, \emph{ggseg3d}, and \emph{ggsegExtra} packages contain three main features:
+\textbf{1)} a collection of 2D-polygon and 3D mesh brain parcellation atlases.
+The atlas data include the necessary coordinates for plotting, but are made more user-friendly.
 \textbf{2)} \texttt{ggseg()} and \texttt{ggseg3d()} functions for visualization.
-\texttt{ggseg()} is a wrapper function for \texttt{geom\_polygon} from \texttt{ggplot2} and it can be built upon like any ggplot object.
-\texttt{ggseg3d()} is a plotly wrapper function for tri-surface mesh plots which prints 3D atlases.
-Both functions are flexible and well-adapted to their environment and can be combined with any additional argument from ggplot and plotly, respectively.
-\textbf{3)} Complimentary features -- e.g.~color scales - and functions such as \texttt{as\_ggseg\_atlas()} and \texttt{as\_ggseg3d\_atlas()} to convert data in the correct atlas format. These function should provide users with the possibility of adapting their plots to their wishes, and also to make it possible to create and contribute to the atlas repository in ggsegExtra.
+\texttt{ggseg()} is a wrapper function for \texttt{geom\_polygon} from \emph{ggplot2} and it can be built upon like any \emph{ggplot2} object.
+\texttt{ggseg3d()} is a \emph{plotly} wrapper function for tri-surface mesh plots which prints 3D atlases.
+Both functions are flexible and well-adapted to their environment and can be combined with any additional argument from \emph{ggplot2} and \emph{plotly}, respectively.
+\textbf{3)} Complimentary features -- e.g.~color scales - and functions such as \texttt{as\_ggseg\_atlas()} and \texttt{as\_ggseg3d\_atlas()} to convert data in the correct atlas format.
+These functions provide users with the possibility of adapting the plots to their wishes, and also makes it possible to create and contribute to the atlas repository in \emph{ggsegExtra}.
 
-The foundations of the ggseg-packages trace back to the necessity of visualizing and exploring the lifespan trajectories of cortical thickness across different brain regions (see supporting information in Vidal-Piñeiro et al.~(\citeyearpar{vidal_2019})) .
-That is, ggseg appears with the need to inspect and display brain information over time - that is, including a spatial dimension and a time-varying factor - overcoming the constrains of printed journals and classical 2D plots (e.g.~bar plots).
+The foundations of the \emph{ggseg}-packages trace back to the necessity of visualizing and exploring the lifespan trajectories of cortical thickness across different brain regions (see supporting information in Vidal-Piñeiro et al.~(\citeyearpar{vidal_2019})) .
+That is, \emph{ggseg} appears with the need to inspect and display brain information over time - i.e.~including a spatial dimension and a time-varying factor - overcoming the constrains of printed journals and classical 2D plots (e.g.~bar plots).
 The current state of science requires researches to share the results of studies in both high detail and in an intuitive manner, as it permits communication to wide audiences and facilitates reproducibility.
 Hence, we believe this tool conforms to the essence of open science and invite users to improve the code, provide examples, or tutorials, and contribute to the atlas collection according to their own interest and needs via the public \href{https://github.com/LCBC-UiO/ggseg}{ggseg GitHub repository}, \href{https://github.com/LCBC-UiO/ggseg3d}{ggseg3d GitHub repository}, and \href{https://github.com/LCBC-UiO/ggsegExtra}{ggsegExtra GitHub repository}.
 
-Finally - while the ggseg-packages are circumscribed to brain parcellations - we believe that the structure and functions of the package can be easily applied to any scientific field that benefits from data being displayed across the spatial dimension.
-We encourage readers to borrow the package functionalities and adapt it to their respective fields and structures of interest, such as has already been done with the gganatogram-package (\citet{gganatogram}).
+Finally - while the \emph{ggseg}-packages are circumscribed to brain parcellations - we believe that the structure and functions of the package can be easily applied to any scientific field that benefits from data being displayed across the spatial dimension.
+We encourage readers to borrow the package functionalities and adapt it to their respective fields and structures of interest, such as has already been done with the \emph{gganatogram}-package (\citet{gganatogram}).
 
 \hypertarget{planned-package-improvements}{%
 \section{Planned package improvements}\label{planned-package-improvements}}
 
 In the package \href{https://github.com/LCBC-UiO/ggseg/wiki}{github wiki}, we offer a pipeline to create and supply atlases for 2D plotting.
-However, the current way to do this is convoluted and difficult, and we are putting efforts into improving the way atlases can be made more easily.
-The aim is to create a set of functions that will call specialized tools like FSL(\citet{fsl}), Freesurfer(\citet{fischl_99}, \citet{dale_99}, \citet{Fischl2000}) and Imagemagick(\citet{magick}) to detect the polygon vectors or the mesh segments given an MRI image containing a parcellation specification, and organize these into valid ggseg atlases.
-We encourage users to contribute to the ggsegExtra brain atlas repository by including additional brain atlases.
+At the moment, the creation of atlas for ggseg is convoluted and difficult and requires manual intervention.
+We are in the process of designing a simple, straightforward pipeline to facilitate the creation of new ggseg (2D) atlases.
+The aim is to create a set of functions that will call specialized tools like FSL(\citet{fsl}), Freesurfer(\citet{fischl_99}, \citet{dale_99}, \citet{Fischl2000}) and Imagemagick(\citet{magick}) to detect the polygon vectors or the mesh segments given an MRI image containing a parcellation specification, and organize these into valid \emph{ggseg} and \emph{ggseg3d} atlases.
+We encourage users to contribute to the \emph{ggsegExtra} brain atlas repository by including additional brain atlases.
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-Visualization is a fundamental aspect of neuroimaging to explore and understand data, guide interpretation and, communicate with colleagues and general audience.
-In this tutorial, we have introduced the ggseg-package, a tool for visualizing brain statistics through brain parcellation atlases in R.
+Visualization is a fundamental aspect of neuroimaging to explore and understand data, guide interpretation, and communicate with colleagues and the general audience.
+In this tutorial, we have introduced the \emph{ggseg}-packages, tools for visualizing brain statistics through brain parcellation atlases in R.
 This visualization tool easily combines with interactive routines as well as with diverse statistical analysis pipelines.
 We hope this tool and tutorial proves useful to neuroscientists and inspires others to apply the functions in a wide variety of fields and structures.
 
 \hypertarget{author-contributions}{%
 \section{Author Contributions}\label{author-contributions}}
 
-Didac Vidal-Piñeiro generated the idea for the tool, and the initial scripts that made the plots.
-He has also been responsible for converting images from neuroimaging software into the type of data necessary for plotting polygons and mesh plots in R.
+Didac Vidal-Piñeiro generated the idea for the tool, and the initial scripts for plot visualization.
+He has also been responsible for converting images from neuroimaging data to ggseg-like data (e.g.~polygons and mesh data).
 Athanasia M. Mowinckel adapted the initial scripts and made the functions into package format and has continued developing the functions with the aim of increasing user-friendliness.
 She is also responsible for conceiving and adding the mesh-plot functionality through plotly, and developing the pipeline for making that possible.
 A. M. Mowinckel wrote the first draft of the paper, and both have since critically edited it.
@@ -677,12 +636,10 @@ The authors declare that there were no conflicts of interest with respect to the
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}
 
-We wish to thank John Muschelli for his initial improvements in the package code and preparing it for incorporation in neuroconductor (\citeyearpar{neuroconductor}), and Richard Beare for submitting the first community created atlas, and providing helpful comments to the base code.
-A. M. Winkler, who originally introduced us to the procedure of converting 3D brain images from Freesurfer into \texttt{.ply} files, also needs to be credited with this, we would not have managed to create the mesh-plots without his scripts.
-Additionally, Inge Amlien has provided helpful pointers to plot Freesurfer images in R, which resulted in us finally managing to plot mesh segmented brains in R.
-He also provided the `LCBC' surface files, which can be found in the ggsegExtra github repository (\citet{ggsegExt12_lcbc}).
-We also thank Anders M. Fjell and Kristine B. Walhovd for allowing us to pursue the creation of this tool and encouraging our progress.
-We are indebted to those users that actively contributed to the package and all the scientists and engineers that worked on the framework on which the package is sustained (e.g.~R-project, neuroimaging software).
+We thank John Muschelli for package code comments and its adaptation to neuroconductor ({[}2018{]}), and Richard Beare for the first community created atlas, and base code comments.
+We are indebted to A. M. Winkler scripts for converting neuroimaging data (Freesurfer) into .ply files, a necessary step for neuroimaging to mesh-plots conversion, and to Inge Amlien for the `LCBC' surface files and helpful contributions to the ggseg3d pipeline.
+We are indebted to those users that actively contributed to the package and all the individuals that worked on the framework on which the package is sustained (e.g.~R-project, neuroimaging software).
+Finally, we thank Anders M. Fjell and Kristine B. Walhovd for their encouragement and financial support.
 
 \hypertarget{funding}{%
 \section{Funding}\label{funding}}
@@ -693,8 +650,8 @@ The project has also received funding from the European Research Council's Start
 \hypertarget{prior-versions}{%
 \section{Prior versions}\label{prior-versions}}
 
-Some of the content presented here also appears in the package vignette of \texttt{ggseg} and \texttt{ggseg3d}, which may be accessed through R or in the package websites (\citet{ggseg}, \citet{ggseg3d}).
-Athanasia Monika Mowinckel also has several tutorials on her blog regarding ggseg creation and functionality (\citet{ggsegAnim}, \citet{ggsegIntro}).
+Some of the content presented here also appears in the package vignettes of \emph{ggseg} and \emph{ggseg3d}, which may be accessed through R or in the package websites (\citet{ggseg}, \citet{ggseg3d}).
+Athanasia Monika Mowinckel also has several tutorials on her blog regarding \emph{ggseg} creation and functionality (\citet{ggsegAnim}, \citet{ggsegIntro}).
 
 \renewcommand\refname{References}
 \bibliography{references.bib}
