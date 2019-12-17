@@ -1,0 +1,368 @@
+\begin{thebibliography}{39}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Amlien et~al.(2019)Amlien, Sneve, Vidal-Piñeiro, Walhovd, and
+  Fjell]{amlien_elaboration_2019}
+Inge~K. Amlien, Markus~H. Sneve, Didac Vidal-Piñeiro, Kristine~B. Walhovd, and
+  Anders~M. Fjell.
+\newblock Elaboration {Benefits} {Source} {Memory} {Encoding} {Through}
+  {Centrality} {Change}.
+\newblock \emph{Scientific Reports}, 9\penalty0 (1):\penalty0 3704, March 2019.
+\newblock ISSN 2045-2322.
+\newblock \doi{10.1038/s41598-019-39999-1}.
+\newblock URL \url{https://doi.org/10.1038/s41598-019-39999-1}.
+
+\bibitem[Chang et~al.(2019)Chang, Cheng, Allaire, Xie, and McPherson]{shiny}
+Winston Chang, Joe Cheng, JJ~Allaire, Yihui Xie, and Jonathan McPherson.
+\newblock \emph{shiny: Web Application Framework for R}, 2019.
+\newblock URL \url{https://CRAN.R-project.org/package=shiny}.
+\newblock R package version 1.3.1.
+
+\bibitem[Chen et~al.(2013)Chen, Fiecas, Guti{\'e}rrez, Panizzon, Eyler,
+  Vuoksimaa, Thompson, Fennema-Notestine, Hagler, Jernigan, Neale, Franz,
+  Lyons, Fischl, Tsuang, Dale, and Kremen]{chen}
+Chi-Hua Chen, Mark Fiecas, E.~D. Guti{\'e}rrez, Matthew~S. Panizzon, Lisa~T.
+  Eyler, Eero Vuoksimaa, Wesley~K. Thompson, Christine Fennema-Notestine,
+  Donald~J. Hagler, Terry~L. Jernigan, Michael~C. Neale, Carol~E. Franz,
+  Michael~J. Lyons, Bruce Fischl, Ming~T. Tsuang, Anders~M. Dale, and
+  William~S. Kremen.
+\newblock Genetic topography of brain morphology.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 110\penalty0
+  (42):\penalty0 17089--17094, 2013.
+\newblock ISSN 0027-8424.
+\newblock \doi{10.1073/pnas.1308091110}.
+\newblock URL \url{https://www.pnas.org/content/110/42/17089}.
+
+\bibitem[Dale et~al.(1999)Dale, Fischl, and Sereno]{dale_99}
+Anders Dale, Bruce Fischl, and Martin~I. Sereno.
+\newblock Cortical surface-based analysis: I. segmentation and surface
+  reconstruction.
+\newblock \emph{NeuroImage}, 9\penalty0 (2):\penalty0 179 -- 194, 1999.
+
+\bibitem[Damiba(2019{\natexlab{a}})]{plotly-ax}
+Joseph Damiba.
+\newblock {plotly} axes.
+\newblock \url{https://plot.ly/r/axes/#modifying-axes-for-3D-plots},
+  2019{\natexlab{a}}.
+\newblock Accessed: 2019-04-01.
+
+\bibitem[Damiba(2019{\natexlab{b}})]{plotly-tri}
+Joseph Damiba.
+\newblock {plotly} tri-surf.
+\newblock \url{https://plot.ly/r/trisurf/}, 2019{\natexlab{b}}.
+\newblock Accessed: 2019-04-01.
+
+\bibitem[Desikan et~al.(2006)Desikan, Ségonne, Fischl, Quinn, Dickerson,
+  Blacker, Buckner, Dale, Maguire, Hyman, Albert, and Killiany]{dkt}
+Rahul~S. Desikan, Florent Ségonne, Bruce Fischl, Brian~T. Quinn, Bradford~C.
+  Dickerson, Deborah Blacker, Randy~L. Buckner, Anders~M. Dale, R.~Paul
+  Maguire, Bradley~T. Hyman, Marilyn~S. Albert, and Ronald~J. Killiany.
+\newblock An automated labeling system for subdividing the human cerebral
+  cortex on mri scans into gyral based regions of interest.
+\newblock \emph{NeuroImage}, 31\penalty0 (3):\penalty0 968 -- 980, 2006.
+\newblock ISSN 1053-8119.
+\newblock \doi{https://doi.org/10.1016/j.neuroimage.2006.01.021}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/S1053811906000437}.
+
+\bibitem[Destrieux et~al.(2010)Destrieux, Fischl, Dale, and
+  Halgren]{desterieux}
+Christophe Destrieux, Bruce Fischl, Anders Dale, and Eric Halgren.
+\newblock Automatic parcellation of human cortical gyri and sulci using
+  standard anatomical nomenclature.
+\newblock \emph{NeuroImage}, 53\penalty0 (1):\penalty0 1 -- 15, 2010.
+\newblock ISSN 1053-8119.
+\newblock \doi{https://doi.org/10.1016/j.neuroimage.2010.06.010}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/S1053811910008542}.
+
+\bibitem[Eickhoff et~al.(2018)Eickhoff, Yeo, and Genon]{eickhoff_2018}
+Simon~B. Eickhoff, B.~T.~Thomas Yeo, and Sarah Genon.
+\newblock Imaging-based parcellations of the human brain.
+\newblock \emph{Nature Reviews Neuroscience}, 19\penalty0 (11):\penalty0
+  672--686, November 2018.
+\newblock ISSN 1471-0048.
+\newblock \doi{10.1038/s41583-018-0071-7}.
+\newblock URL \url{https://doi.org/10.1038/s41583-018-0071-7}.
+
+\bibitem[Fischl and Dale(2000)]{Fischl2000}
+Bruce Fischl and Anders~M. Dale.
+\newblock {Measuring the thickness of the human cerebral cortex from magnetic
+  resonance images}.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, 97\penalty0 (20):\penalty0 11050--11055, 2000.
+
+\bibitem[Fischl et~al.(1999)Fischl, Sereno, and Dale]{fischl_99}
+Bruce Fischl, Martin~I. Sereno, and Anders Dale.
+\newblock Cortical surface-based analysis: Ii: Inflation, flattening, and a
+  surface-based coordinate system.
+\newblock \emph{NeuroImage}, 9\penalty0 (2):\penalty0 195 -- 207, 1999.
+
+\bibitem[Fischl et~al.(2002)Fischl, Salat, Busa, Albert, Dieterich, Haselgrove,
+  van~der Kouwe, Killiany, Kennedy, Klaveness, Montillo, Makris, Rosen, and
+  Dale]{aseg}
+Bruce Fischl, David~H. Salat, Evelina Busa, Marilyn Albert, Megan Dieterich,
+  Christian Haselgrove, Andre van~der Kouwe, Ron Killiany, David Kennedy, Shuna
+  Klaveness, Albert Montillo, Nikos Makris, Bruce Rosen, and Anders~M. Dale.
+\newblock Whole brain segmentation: Automated labeling of neuroanatomical
+  structures in the human brain.
+\newblock \emph{Neuron}, 33\penalty0 (3):\penalty0 341 -- 355, 2002.
+\newblock ISSN 0896-6273.
+\newblock \doi{https://doi.org/10.1016/S0896-6273(02)00569-X}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/S089662730200569X}.
+
+\bibitem[Fisher(2019)]{ggBrain}
+Aaron Fisher.
+\newblock \emph{ggBrain: ggplot Brain Images}, 2019.
+\newblock R package version 0.1.
+
+\bibitem[Glasser et~al.(2016)Glasser, Coalson, Robinson, Hacker, Harwell,
+  Yacoub, Ugurbil, Andersson, Beckmann, Jenkinson, Smith, and
+  Van~Essen]{glasser}
+Matthew~F. Glasser, Timothy~S. Coalson, Emma~C. Robinson, Carl~D. Hacker, John
+  Harwell, Essa Yacoub, Kamil Ugurbil, Jesper Andersson, Christian~F. Beckmann,
+  Mark Jenkinson, Stephen~M. Smith, and David~C. Van~Essen.
+\newblock A multi-modal parcellation of human cerebral cortex.
+\newblock \emph{Nature}, 536:\penalty0 171 EP --, 07 2016.
+\newblock URL \url{https://doi.org/10.1038/nature18933}.
+
+\bibitem[Hornik(2012)]{cran}
+Kurt Hornik.
+\newblock The comprehensive r archive network.
+\newblock \emph{WIREs Computational Statistics}, 4\penalty0 (4):\penalty0
+  394--398, 2012.
+\newblock \doi{10.1002/wics.1212}.
+\newblock URL \url{https://onlinelibrary.wiley.com/doi/abs/10.1002/wics.1212}.
+
+\bibitem[Hua et~al.(2008)Hua, Zhang, Wakana, Jiang, Li, Reich, Calabresi,
+  Pekar, van Zijl, and Mori]{jhu}
+Kegang Hua, Jiangyang Zhang, Setsu Wakana, Hangyi Jiang, Xin Li, Daniel~S.
+  Reich, Peter~A. Calabresi, James~J. Pekar, Peter~C.M. van Zijl, and Susumu
+  Mori.
+\newblock Tract probability maps in stereotaxic spaces: Analyses of white
+  matter anatomy and tract-specific quantification.
+\newblock \emph{NeuroImage}, 39\penalty0 (1):\penalty0 336 -- 347, 2008.
+\newblock ISSN 1053-8119.
+\newblock \doi{https://doi.org/10.1016/j.neuroimage.2007.07.053}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/S105381190700688X}.
+
+\bibitem[Maag(2018)]{gganatogram}
+Jesper Maag.
+\newblock gganatogram: An r package for modular visualisation of anatograms and
+  tissues based on ggplot2.
+\newblock \emph{f1000research}, 2018.
+\newblock URL \url{https://f1000research.com/articles/7-1576/v1}.
+\newblock Version 1: Awaiting peer review.
+
+\bibitem[Makris et~al.(2006)Makris, Goldstein, Kennedy, Hodge, Caviness,
+  Faraone, Tsuang, and Seidman]{ho}
+Nikos Makris, Jill~M. Goldstein, David Kennedy, Steven~M. Hodge, Verne~S.
+  Caviness, Stephen~V. Faraone, Ming~T. Tsuang, and Larry~J. Seidman.
+\newblock Decreased volume of left and total anterior insular lobule in
+  schizophrenia.
+\newblock \emph{Schizophrenia Research}, 83\penalty0 (2):\penalty0 155 -- 171,
+  2006.
+\newblock ISSN 0920-9964.
+\newblock \doi{https://doi.org/10.1016/j.schres.2005.11.020}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/S0920996405004998}.
+
+\bibitem[McCarthy(2019)]{fsleyes}
+Paul McCarthy.
+\newblock Fsleyes, April 2019.
+\newblock URL \url{https://doi.org/10.5281/zenodo.2630502}.
+
+\bibitem[Mori et~al.(2005)Mori, Wakana, van Zijl, and Nagae-Poetscher]{icbm}
+Susumu Mori, S.~Wakana, Peter C~M van Zijl, and L.M. Nagae-Poetscher.
+\newblock \emph{MRI Atlas of Human White Matter}.
+\newblock Elsevier Science, 2005.
+\newblock ISBN 9780080456164.
+\newblock URL
+  \url{https://www.elsevier.com/books/mri-atlas-of-human-white-matter/mori/978-0-444-51741-8}.
+
+\bibitem[Mowinckel(2018{\natexlab{a}})]{ggsegAnim}
+A.M. Mowinckel.
+\newblock Get the brain animated! - {Dr.Mowinckels} blog.
+\newblock \url{https://drmowinckels.io/blog/get-the-brain-animated/},
+  2018{\natexlab{a}}.
+\newblock Accessed: 2019-04-01.
+
+\bibitem[Mowinckel(2018{\natexlab{b}})]{ggsegIntro}
+A.M. Mowinckel.
+\newblock Introducing the ggseg r-package for brain segmentations -
+  {Dr.Mowinckels} blog.
+\newblock
+  \url{https://drmowinckels.io/blog/introducing-the-ggseg-r-package-for-brain-segmentations/},
+  2018{\natexlab{b}}.
+\newblock Accessed: 2019-04-01.
+
+\bibitem[Mowinckel and Vidal-Piñeiro(2019{\natexlab{a}})]{ggseg}
+A.M. Mowinckel and D.~Vidal-Piñeiro.
+\newblock {ggseg} package website.
+\newblock \url{https://lcbc-uio.github.io/ggseg/}, 2019{\natexlab{a}}.
+\newblock Accessed: 2019-11-26.
+
+\bibitem[Mowinckel and Vidal-Piñeiro(2019{\natexlab{b}})]{ggseg3d}
+A.M. Mowinckel and D.~Vidal-Piñeiro.
+\newblock {ggseg3d} package website.
+\newblock \url{https://lcbc-uio.github.io/ggseg3d/}, 2019{\natexlab{b}}.
+\newblock Accessed: 2019-11-26.
+
+\bibitem[Muschelli et~al.(2018)Muschelli, Gherman, Fortin, Avants, Whitcher,
+  Clayden, Caffo, and Crainiceanu]{neuroconductor}
+J.~Muschelli, A.~Gherman, J.~P. Fortin, B.~Avants, B.~Whitcher, J.~D. Clayden,
+  B.~S. Caffo, and C.~M. Crainiceanu.
+\newblock {N}euroconductor: an {R} platform for medical imaging analysis.
+\newblock \emph{Biostatistics}, Jan 2018.
+
+\bibitem[Muschelli(2017)]{ggneuro}
+John Muschelli.
+\newblock \emph{ggneuro: Plotting Functions for Neuroimaging Data in
+  'ggplot2'}, 2017.
+\newblock R package version 0.5.0.
+
+\bibitem[Ooms(2019)]{magick}
+Jeroen Ooms.
+\newblock \emph{magick: Advanced Graphics and Image-Processing in R}, 2019.
+\newblock URL \url{https://CRAN.R-project.org/package=magick}.
+\newblock R package version 2.2.
+
+\bibitem[Pizzagalli et~al.(2009)Pizzagalli, Holmes, Dillon, Goetz, Birk,
+  Bogdan, Dougherty, Iosifescu, Rauch, and Fava]{Pizzagalli}
+Diego~A. Pizzagalli, Avram~J. Holmes, Daniel~G. Dillon, Elena~L. Goetz,
+  Jeffrey~L. Birk, Ryan Bogdan, Darin~D. Dougherty, Dan~V. Iosifescu, Scott~L.
+  Rauch, and Maurizio Fava.
+\newblock Reduced caudate and nucleus accumbens response to rewards in
+  unmedicated individuals with major depressive disorder.
+\newblock \emph{American Journal of Psychiatry}, 166\penalty0 (6):\penalty0
+  702--710, 2009.
+\newblock \doi{10.1176/appi.ajp.2008.08081201}.
+\newblock URL \url{https://doi.org/10.1176/appi.ajp.2008.08081201}.
+\newblock PMID: 19411368.
+
+\bibitem[{P}roject {J}upyter et~al.(2018){P}roject {J}upyter, {M}atthias
+  {B}ussonnier, {J}essica {F}orde, {J}eremy {F}reeman, {B}rian {G}ranger, {T}im
+  {H}ead, {C}hris {H}oldgraf, {K}yle {K}elley, {G}ladys {N}alvarte, {A}ndrew
+  {O}sheroff, {P}acer, {Y}uvi {P}anda, {F}ernando {P}erez, {B}enjamin~{R}agan
+  {K}elley, and {C}arol {W}illing]{binder}
+{P}roject {J}upyter, {M}atthias {B}ussonnier, {J}essica {F}orde, {J}eremy
+  {F}reeman, {B}rian {G}ranger, {T}im {H}ead, {C}hris {H}oldgraf, {K}yle
+  {K}elley, {G}ladys {N}alvarte, {A}ndrew {O}sheroff, {M} {P}acer, {Y}uvi
+  {P}anda, {F}ernando {P}erez, {B}enjamin~{R}agan {K}elley, and {C}arol
+  {W}illing.
+\newblock {B}inder 2.0 - {R}eproducible, interactive, sharable environments for
+  science at scale.
+\newblock In {F}atih {A}kici, {D}avid {L}ippa, {D}illon {N}iederhut, and {M}
+  {P}acer, editors, \emph{{P}roceedings of the 17th {P}ython in {S}cience
+  {C}onference}, pages 113 -- 120, 2018.
+\newblock \doi{10.25080/Majora-4af1f417-011}.
+
+\bibitem[{R Core Team}(2019)]{R}
+{R Core Team}.
+\newblock \emph{R: A Language and Environment for Statistical Computing}.
+\newblock R Foundation for Statistical Computing, Vienna, Austria, 2019.
+\newblock URL \url{https://www.R-project.org/}.
+
+\bibitem[Riddihiman(2016)]{plotly-trisurf}
+Riddihiman.
+\newblock {plotly} trisurf2.
+\newblock \url{https://moderndata.plot.ly/trisurf-plots-in-r-using-plotly/},
+  2016.
+\newblock Accessed: 2019-04-01.
+
+\bibitem[Schaefer et~al.(2017)Schaefer, Kong, Gordon, Laumann, Zuo, Holmes,
+  Eickhoff, and Yeo]{schaefer}
+Alexander Schaefer, Ru~Kong, Evan~M Gordon, Timothy~O Laumann, Xi-Nian Zuo,
+  Avram~J Holmes, Simon~B Eickhoff, and B~T~Thomas Yeo.
+\newblock {Local-Global Parcellation of the Human Cerebral Cortex from
+  Intrinsic Functional Connectivity MRI}.
+\newblock \emph{Cerebral Cortex}, 28\penalty0 (9):\penalty0 3095--3114, 07
+  2017.
+\newblock ISSN 1047-3211.
+\newblock \doi{10.1093/cercor/bhx179}.
+\newblock URL \url{https://doi.org/10.1093/cercor/bhx179}.
+
+\bibitem[Sievert(2018)]{plotly}
+Carson Sievert.
+\newblock \emph{plotly for R}, 2018.
+\newblock URL \url{https://plotly-r.com}.
+
+\bibitem[Vidal-Piñeiro et~al.(2019)Vidal-Piñeiro, Parker, Shin, French,
+  Jackowski, Mowinckel, Patel, Pausova, Salum, Sørensen, Walhovd, Paus, and
+  Fjell]{vidal_2019}
+D.~Vidal-Piñeiro, N.~Parker, J.~Shin, L.~French, AP. Jackowski, AM. Mowinckel,
+  Y.~Patel, Z.~Pausova, G.~Salum, Ø. Sørensen, KB~Walhovd, T.~Paus, and
+  AM~Fjell.
+\newblock Cellular correlates of cortical thinning throughout the lifespan.
+\newblock \emph{bioRxiv}, page 585786, January 2019.
+\newblock \doi{10.1101/585786}.
+\newblock URL
+  \url{http://biorxiv.org/content/early/2019/03/23/585786.abstract}.
+
+\bibitem[Walhovd et~al.(2005)Walhovd, Fjell, Reinvang, Lundervold, Dale,
+  Eilertsen, Quinn, Salat, Makris, and Fischl]{WALHOVD20051261}
+Kristine~B. Walhovd, Anders~M. Fjell, Ivar Reinvang, Arvid Lundervold,
+  Anders~M. Dale, Dag~E. Eilertsen, Brian~T. Quinn, David Salat, Nikos Makris,
+  and Bruce Fischl.
+\newblock Effects of age on volumes of cortex, white matter and subcortical
+  structures.
+\newblock \emph{Neurobiology of Aging}, 26\penalty0 (9):\penalty0 1261 -- 1270,
+  2005.
+\newblock ISSN 0197-4580.
+\newblock \doi{https://doi.org/10.1016/j.neurobiolaging.2005.05.020}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/S0197458005001673}.
+
+\bibitem[Wickham(2016)]{ggplot}
+Hadley Wickham.
+\newblock \emph{ggplot2: Elegant Graphics for Data Analysis}.
+\newblock Springer-Verlag New York, 2016.
+\newblock ISBN 978-3-319-24277-4.
+\newblock URL \url{https://ggplot2.tidyverse.org}.
+
+\bibitem[Woolrich et~al.(2009)Woolrich, Jbabdi, Patenaude, Chappell, Makni,
+  Behrens, Beckmann, Jenkinson, and Smith]{fsl}
+Mark~W. Woolrich, Saad Jbabdi, Brian Patenaude, Michael Chappell, Salima Makni,
+  Timothy Behrens, Christian Beckmann, Mark Jenkinson, and Stephen~M. Smith.
+\newblock Bayesian analysis of neuroimaging data in {FSL}.
+\newblock \emph{{NeuroImage}}, 45\penalty0 (1):\penalty0 S173--S186, March
+  2009.
+\newblock \doi{10.1016/j.neuroimage.2008.10.055}.
+\newblock URL \url{https://doi.org/10.1016/j.neuroimage.2008.10.055}.
+
+\bibitem[Yendiki et~al.(2011)Yendiki, Panneck, Srinivasan, Stevens, Zöllei,
+  Augustinack, Wang, Salat, Ehrlich, Behrens, Jbabdi, Gollub, and
+  Fischl]{tracula}
+Anastasia Yendiki, Patricia Panneck, Priti Srinivasan, Allison Stevens, Lilla
+  Zöllei, Jean Augustinack, Ruopeng Wang, David Salat, Stefan Ehrlich, Tim
+  Behrens, Saad Jbabdi, Randy Gollub, and Bruce Fischl.
+\newblock Automated probabilistic reconstruction of white-matter pathways in
+  health and disease using an atlas of the underlying anatomy.
+\newblock \emph{Frontiers in Neuroinformatics}, 5:\penalty0 23, 2011.
+\newblock ISSN 1662-5196.
+\newblock \doi{10.3389/fninf.2011.00023}.
+\newblock URL
+  \url{https://www.frontiersin.org/article/10.3389/fninf.2011.00023}.
+
+\bibitem[Yeo et~al.(2011)Yeo, T., Krienen, Sepulcre, Sabuncu, Lashkari,
+  Hollinshead, Roffman, Smoller, Zöllei, Polimeni, Fischl, Liu, and
+  Buckner]{yeo2011}
+Thomas Yeo, B.~T., Fenna~M. Krienen, Jorge Sepulcre, Mert~R. Sabuncu, Danial
+  Lashkari, Marisa Hollinshead, Joshua~L. Roffman, Jordan~W. Smoller, Lilla
+  Zöllei, Jonathan~R. Polimeni, Bruce Fischl, Hesheng Liu, and Randy~L.
+  Buckner.
+\newblock The organization of the human cerebral cortex estimated by intrinsic
+  functional connectivity.
+\newblock \emph{Journal of Neurophysiology}, 106\penalty0 (3):\penalty0
+  1125--1165, 2011.
+\newblock \doi{10.1152/jn.00338.2011}.
+\newblock URL \url{https://doi.org/10.1152/jn.00338.2011}.
+\newblock PMID: 21653723.
+
+\end{thebibliography}
