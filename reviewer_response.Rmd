@@ -1,0 +1,96 @@
+---
+title: "Response to reviewers"
+subtitle: "for AMPPS manuscript: Visualisation of Brain Statistics with R-packages ggseg and ggseg3d"
+author: "Athanasia Monika Mowinckel & Didac Vidal Piñeiro"
+date: "2/14/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Reviewer 1
+
+### Major concerns
+#### 1. The output of many code chunks are not present to illustrate the concepts described (Pages 5, 9).
+
+The code for Figure 3 on page 5 is printed on page 5, _after_ the figure. 
+This is necessary, as there is not really any proper room for the code to come before that plot specifically.
+We hoped this was not too confusing, but understand that is it easy to miss. 
+
+on the plot for page 9, the missing code is printed in the title of each sub-plot. 
+The reason we are omitting the code chunk of this image is that to incorporate static images of 3d plotly images, we need to use the tool `orca`. We mention this tool on page 11, but we do not want to go into orca in this tutorial. This is because it adds a level of complexity which we do not want to introduce, as we wish to focus on the bits of code necessary to make the images in an interactive R session. 
+We have added an _unexectuted_ code chunk showing these three plots, but not how you can combine them into the three-part subplot that is actually in the paper, as this is just a little too much information in our opinion.
+
+#### 2. Many users wish to bring in parcellations from individual subjects processing. For example, freesurfer files or PLY files from some other software. It is not clear if ggseg has the ability to read and then render these, but they are fundamental to this area. Similarly, In this vein, the overall functionality of a user creating their own atlas would be helpful.
+We agree, this is an area we are working on imporiving. 
+Currently, creating one's own custom atlas is cumbersome and not something anyone can do easily. 
+While we hope to get this functionality improved in the (near) future, we currently have information on how to make your own `ggseg` atlas in the github wiki'es page. 
+**ADD INFORMATION FOR ggseg3d creation!**
+
+#### 3. In this regard, please read in a true freesurfer stats file from the subjects folder installed with freesurfer, and don’t use mock data. This will help those using Freesurfer, which is a likely user of these packages.  
+We considerably altered the section introducing how to supply your own data to the function, to include this aspect of reading a freesurfer file directly.
+Indeed, when we did this, we realised a bit more data manipulation was necessary to get the data into correct format than we could expect a novice user to handle.
+Therefore, we added several new functions to the package, that should make this transition easier.
+The section is now changed to also instruct the user on how to use those functions to read in Freesurfer data from two different formats, and these are subsequently plotted in Figure 4. 
+
+We do continue to use mock data in the remainder of the tutorial, because the mock data allows us to highlight certain function features more easily. 
+
+
+#### 4. The interactivity of these tools is essential - link out to interactive examples are necessary.
+We have added links to online documentation of the tools, which have more features covered, and in case of `ggseg3d` also has interactive versions of plots. 
+
+#### 5. Page 9, Line 34 “It is important to note that the coordinates in the plot (X, Y, Z) are not any type of radiological coordinate system, but arbitrary Cartesian plot coordinates.” - it is unclear why this is important - please discuss the signifiance (such as using this to find ROIs on MNI space, etc).
+We added a sentence to this section making sure this point was made even more clearly. 
+
+> It is important to note that the coordinates in the plot (X, Y, Z) are **not** any type of radiological coordinate system, but arbitrary Cartesian plot coordinates.
+While these coordinates are important when running imaging analyses and for reporting of the placement of these regions compared to other regions, this information is not preserved in `ggseg3d`, at the moment.
+As such, information regarding referecing the regions' location in standard radiological spaces (like MNI or Taliarch) should be aquired directly from imaging software or papers describin the atlases, not `ggseg3d`. 
+
+
+### Minor concerns
+#### 1. Why must you group_by and then facet_wrap in line 43 page 7? Is the grouping necessary? Line 23, page 7 seems to indicate that it is, but it’s unclear why
+This is a pretty annoying neccessity because the function `ggseg` is just a wrapper for `geom_polygon` and we are in a sense cricumventing the genious of the grammar of graphics. We added a small section in the manuscript explaining this, and also added a subplot to figure 5, now showing when data is grouped before and if not grouped. `ggseg` will merge supplied data with atlas-data, and then feed that merged data to `ggplot` and `geom_polygon`. This makes some unfortunate changes to the data, so that the entire atlas will not be plotted correctly once provided to `ggplot` and facetted. We also added some text explaining this under the **Creating subplots** heading for ggseg.
+
+> In regards to the second rule of needing to group the data before plotting, this is due to the underlying structure of how the provided data and the atlas data are combined before plotting. 
+Since the package function, so far, is a wrapper for {ggplot2} rather than a  `geom`, there is certain ggplot2-functionality that is difficult to integrate, like the facets. 
+For the complete atlas-data to be merged with _every data group_ correctly, the ggseg function needs to have an indication before plotting what the groups are. 
+The result of ungrouped data into `ggseg` is shown in  \@ref(fig:datasupp3)A. 
+Notice how there are three panels rather than two, and that the regions _not represented in the data_ have their own panel with all the grey `NA` colour, while the panels with the data only have the regions represented in the data. 
+
+
+#### 2. Can a continuous mapping of triangles be handled? For example, Figure 4 has a parcellation, but can a mapping to each point on the surface be handled? If so, please give example in supplement. 
+unfortunately no. We are finding it difficult to figure out how the indexing of each individual triangle actually works, and how to map that in a continuous way. We hope to be able to crack that nut in the future, but at the moment we are not able to do so. If we get there, that would be a great improvement to the package as a whole, as it would greatly minimize the data needed to plot and improve speed of plotting, which now can be quite slow for atlases with many parcellations. 
+
+#### 3. Define “glass brains” for the main audience (page 9)
+We have added the following centences below the glass brain subheading
+
+> A glass brain is a transluscent representation of the brain that can provide a frame of reference, particularly when looking at subcortical parcellations.
+Since individual brain areas or subcortical structures can be very hard to place without the visual reference of the entire brain, glass brains are often used to aid the viewer understand a regions location.
+Subcortical atlases include cortical surfaces and other landmark structures for visualization purposes only.
+
+#### 4. A link to an interactive figure 9 should be provided.
+
+
+#### 5. Why must title = " " in the code chunks Page (3)
+This was something hacky we did to get title alignment and placement to work with cowplot. We switched to patchwork, where this is not needed. We have not made title and subtitle setting in `labs` that describe the plots very shortly. 
+
+#### 6. The code chunks in Page 3 should be run in the same order as the figure so that readers flipping back and forth do not have to search around, p1, med, combo, p2, left, p3 is the order they are passed, so they should be the order in which they are created. Also A/B/C/etc should be in the code comments, not simply the name, e.g. F: aseg default theme.
+We have corrected the figure and code with your comments, and find it much improved. 
+
+#### 7. Why is there an NA in Figure 3?
+All cortical atlases have `NA` for the polygon representing the medial wall, and currently subcortical atlases also have `NA` for the polygon(s) representing the cortex.  
+This was a design decision we did early on, that areas that are _not_ part of the atlas itself should be represented stored as `NA` , rather than giving them their own fill colour. 
+
+### Typos
+**• extra “s” in pluss in 3rd paragraph (line 55)**  
+Thank you for spotting this, we amended the error.
+
+
+## Reviewer 2
+**I have done many R package tutorials, and I saw no issue with this one. I would rank it as intermediate in difficulty because of some setting up additional dependencies such as the remotes package. I think I would especially utilize this package with Freesurfer so the examples provided in congruence with that workflow was useful to me. Code itself was clean, commented, and easy to follow. While much of the work I do is outside of R completely, I could see this being a useful tool for someone who is basing their analyses in that framework. I hope that the contents of this tutorial are being similarly represented on a Git documentation page, as I am sure most users will default to that mode to learn about this package instead of a manuscript. I look forward to the planned improvements that the authors note elsewhere in the Planned Package Improvements portion of the article and thank them for the open-source distribution of this package.**
+
+
+**I can provide to the authors minimally commented code I wrote to follow this tutorial, but would note that most of it overlaps with existing content in the manuscript.**
