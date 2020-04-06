@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 # Visualisation of Brain Statistics with R-packages _ggseg_ and _ggseg3d_
 
 <!-- badges: start -->
-[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Athanasiamo/ggsegpaper/master?urlpath=rstudio)
+<!-- [![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Athanasiamo/ggsegpaper/master?urlpath=rstudio) -->
 <!-- badges: end -->
 
 This is the repository for the tutorial "Visualisation of Brain Statistics with R-packages _ggseg_ and _ggseg3d_"

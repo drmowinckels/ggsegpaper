@@ -5,8 +5,8 @@
 
 <!-- badges: start -->
 
-[![Launch Rstudio
-Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Athanasiamo/ggsegpaper/master?urlpath=rstudio)
+<!-- [![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Athanasiamo/ggsegpaper/master?urlpath=rstudio) -->
+
 <!-- badges: end -->
 
 This is the repository for the tutorial “Visualisation of Brain
