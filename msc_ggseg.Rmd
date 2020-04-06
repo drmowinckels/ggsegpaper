@@ -12,7 +12,7 @@ affiliation:
   - code: 1
     address: Center for Lifespan Changes in Brain and Cognition, University of Oslo, PO. box 1094 Blindern, 0317 Oslo, Norway
 abstract: >
-  There is an increased emphasis on visualizing neuroimaging results in more intuitive ways. Common statistical tools for dissemination, such as bar charts, lack the spatial dimension that is inherent in neuroimaging data. Here we present two packages for the statistical software R, _ggseg_ and _ggseg3d_, that integrate this spatial component. The _ggseg_ and _ggseg3d_ packages visualize pre-defined brain segmentations as both 2D polygons and 3D meshes, respectively. Both packages are integrated with other well-established R-packages, allowing great flexibility. In this tutorial, we present the main data and functions in the _ggseg_ and _ggseg3d_ packages for brain atlas visualization. The main highlighted functions are able to display brain segmentation plots in R. Further, the accompanying _ggsegExtra_-package includes a wider collection of atlases, and is intended for community-based efforts to develop more compatible atlases to _ggseg_ and _ggseg3d_. Overall, the _ggseg_-packages facilitate parcellation-based visualizations in R, improve and ease the dissemination of the results, and increase the efficiency of the workflows. 
+  There is an increased emphasis on visualizing neuroimaging results in more intuitive ways. Common statistical tools for dissemination, such as bar charts, lack the spatial dimension that is inherent in neuroimaging data. Here we present two packages for the statistical software R, _ggseg_ and _ggseg3d_, that integrate this spatial component. The _ggseg_ and _ggseg3d_ packages visualize pre-defined brain segmentations as both 2D polygons and 3D meshes, respectively. Both packages are integrated with other well-established R-packages, allowing great flexibility. In this tutorial, we present the main data and functions in the _ggseg_ and _ggseg3d_ packages for brain atlas visualization. The main highlighted functions are able to display brain segmentation plots in R. Further, the accompanying _ggsegExtra_-package includes a wider collection of atlases, and is intended for community-based efforts to develop more compatible atlases for _ggseg_ and _ggseg3d_. Overall, the _ggseg_-packages facilitate parcellation-based visualizations in R, improve and ease the dissemination of the results, and increase the efficiency of the workflows. 
 bibliography: references.bib
 output:
   bookdown::pdf_book:
@@ -67,22 +67,24 @@ knit_hooks$set(output = function(x, options) {
   hook_output(x, options)
 })
 
-dt <- as_tibble(data(package='ggseg')$results)
-dt3 <- as_tibble(data(package='ggseg3d')$results)
-dtE <- as_tibble(data(package='ggsegExtra')$results)
+get_data_list <- function(package){
+  as_tibble(data(package=package)$results)
+}
 
-dd <-  bind_rows(dt, dt3) %>% 
-  bind_rows(dtE) %>% 
-  filter(!grepl("pal", Item)) %>% 
+pkglist <- c("ggseg", "ggseg3d",  
+             basename(ggsegExtra::ggseg_atlas_repos()$repo))
+dt <- lapply(pkglist, get_data_list) %>% 
+  bind_rows() %>% 
+    filter(!grepl("pal", Item)) %>% 
   mutate(Type = ifelse(grepl("3d", Item), "Mesh", "Polygon"),
          Item = gsub("_3d", "", Item),
          Item = gsub("_", "", Item)) %>% 
-  select(Package, Title, Type, Item) %>% 
+    select(Package, Title, Type, Item) %>% 
   spread(Type, Package, fill = "None")  %>% 
   mutate(Citation = case_when(
-    grepl("dkt", Item) ~ "\\citet{dkt}",
+    grepl("dk", Item) ~ "\\citet{dk}",
     grepl("yeo", Item) ~ "\\citet{yeo2011}",
-    grepl("aseg", Item) ~ "\\citet{aseg}",
+    grepl("aseg|hcpa", Item) ~ "\\citet{aseg}",
     grepl("desterieux", Item) ~ "\\citet{desterieux}",
     grepl("^chen", Item) ~ "\\citet{chen}",
     grepl("glasser", Item) ~ "\\citet{glasser}",
@@ -93,7 +95,7 @@ dd <-  bind_rows(dt, dt3) %>%
     grepl("^ho", Item) ~ "\\citet{ho}",
     TRUE ~ ""
   ))
-rm(dt, dt3, dtE)
+
 options(warnPartialMatchAttr = FALSE,
         warnPartialMatchDollar = FALSE,
         warnPartialMatchArgs = FALSE)
@@ -105,48 +107,50 @@ Visualization is increasingly important for accurate guidance and interpretation
 For Magnetic Resonance Imaging (MRI), neuroimaging software provides whole-brain information by using many small units of space (>100.000).
 Nonetheless, this data is often grouped and summarized into a limited number of regions using predefined brain parcellation atlases.
 Brain parcellations segment the brain into a finite set of meaningful neurobiological components, which reflect one or more brain features either based on structural or connectivity properties (@eickhoff_2018).
-The use of brain atlases is widespread as these facilitate interpretation and minimize the amount of data, hence reducing problems with multiple comparisons.
+The use of brain atlases in neuroscience is widespread as these facilitate interpretation and minimize the amount of data (in comparison to using whole-brain data), hence reducing problems with multiple comparisons.
 This enables replicability and data sharing in otherwise computationally expensive analyses, which are often performed in specialized software environments such as R (@R).
 
 MRI data provides good spatial resolution and thus an optimal representation has to respect spatial relationships across regions.
 Results from brain atlas analyses are most meaningfully visualized when projected onto a representation of the brain, thus it is desirable that any visual representation takes this relation into account.
 The projection of data onto brain representations provides clear points of reference - especially when the reader is unfamiliar with the atlas - eases readability, guides interpretation, and conveys the spatial patterns of the data.
-Adopting the grammar of graphics implemented in _ggplot2_ (@ggplot), one can plot neuroimaging data directly in R with several tools such as ggBrain (@ggBrain) and ggneuro (@ggneuro; see neuroconductor -@neuroconductor for curated neuroimaging packages for R).
+Adopting the grammar of graphics implemented in _ggplot2_ (@ggplot), one can plot neuroimaging data directly in R with several tools such as _ggBrain_ (@ggBrain) and _ggneuro_ (@ggneuro; see neuroconductor -@neuroconductor for curated neuroimaging packages for R).
 Yet these tools display whole-brain image files and are not well-suited for representing brain atlas data.
 
 In this tutorial, we introduce two packages for visualizing brain atlas data in R.
-The _ggseg_ and _ggseg3d_ – plus the complimentary _ggsegExtra_ – packages include pre-compiled data sets for different brain atlases that allow for 2D and 3D visualization.
+The _ggseg_ and _ggseg3d_ – plus the complimentary _ggsegExtra_ – packages, which include pre-compiled data-sets for different brain atlases that allow for 2D and 3D visualization.
 The two-dimensional functionality in _ggseg_ is based on polygons and _ggplot2_-based grammar of graphics (@ggplot), while the 3D functionality in _ggseg3d_ is based on tri-surface mesh plots and _plotly_ (@plotly).
 
-Both packages present compiled data sets, tailored functions that allow brain data integration and plotting, and other minor features such as custom colour palettes.
-The data featured in the packages are derived from two well-known parcellations: the Desikan-Killany cortical atlas (DKT; @dkt), which covers the cortical surface of the brain, and the Automatic Segmentation of Subcortical Structures (aseg; @aseg), which covers the subcortical structures.
+The _ggseg_ and _ggseg3d_ packages present compiled data-sets, tailored functions that allow brain data integration and plotting, and other minor features such as custom colour palettes.
+The data featured in the packages are derived from two well-known parcellations: the Desikan-Killany cortical atlas (DK; @dk), which covers the cortical surface of the brain, and the Automatic Segmentation of Subcortical Structures (aseg; @aseg), which covers the subcortical structures.
 Both atlases are implemented in several neuroimaging softwares, such as FreeSurfer (@fischl_99, @dale_99, @Fischl2000), and are commonly used in relation to developmental changes, disease biomarkers, genomic data, and cognition (@amlien_elaboration_2019, @WALHOVD20051261, @Pizzagalli).
-The _ggsegExtra_ package contains a collection of precompiled atlases (currently `r dd %>% filter(grepl("ggsegExtra", Mesh) | grepl("ggsegExtra", Polygon)) %>% nrow()` additional atlases) and it is frequently updated.
-A summary of all available atlases compatible with the _ggseg_-packages as of `r format(Sys.Date(), "%B %Y")` can be found in Table \@ref(tab:atlasTab).
+The _ggsegExtra_ package contains a list of online repositories of pre-compiled atlases (currently `r sum(!grepl("None", dt$Polygon))-1` additional polygon atlases and `r sum(!grepl("None", dt$Mesh))-1` mesh atlases) and it is frequently updated.
+A summary of all available atlases compatible with the _ggseg_-packages as of `r format(Sys.Date(), "%B %Y")` can be found in Table \@ref(tab:table1).
 
 
-```{r 'atlasTab', echo=F, warning=FALSE, message=FALSE}
-dd %>%
+```{r 'table1', echo=F, warning=FALSE, message=FALSE}
+dt %>%
   kable(format="latex", escape = FALSE, booktabs = TRUE,
-        caption = "Table of currently available atlases in the ggseg, ggseg3d, and the ggsegExtra R-packages. Polygon and mesh refer to 2D and 3D brain atlas representations, respectively") %>%
+        caption = "Table of currently available atlases in ggseg and ggseg3d, and listed in the ggsegExtra R-package. Polygon and Mesh refer to 2D and 3D brain atlas representations, respectively. Cell contents in the Mesh and Polygon columns indicate the source package containing the atlas data-set.") %>%
   kable_styling(latex_options = c("scale_down"))
 ```
 
 # Tutorial
 This tutorial will introduce the _ggseg_, _ggseg3d_, and _ggsegExtra_ packages and familiarize the reader with the main functions and the general use of the packages.
 The tutorial will focus on the two main functions: `ggseg()` for plotting 2D polygons and `ggseg3d()` for plotting 3D brains based on tri-surface mesh plots.
+The following tutorial complements the package documentation and vignettes that can be found online for all three packages: [ggseg](https://lcbc-uio.github.io/ggseg), [ggseg3d](https://lcbc-uio.github.io/ggseg3d), [ggsegExtra](https://lcbc-uio.github.io/ggsegExtra).
+
 
 ## Plotting polygon data (ggplot2)
 
-_ggseg_ is the main function for plotting 2D data.
-By default, the function automatically plots the DKT atlas (see Figure \@ref(fig:init)).
+`ggseg()` from the _ggseg_ package is the main function for plotting 2D data.
+By default, the function automatically plots the DK atlas (see Figure \@ref(fig:figure1)).
 The `ggseg()`-function is a wrapper for `geom_polygon()` from _ggplot2_, and it can be built upon and combined like any _ggplot_-object.
 The image plot consists of a simple brain representation containing no extra information.
 Hence, _ggseg_ plots can be easily complemented with any of the available _ggplot2_ features and options.
 We recommend users to get familiarized with _ggplot2_ (@ggplot).
 The package is currently only available through github, but we expect to submit the _ggseg_-package to The Comprehensive R Archive Network (@cran) in 2020.
 
-```{r 'init', fig.width=3, message=FALSE, fig.cap='By default `ggseg()` will plot the dkt atlas in grey shaded polygons.'}
+```{r 'figure1', fig.width=3, message=FALSE, fig.cap='By default `ggseg()` will plot the dk atlas in grey shaded polygons.'}
 # remotes::install_github("LCBC-UiO/ggseg")
 library(ggseg)
 
@@ -159,40 +163,42 @@ ggseg()
 
 In addition to the standard options for _ggplot2_ polygon geoms, the function also has several options for plotting the main brain representations.
 These options are atlas-specific.
-For cortical atlases, such as the `dkt`, one can stack the hemispheres, display only the medial or lateral side, choose either one or both hemispheres, or any combination of hemisphere and view (see Figure \@ref(fig:collection) for examples).
+For cortical atlases, such as the `dk`, one can stack the hemispheres, display only the medial or lateral side, choose either one or both hemispheres, or any combination of hemisphere and view (see Figure \@ref(fig:figure2) for examples).
 For subcortical atlases, such as the `aseg` atlas, the options are more limited but one can often choose between axial, sagittal, and coronal views.
 
-```{r 'collection', fig.width=5, fig.cap='*ggseg* plots can be used with any *ggplot2* feature such as standard scales and themes. For cortical atlases, one can supply special *ggseg* options to determine, for example, hemisphere, view, or position. **A:** `dkt` atlas, stacked with dark theme ; **B:** `dkt` with medial view only; **C:** `dkt` atlas with only left medial display; **D:** `dkt` atlas, stacked, with classic theme; **E:** `dkt` atlas with left hemisphere only; **F:** axial view of `aseg` atlas'}
-# A: dkt dark theme
-p1 <- ggseg(position = "stacked") +
+(ref:figure2-cap) *ggseg* plots can be used with any *ggplot2* feature such as standard scales and themes. For cortical atlases, one can supply special *ggseg* options to determine, for example, hemisphere, view, or position. **A:** `dk` atlas, stacked with dark theme ; **B:** `dk` with medial view only; **C:** `dk` atlas with only left medial display; **D:** `dk` atlas, stacked, with classic theme; **E:** `dk` atlas with left hemisphere only; **F:** axial view of `aseg` atlas
+
+```{r 'figure2', fig.width=6, fig.cap='(ref:figure2-cap)', out.width = "100%"}
+# A: dk dark theme
+fig2A <- ggseg(position = "stacked") +
   theme_dark() +
-  labs(title="dkt", subtitle = "dark theme")
+  labs(title="dk", subtitle = "dark theme")
 
-# B: dkt medial view
-p2 <- ggseg(view = "medial") +
-  labs(title = "dkt", subtitle = "medial view")
+# B: dk medial view
+fig2B <- ggseg(view = "medial") +
+  labs(title = "dk", subtitle = "medial view")
 
-# C: dkt left medial alone
-p3 <- ggseg(view = "medial",
+# C: dk left medial alone
+fig2C <- ggseg(view = "medial",
             hemisphere = "left") +
-  labs(title="dkt", subtitle = "medial left side")
+  labs(title="dk", subtitle = "medial left")
 
-# D: dkt classic theme
-p4 <- ggseg(position = "stacked") +
+# D: dk classic theme
+fig2D <- ggseg(position = "stacked") +
   theme_classic() +
-  labs(title = "dkt", subtitle = "classic theme")
+  labs(title = "dk", subtitle = "classic theme")
 
 
-# E: dkt left hemisphere
-p5 <- ggseg(hemisphere = "left") +
-  labs(title = "dkt", subtitle = "left hemisphere")
+# E: dk left hemisphere
+fig2E <- ggseg(hemisphere = "left") +
+  labs(title = "dk", subtitle = "left hemisphere")
 
 # F: aseg default theme
-p6 <- ggseg(atlas = aseg, view = "axial") +
+fig2F <- ggseg(atlas = aseg, view = "axial") +
   labs(title = "aseg", subtitle = "axial view")
 
 # Using patchwork to combine all plots into one
-(p1 | p2 | p3) / (p4 | p5 | p6) +
+(fig2A | fig2B | fig2C) / (fig2D | fig2E | fig2F) +
   plot_annotation(tag_levels = 'A')
 ```
 
@@ -200,12 +206,14 @@ p6 <- ggseg(atlas = aseg, view = "axial") +
 ### Using own data with fill and colour
 `ggseg()` accepts any argument you can supply to `geom_polygon()`, and therefore is easy to work with for those familiar with _ggplot2_ functionality.
 Standard arguments like `fill` that floods the segments with a colour, or `colour` that colours the edges around the segments are typical arguments to provide to the function either as a single setting value or within the _ggplot2_ mapping function `aes`.
-To use color palettes corresponding to those used in the original neuroimaging softwares one can use atlas-specific 'brain' palette scales (Figure \@ref(fig:fill)).
+To use color palettes corresponding to those used in the original neuroimaging softwares one can use atlas-specific 'brain' palette scales (Figure \@ref(fig:figure3)).
 
-```{r 'fill', fig.width=5, fig.height=5, fig.cap="Supplying 'area' to the fill option in `ggseg()`, will use the column 'area' from the accompanying dataset to create a discrete colour palette over the segments in the atlas. The `dkt` atlas default palette corresponds to the FreeSurferColorLut scheme."}
+(ref:figure3-cap) Supplying 'region' to the fill option in `ggseg()`, will use the column 'region' from the accompanying data-set to create a discrete colour palette over the segments in the atlas. The `dk` atlas default palette corresponds to the FreeSurferColorLut scheme.
+
+```{r 'figure3', fig.width=5, fig.height=5, fig.cap="(ref:figure3-cap)"}
 # Figure 3
-ggseg(mapping = aes(fill = area), colour="black") +
-  scale_fill_brain("dkt") +
+ggseg(mapping = aes(fill = region), colour="black") +
+  scale_fill_brain("dk") +
   theme(legend.justification = c(1,0),
         legend.position = "bottom",
         legend.text = element_text(size = 5)) +
@@ -213,121 +221,129 @@ ggseg(mapping = aes(fill = area), colour="black") +
 ```
 
 Most users will use `ggseg()` to display - using a color scale - some descriptive or inferential statistics, such as mean thickness or brain-cognition relationships across the different brain regions.
-Yet, before projecting the statistics onto the segments, one should explore the structure of the atlas data sets.
-The atlas data set structure will help users understand what incoming statistical data needs to look like.
-Note that each atlas corresponds to a unique data set.
-All data sets have a similar structure and contain key information regarding the atlas, the region names, and the coordinates for the segment polygons.
+Yet, before projecting the statistics onto the segments, one should explore the structure of the atlas data-sets.
+The atlas data-set structure will help users understand what incoming statistical data needs to look like.
+Note that each atlas corresponds to a unique data-set.
+All data-sets have a similar structure and contain key information regarding the atlas, the region names, and the coordinates for the segment polygons.
 
 
 ```{r, size='small', eval=FALSE, codecap = "Inspect atlas data"}
-# Look at the top 5 rows of the dkt dataset
-head(dkt, 5)
+# Look at the top 5 rows of the dk data-set
+head(dk, 5)
 ```
 
 In any atlas, the column 'label' is particularly useful for combining the data of interest with the _ggseg_-polygons.
 The column 'label' contains the label (region) names as in the original neuroimaging software.
-For example, the DKT atlas label column matches the region names from Freesurfer statistics table outputs.
+For example, the `dk` atlas label column matches the region names from Freesurfer statistics table outputs.
 Yet, the data in _ggseg_ is in a long format - that is each region has a single row - and any data of interest needs to be in this same format.
-Often data sets are organized in wide format, in which subjects are represented by rows and each different data variable is represented in a separate column, and thus need to be rearranged to work with ggseg.
-To ease to conversion between Freesurfer files and ggseg compatible files, we have functions to aid import to R. 
-There is an extended vignette in the [online documentation]() of the various options, here we assume that that the data has been compiled into a file using Freesurfer's `aparcstats2table` or `asegstats2table` that combine parcellation metrics for all wanted subjects into a single file. 
-This file also contains extra metrics like intracranial volume and total grey matter. 
-These do not map onto ggseg, and as such, one should make sure to remove them from the subsequent data. 
+Often data-sets are organized in wide format, in which subjects are represented by rows and each different data variable is represented in a separate column, and thus need to be rearranged to work with ggseg.
+Summary statistic files from Freesurfer have a file format that can be difficult to work with in R. 
+In a set of functions in _ggseg_, we facilitate conversion between FreeSurfer files and ggseg compatible data. 
+There is an [extended vignette](https://lcbc-uio.github.io/ggseg/articles/freesurfer_files.html) of the various options.
+In the following example, we import summary data that has been compiled using Freesurfer's `aparcstats2table` (for surfaces) or `asegstats2table` (volumes). 
+The summary files can combine parcellation metrics for one or more subjects into a single summary file.
+This file also contains extra metrics like intracranial volume and total grey matter volume. 
+These later measures do not map onto ggseg, and as such, one should filter them out of the data returned from `read_freesurfer_table)`. 
 
 ```{r, size='small'}
 file_path <- "data/aparc.volume.table"
 
 someData <- read_freesurfer_table(file_path, measure = "volume") %>% 
-  # remove rows in the data that do not conain the strings "rh" or "lh"
+  # remove rows in the data that do not contain the strings "rh" or "lh"
   dplyr::filter(grepl("rh|lh", label))
 someData
 ```
 
-A second option is to read in atlas files directly from the entire subject directory, using regular expression to define the atlas wanted. 
-If we inspect a single subjects stats directory of Freesurfer (here on default installation on macOS), we can see several parcellations to choose from.
+A second option is to read in atlas files directly from the entire subject directory, using regular expression to select the target atlas. 
 The default aparc has a unique string ending with `aparc.stats` which we will use to read in all subject stats for that particular atlas.
-This data has more columns, as it contains several metrics that can be plotted. 
+One can filter specific subjects and/or regions from the R-object data.frame.
 
-
-```{bash}
-# in bash terminal
-ls /Applications/freesurfer/subjects/bert/stats
-```
 
 ```{r, warning=FALSE}
 atlas_data <- read_atlas_files(
+  # Path to Freesurfers $SUBJECTS_DIR
   subjects_dir = "/Applications/freesurfer/subjects/",
+  # Regular expression to find atlas files
   atlas = "aparc.stats$"
 )
 atlas_data
 ```
 
-This long format data can be used directly with the `ggseg()`-function, as the 'label' column corresponds in name and content with the 'label' column in the atlas data of `dkt`.
+This long format data can be used directly with the `ggseg()`-function, as the 'label' column corresponds in name and content with the 'label' column in the atlas data of `dk`.
 The data **must** include a column that has the same column name and at least _some_ data matching the values in the corresponding column in the atlas data.
 In the following example, the `ggseg()`-function will recognise the matching column 'label', and merge the supplied data into the atlas using _dplyr_-joins.
-The appearance of the plot can then be modified similarly to any other _ggplot2_ graph using functions such as scales, labs, themes, etc., as seen in Figure \@ref(fig:datasupp)
+The appearance of the plot can then be modified similarly to any other _ggplot2_ graph using functions such as scales, labs, themes, etc., as seen in Figure \@ref(fig:figure4)
 
-```{r 'datasupp', fig.width=5, fig.cap="Supplying data through the '.data' option in `ggseg()` enables use of columns in the supplied data to aesthetical arguments (such as 'fill'). The *ggseg* plot can be used with any other polygon compatible function from *ggplot2* or *ggplot2* extentions, for instance adding title, changing the legend name and the colour scheme with standard *ggplot2* functions.", warning = FALSE}
+(ref:figure4-cap) Supplying data through the '.data' option in `ggseg()` enables use of columns in the supplied data to aesthetical arguments (such as 'fill'). The *ggseg* plot can be used with any other polygon compatible function from *ggplot2* or *ggplot2* extentions, for instance adding title, changing the legend name and the colour scheme with standard *ggplot2* functions.
+
+```{r 'figure4', fig.width=5, fig.cap="(ref:figure4-cap)", warning = FALSE}
 
 # Figure 4A
-p1 <- ggseg(.data=someData, mapping=aes(fill=volume))  +
+fig4A <- someData %>% 
+  # plot only subject bert
+  filter(subject == "bert") %>% 
+  
+  ggseg(mapping=aes(fill=volume))  +
   labs(title="from read_freesurfer_table", 
        fill="volume\n(mm^3)") +
   scale_fill_gradient(low="firebrick",high="goldenrod") +
   guides(fill = guide_colourbar(barheight = 3))
 
 # Figure 4B
-p2 <- ggseg(.data=atlas_data, mapping=aes(fill=ThickAvg))  +
+fig4B <- atlas_data %>% 
+  # plot only subject bert
+  filter(subject == "bert") %>% 
+  
+  ggseg(mapping=aes(fill=ThickAvg))  +
   labs(title="from read_atlas_files", 
        fill="Thickness\n(mean)") +
   scale_fill_gradient(low="forestgreen",high="goldenrod")+
   guides(fill = guide_colourbar(barheight = 3))
 
-(p1 / p2) +
+(fig4A / fig4B) +
   plot_annotation(tag_levels = "A")
 ```
 
 If the results are only in one hemisphere, but you still want to plot both of them, make sure your data.frame includes the column 'hemi' with either 'right' or 'left'.
-In this case, data will be merged into the atlas both by 'area' and by 'hemi'.
-For more information about adapting data and viewing only one hemisphere or side, the [package vignettes](https://lcbc-uio.github.io/ggseg/articles/ggseg.html#single-hemisphere-results) contains more elaborate information.
+In this case, data will be merged into the atlas both by 'region' and by 'hemi'.
+For more information about adapting data and viewing only one hemisphere or side, the [online documentation](https://lcbc-uio.github.io/ggseg/articles/ggseg.html#single-hemisphere-results) contains more elaborate information.
 
 ### Creating subplots
 There is often the need to plot a statistic of interest in different groups (e.g. thickness or brain - cognition relationships in young or older adults).
 This may be obtained also with `ggseg()`, using _ggplot2_'s `facet_wrap` or `facet_grid`, with three guiding rules:
-**1)** as before, data needs to be in long format with a column indexing which group the row corresponds to (group data should appear in seperate rows, not in separate columns).
-**2)** The data needs to be grouped using _dplyr_'s `group_by()` function _before_ providing the data to the `ggseg()`-function.
-The `ggseg()`-function will detect grouped data, and adapt it to `facet`'s requirements.
-**3)** Apply `facet_wrap` or `facet_grid` to the plot having used the above two rules.
-An example of this can be seen in Figure \@ref(fig:datasupp3) B, where a mock data set including summary statistics for two groups ('Young' and 'Old') is used when faceting a _ggseg_-plot.
 
-In regards to the second rule of needing to group the data before plotting, this is due to the underlying structure of how the provided data and the atlas data are combined before plotting.
-Since the package function, so far, is a wrapper for {ggplot2} rather than a  `geom`, there is certain ggplot2-functionality that is difficult to integrate, like the facets.
-For the complete atlas-data to be merged with _every data group_ correctly, the ggseg function needs to have an indication before plotting what the groups are.
-The result of ungrouped data into `ggseg` is shown in  \@ref(fig:datasupp3) A.
-Notice how there are three panels rather than two, and that the regions _not represented in the data_ have their own panel with all the grey `NA` colour, while the panels with the data only have the regions represented in the data.
+1. As before, data needs to be in long format with a column indexing which group the row corresponds to (group data should appear in separate rows, not in separate columns).  
+2. The data needs to be grouped using _dplyr_'s `group_by()` function _before_ providing the data to the `ggseg()`-function. 
+The `ggseg()`-function will detect grouped data, and adapt it to `facet`'s requirements.  
+3. Apply `facet_wrap` or `facet_grid` to the plot having used the above two rules.
+An example of this can be seen in Figure \@ref(fig:figure5) B, where a mock data-set including summary statistics for two groups ('Young' and 'Old') is used when faceting a _ggseg_-plot.  
 
-All the concepts described above also work with the `aseg` atlas for subcortical structures, except for 'hemisphere' and 'view' arguments that are superfluous in subcortical atlases (Figure \@ref(fig:atlases)).
+The second rule is needed as the `ggseg()`-function is a ggplot-wrapper rather than an extension, and thus has a particular structure and pipeline to combine the atlas to supplied data.
+The result of ungrouped data into `ggseg` is shown in  \@ref(fig:figure5) A.
+Note that the data is combined incorrectly, there are three panels rather than two. 
+Regions not represented in the data (`NA`-values) have their own panel, while the remaining two panels only include regions with valid data.
+All the concepts described above also work with the `aseg` atlas for subcortical structures, except for 'hemisphere' and 'view' arguments that are superfluous in subcortical atlases (Figure \@ref(fig:figure6)).
 
-(ref:datasupp3-cap) Examples of incorrect and correct faceting with `ggseg`. **A**: ungrouped data will facet incorrectly due to the data not being merged correctly with the atlas. **B**: grouped data will merge in the expected way and result in correctly facetted plots.
+(ref:figure5-cap) Examples of incorrect and correct faceting with `ggseg`. **A**: ungrouped data will facet incorrectly due to the data not being merged correctly with the atlas. **B**: grouped data will merge in the expected way and result in correctly facetted plots.
 
-```{r 'datasupp3', fig.width=5,  warning= FALSE, fig.cap='(ref:datasupp3-cap)', out.width="100%"}
-# Make some mock data
+```{r 'figure5', fig.width=5,  warning= FALSE, fig.cap='(ref:figure5-cap)', out.width="100%"}
+# Make some simpler mock data
 someData = tibble(
-  area = rep(c("transverse temporal", "insula",
-               "pre central","superior parietal"),2),
+  region = rep(c("transverse temporal", "insula",
+               "precentral","superior parietal"),2),
   p = sample(seq(0,.5,.001), 8),
   AgeG = c(rep("Young",4), rep("Old",4))
 )
 
 # Figure 5a
-grouped_plot <- someData %>%
+fig5A <- someData %>%
   ggseg(position = "stacked",
       mapping=aes(fill=p), show.legend = FALSE) +
   facet_wrap(~AgeG, ncol=3) +
   labs(title = "Ungrouped data")
 
 # Figure 5b
-ungrouped_plot <- someData %>%
+fig5B <- someData %>%
   group_by(AgeG) %>%
   ggseg(position = "stacked",
       mapping=aes(fill=p), show.legend = FALSE) +
@@ -335,7 +351,7 @@ ungrouped_plot <- someData %>%
   labs(title = "Grouped data")
 
 # Combining plots with patchwork, applying theme to all
-(grouped_plot / ungrouped_plot) +
+(fig5A / fig5B) +
   plot_layout(widths = 1) + 
   plot_annotation(tag_levels = 'A') &
   theme(axis.text = element_text(size=8))
@@ -344,9 +360,11 @@ ungrouped_plot <- someData %>%
 The `ggseg` package also has extensive [online documentation](https://lcbc-uio.github.io/ggseg/), with more functionality than we have covered here.
 The online documentation is also regularly updated with explanations of new features or code improvements.
 
-```{r 'atlases', fig.width=5, fig.cap='The `aseg` atlas showing subcortical structures has some distinct differences from the `dkt`. For instance, there is no option to show only a single hemisphere. Furthermore, rather than showing lateral and medial surfaces, it shows an axial and sagittal slice.', collapse = TRUE}
+(ref:figure6-cap) The `aseg` atlas showing subcortical structures has some distinct differences from the `dk`. For instance, there is no option to show only a single hemisphere. Furthermore, rather than showing lateral and medial surfaces, it shows an axial and sagittal slice.
+
+```{r 'figure6', fig.width=5, fig.cap='(ref:figure6-cap)', collapse = TRUE}
 # Figure 6
-ggseg(atlas="aseg", mapping=aes(fill=area)) +
+ggseg(atlas="aseg", mapping=aes(fill=region)) +
   theme(legend.justification=c(1,0),
         legend.position="bottom",
         legend.text = element_text(size = 5)) +
@@ -365,63 +383,54 @@ The data structure is more complex than the _ggplot2_ polygons, and includes add
 As _ggseg3d_ is based on plotly, the resulting brain atlases are interactive, which guides interpretation, and is useful for public dissemination.
 We recommend users to familiarize themselves with _plotly_ (@plotly) when using this function.
 
-Out-of-the-box, `ggseg3d()` plots the `dkt_3d` atlas in 'LCBC' surface, but there are two more surfaces available for cortical atlases (Figure \@ref(fig:ggseg3d-1-out))
-The 'LCBC' surface consists on a semi-inflated white matter surface based on the _fsaverage5_ template subject.
-All `[...]_3d` atlases include a `colour` column that based on the color scheme used in the source neuroimaging software.
+Out-of-the-box, `ggseg3d()` plots the `dk_3d` atlas in 'LCBC' surface, but there are two more surfaces available for cortical atlases (Figure \@ref(fig:figure7))
+The 'LCBC' surface consists on a semi-inflated white matter surface based on the _fsaverage5_ template subject, a surface template that is issued together with the `ggsegExtra` package.
+All `[...]_3d` atlases include a `colour` column that is based on the color scheme used in the source neuroimaging software.
 
-(ref:gseg3d-1-out-cap) The three surface options provided in *ggseg3d* atlases. **From left to right:** the 'white' surface is the white matter surface, 'LCBC' surface is the semi-inflated white matter surface (inflated over 10 iterations), and the 'inflated' surface is a inflated grey matter cortical surface as provided by the FreeSurfer software. The title for each plot is the literal code use to make the subplot.
+(ref:figure7-cap) The three surface options provided in *ggseg3d* atlases. **From left to right:** the 'white' surface is the white matter surface, 'LCBC' surface is the semi-inflated white matter surface (inflated over 10 iterations), and the 'inflated' surface is a inflated grey matter cortical surface as provided by the FreeSurfer software. The title for each plot is the literal code use to make the subplot.
 
 
-```{r "ggseg3d-1", message=FALSE, echo=TRUE, eval=FALSE, out.width='30%',fig.show='hold',fig.ncol = 3, fig.cap='(ref:gseg3d-1-out-cap)'}
+```{r "figure7-show", message=FALSE, echo=TRUE, results = 'hide',  out.width='30%',fig.show='hold',fig.ncol = 3}
+# remotes::install_github("LCBC-UiO/ggseg3d")
+library(ggseg3d)
+
 # Figure 7 left
-ggseg3d(surface = "white")  %>%
+fig7l <- ggseg3d(surface = "white")  %>%
   pan_camera("right lateral") %>%
   remove_axes() %>%
   layout(title="\nggseg3d(surface='white')",
          font =  list(size = 30))
+fig7l
 
-# Figure 7 center
-ggseg3d()  %>%
+# Figure 7 middle
+fig7m <- ggseg3d()  %>%
   pan_camera("right lateral") %>%
   remove_axes() %>%
   layout(title="\nggseg3d(surface='LCBC')",
          font =  list(size = 30))
+fig7m
 
 # Figure 7 right
-ggseg3d(surface = "inflated") %>%
+fig7r <- ggseg3d(surface = "inflated") %>%
   pan_camera("right lateral") %>%
   remove_axes() %>%
   layout(title="\nggseg3d(surface='inflated')",
          font =  list(size = 30))
+fig7r
 ```
 
-```{r "ggseg3d-1-out", message=FALSE, echo=F, eval=TRUE, out.width='30%',fig.show='hold',fig.ncol = 3, fig.cap='(ref:gseg3d-1-out-cap)'}
-p <- ggseg3d(surface = "white")  %>%
-  pan_camera("right lateral") %>%
-  remove_axes() %>%
-  layout(title="\nggseg3d(surface='white')",
-         font =  list(size = 30))
-orca(p, file = "png/ggseg3d_white.png", format = "png")
+```{r "figure7", message=FALSE, echo=F, eval=TRUE, out.width='30%',fig.show='hold',fig.ncol = 3, fig.cap='(ref:figure7-cap)'}
+orca(fig7l, file = "msc_ggseg_files/figure-latex/figure7l.png", format = "png")
+orca(fig7m, file = "msc_ggseg_files/figure-latex/figure7m.png", format = "png")
+orca(fig7r, file = "msc_ggseg_files/figure-latex/figure7r.png", format = "png")
 
-p <- ggseg3d()  %>%
-  pan_camera("right lateral") %>%
-  remove_axes() %>%
-  layout(title="\nggseg3d(surface='LCBC')",
-         font =  list(size = 30))
-orca(p, file = "png/ggseg3d.png", format = "png")
-
-p <- ggseg3d(surface = "inflated") %>%
-  pan_camera("right lateral") %>%
-  remove_axes() %>%
-  layout(title="\nggseg3d(surface='inflated')",
-         font =  list(size = 30))
-orca(p, file = "png/ggseg3d_inflated.png", format = "png")
-
-include_graphics(c("png/ggseg3d_white.png","png/ggseg3d.png", "png/ggseg3d_inflated.png"))
+include_graphics(c("msc_ggseg_files/figure-latex/figure7l.png",
+                   "msc_ggseg_files/figure-latex/figure7m.png",
+                   "msc_ggseg_files/figure-latex/figure7r.png"))
 ```
 
 The 3D-atlas data is stored in nested tibbles.
-Each cortical atlas has data sets for three different surfaces (see Figure \@ref(fig:ggseg3d-1-out)) and the two hemispheres.
+Each cortical atlas has data-sets for three different surfaces (see Figure \@ref(fig:figure7)) and the two hemispheres.
 Only one surface is available for subcortical atlases as inflation procedures are irrelevant.
 The 'ggseg_3d' column includes all necessary information for `ggseg3d()` to create a 3D mesh-plot, and should not be modified by the user.
 The additional 3D-atlases in _ggsegExtra_ have the same data structure.
@@ -429,20 +438,14 @@ It is important to note that the coordinates in the plot (X, Y, Z) are **not** a
 While these coordinates are important when running imaging analyses and for reporting of the placement of these regions compared to other regions, this information is not preserved in `ggseg3d`, at the moment.
 As such, information regarding referencing the regions' location in standard radiological spaces (like MNI or Taliarch) should be acquired directly from imaging software or papers describing the atlases, not `ggseg3d`.
 
-```{r, out.width='90%', size='small'}
-# remotes::install_github("LCBC-UiO/ggseg3d")
-library(ggseg3d)
-```
-
-
 ### External data supply
 
 Similarly as in the 2D-atlas, the user will use `ggseg3d()` to display through a colour scale some descriptive or inferential statistic.
 If the data is not already in the correct long format or uses similar naming as the atlas, the users should inspect the atlas data for a specific surface (and hemisphere, if desired), and then `unnest(ggseg_3d)` it to see how the atlas data is organised.
 
-```{r out.width='80%', linewidth=100, size='small', eval=FALSE}
+```{r out.width='80%', linewidth=100, size='small', eval=TRUE}
 # Select surface and hemisphere, and then unnest to inspect the atlas data
-dkt_3d %>%
+dk_3d %>%
   filter(surf == "inflated" & hemi == "right") %>%
   unnest(ggseg_3d) %>%
   head(5)
@@ -450,65 +453,54 @@ dkt_3d %>%
 
 Note the `mesh` column, which contains lists.
 Each list corresponds to a region and contains 6 vectors required to create the mesh of the tri-surface plot.
-It should also be noted that the 'label', 'annot' and 'area' columns could provide matching values for your own data.
-Similarly to the `ggseg()`-function, the 'label' column should match the region names used in the original neuroimaging software while 'area' and 'annot' provide alternative/secondary names.
+It should also be noted that the 'label', 'annot' and 'region' columns could provide matching values for your own data.
+Similarly to the `ggseg()`-function, the 'label' column should match the region names used in the original neuroimaging software while 'region' and 'annot' provide alternative/secondary names.
 It is thus important to match your regional identifiers with those used in the atlas.
 To colour the segments using a column from the data, a column name from the data needs to be supplied to the `colour` option, and providing it to the `text` option will add another line to the _plotly_ hover information.
 
-```{r, eval=FALSE, out.width='40%'}
+```{r 'figure8-show', include=FALSE, out.width='40%', results='hide'}
 # Figure 8 left
-ggseg3d(.data = someData, atlas = dkt_3d, colour = "p", text = "p")
+fig8l <- ggseg3d(.data = someData, 
+                 atlas = dk_3d, colour = "p", text = "p") %>% 
+  pan_camera("right lateral")
+fig8l
 
 # Figure 8 middle
-ggseg3d(.data = someData,
-        atlas = dkt_3d,
+fig8m <- ggseg3d(.data = someData,
+        atlas = dk_3d,
         colour = "p", text = "p",
         palette = c("#ff0000", "#00ff00", "#0000ff")) %>%
   pan_camera("right lateral") %>%
   remove_axes()
+fig8m
 
 # Figure 8 right
-ggseg3d(.data = someData,
-        atlas = dkt_3d,
+fig8r <- ggseg3d(.data = someData,
+        atlas = dk_3d,
         colour = "p", text = "p",
         na.colour = "black") %>%
   pan_camera("right lateral") %>%
   remove_axes()
+fig8r
 ```
 
-(ref:ggseg3d-data1-cap) **Left:** Supplying data to `ggseg3d()` works similarly to `ggseg()`. Since `ggseg3d()` is based on *plotly* rather than *ggplot2*, most aesthetic adaptations must be set in the main function. Here we set the parcellation colours with the 'colour' column and accompanying mouse-hover text with the 'text' column. **Middle:** The palette for *ggseg3d* needs to be specified directly in the main plot call. The 'palette' option takes vectors of colours either as HEX-codes or R-colour names. **Right:** The colour of the `NA` values can also be changed through the option 'na.colour'.
+(ref:figure8-cap) **Left:** Supplying data to `ggseg3d()` works similarly to `ggseg()`. Since `ggseg3d()` is based on *plotly* rather than *ggplot2*, most aesthetic adaptations must be set in the main function. Here we set the parcellation colours with the 'colour' column and accompanying mouse-hover text with the 'text' column. **Middle:** The palette for *ggseg3d* needs to be specified directly in the main plot call. The 'palette' option takes vectors of colours either as HEX-codes or R-colour names. **Right:** The colour of the `NA` values can also be changed through the option 'na.colour'.
 
-```{r ggseg3d-data1, out.width='30%', echo=FALSE, fig.cap="(ref:ggseg3d-data1-cap)", fig.show='hold', fig.ncol = 3}
-p <- ggseg3d(.data = someData, atlas = dkt_3d,
-             colour = "p", text = "p") %>%
-  pan_camera("right lateral") %>%
-  remove_axes()
-orca(p, file = "png/ggseg3d_data.png", format = "png")
-
-p <- ggseg3d(.data = someData, atlas = dkt_3d,
-             colour = "p", text = "p",
-             palette = c("#ff0000", "#00ff00", "#0000ff")) %>%
-  pan_camera("right lateral") %>%
-  remove_axes()
-orca(p, file = "png/ggseg3d_colour.png", format = "png")
-
-p <-   ggseg3d(.data = someData, atlas = dkt_3d,
-               colour = "p", text = "p",
-               na.colour = "black") %>%
-  pan_camera("right lateral") %>%
-  remove_axes()
-orca(p, file = "png/ggseg3d_nacolour.png", format = "png")
+```{r 'figure8', out.width='30%', echo=FALSE, fig.cap="(ref:figure8-cap)", fig.show='hold', fig.ncol = 3}
+orca(fig8l, file = "msc_ggseg_files/figure-latex/figure8l.png", format = "png")
+orca(fig8m, file = "msc_ggseg_files/figure-latex/figure8m.png", format = "png")
+orca(fig8r, file = "msc_ggseg_files/figure-latex/figure8r.png", format = "png")
 
 include_graphics(c(
-  "png/ggseg3d_data.png",
-  "png/ggseg3d_colour.png",
-  "png/ggseg3d_nacolour.png"))
+  "msc_ggseg_files/figure-latex/figure8l.png",
+  "msc_ggseg_files/figure-latex/figure8m.png",
+  "msc_ggseg_files/figure-latex/figure8r.png"))
 
 ```
 
 ### Customizing colours and the colour bar
 
-You can provide custom colour palettes either in hex or R-names, as seen in Figure \@ref(fig:ggseg3d-data1).
+You can provide custom colour palettes either in hex or R-names, as seen in Figure \@ref(fig:figure8).
 Colours will be evenly spaced when creating the colour-scale.
 A palette may also be supplied as a _named numeric vector_, where the vector names are the colours that users wish to use, and the numeric values are the breakpoints for each colour (e.g. `c("red" = 0, "white" = 0.5, "blue" = 1)`).
 This way the users can control the minimum and maximum values of the colour scale, and also how the gradient is applied.
@@ -516,32 +508,26 @@ If another colour than the default gray is wanted for the `NA` regions, supply '
 This option only takes a single colour.
 
 ### Adding a glass brain
-A glass brain is a translucent representation of the brain that can provide a frame of reference, particularly when looking at subcortical parcellations.
-Since individual brain areas or subcortical structures can be very hard to place without the visual reference of the entire brain, glass brains are often used to aid the viewer understand a regions location.
-Subcortical atlases include cortical surfaces and other landmark structures for visualization purposes only.
+A glass brain is a translucent representation of the brain that can provide a frame of reference,
+particularly when looking at subcortical parcellations and it only serves as a visual aid.
 One can control the opacity of the these `NA` structures, to improve visualization, directly in the `ggseg3d` call.
-A cortical glass brain can be added to `ggseg3d` plots through the function `add_glassbrain()` (Figure \@ref(fig:glass brain1)), which takes three extra arguments: hemisphere, colour, and opacity.
+A cortical glass brain can be added to `ggseg3d` plots through the function `add_glassbrain()` (Figure \@ref(fig:figure9)), which takes three extra arguments: hemisphere, colour, and opacity.
 We recommend only using the glass brain function when plotting subcortical atlases.
-An interactive version of this plot can be found at [https://lcbc-uio.github.io/ggseg3d/articles/ggseg3d.html#colours](https://lcbc-uio.github.io/ggseg3d/articles/ggseg3d.html#colours)
+A similar, interactive version of this plot can be found in the [online documentation](https://lcbc-uio.github.io/ggseg3d//articles/ggseg3d.html#colours-1).
 
-```{r, out.width='40%', warning=F, message=FALSE, eval=FALSE}
+```{r 'figure9-show', out.width='40%', warning=F, message=FALSE, results = 'hide'}
 # Figure 9
-ggseg3d(atlas = aseg_3d,
+fig9 <- ggseg3d(atlas = aseg_3d,
         na.alpha= .5) %>%
   add_glassbrain("left") %>%
-  pan_camera("left lateral") %>%
-  remove_axes()
+  pan_camera("left lateral")
+fig9
 ```
 
-(ref:glass brain1-cap) For subcortical structure visualization, one can add a glass brain to the plot. This will help with locating the structures relative to the cortex, and make the plot easier to interpret. The glass brain is controlled by three options: opacity, hemisphere, and colour.
+(ref:figure9-cap) For subcortical structure visualization, one can add a glass brain to the plot. This will help with locating the structures relative to the cortex, and make the plot easier to interpret. The glass brain is controlled by three options: opacity, hemisphere, and colour.
 
-```{r glassbrain1, out.width='60%', echo=F, eval=T, fig.cap="(ref:glassbrain1-cap)"}
-p <- ggseg3d(atlas = aseg_3d,
-             na.alpha= .5) %>%
-  add_glassbrain("left") %>%
-  pan_camera("right lateral") %>%
-  remove_axes()
-include_plotly(p, "png/ggseg3d_glass.png")
+```{r 'figure9', out.width='60%', echo=F, eval=T, fig.cap="(ref:figure9-cap)"}
+include_plotly(fig9, "msc_ggseg_files/figure-latex/figure9.png")
 ```
 
 `ggsed3d()` is based on _plotly_ and thus additional _plotly_ functionalities can be used to modify and improve the 3D atlas representations.
@@ -552,64 +538,108 @@ The package [online documentation](https://lcbc-uio.github.io/ggseg3d/articles/g
 The online documentation will also be updated as new features are required or we improve the current state of user functionality and options.
 
 ## Additional atlases
-The _ggseg_ and _ggseg3d_ packages have two atlases each, which are 2D and 3D variations of the same main atlases: the `dkt` (@dkt) and `aseg` (@aseg) atlases.
+The _ggseg_ and _ggseg3d_ packages have two atlases each, which are 2D and 3D variations of the same main atlases: the `dk` (@dk) and `aseg` (@aseg) atlases.
 These are, however, only two among many meaningful ways of segmenting the brain into different regions.
-Thus, the _ggsegExtra_ package is a repository containing additional with additional data sets for plotting with the _ggseg_ and _ggseg3d_ packages.
+Thus, the _ggsegExtra_ package is a library with two main functionalities: 1) to install additional data-sets for plotting with the _ggseg_ and _ggseg3d_ packages from other repositories, and 2) to create custom atlases for _ggseg_ and _ggseg3d_.
+
+### Verified existing atlases
 There is an ever-increasing amount of new atlases being created, as research and methods in neuroimaging analysis progresses.
 The _ggsegExtra_-package is intended to be expanded as a community-effort, as new and informative atlases are published.
-A small collection of the atlases currently in the _ggsegExtra_ package may be viewed in Figure \@ref(fig:ggsegExtra), and explored in our [shinyapps.io demonstration](https://athanasiamo.shinyapps.io/ggsegDemo/).
+A collection of the atlases currently listed in the _ggsegExtra_ package may be found in Figure \@ref(fig:figure10) and explored in our [shinyapps.io demonstration](https://athanasiamo.shinyapps.io/ggsegDemo/).
 
-```{r,  include = FALSE}
+```{r}
+# remotes::install_github("LCBC-UiO/ggsegExtra")
 library(ggsegExtra)
-k1 <- ggseg(atlas = yeo7 , mapping=aes(fill=area),
-            show.legend = FALSE, position="stacked") +
-  scale_fill_brain("yeo7", package = "ggsegExtra") +
-  labs(title="yeo7-data set")
-ggsave(filename = "png/ggseg_extra1.png", plot = k1, device = "png")
 
-k2 <- ggseg(atlas = glasser , mapping=aes(fill=area),
+# list all known ggseg atlas-repositories
+ggseg_atlas_repos()
+
+# list repositories matching a pattern search
+yeo_repo <- ggseg_atlas_repos("Yeo")
+```
+
+Having found an existing atlas, you will need to install this like an R-library.
+There is a convenience-function in _ggsegExtra_ that will help you do that.
+Alternatively, you can install all the existing atlases. 
+This function will take time to execute and will consume quite some space as each atlas (particularly ggseg3d-atlases) can be large. 
+Once the atlases are installed, the atlas-packages can be loaded like any other R-package using `library`.
+
+
+```{r, eval = FALSE}
+# Install ggseg-atlas listed by ggseg_atlas_repos("Yeo")
+install_ggseg_atlas(yeo_repo$repo, yeo_repo$source)
+
+# This will take quite some time, there are many atlases with heavy data.
+install_ggseg_atlas_all()
+```
+
+
+```{r 'figure10-show', results = 'hide', message = FALSE}
+library(ggsegYeo2011)
+library(ggsegGlasser)
+library(ggsegDesterieux)
+library(ggsegICBM)
+
+yeo7_p <- ggseg(atlas = yeo7 , mapping=aes(fill=region),
+            show.legend = FALSE, position="stacked") +
+  scale_fill_brain("yeo7", package = "ggsegYeo2011") +
+  labs(title="yeo7-data-set")
+
+glasser_p <- ggseg(atlas = glasser , mapping=aes(fill=region),
             show.legend = FALSE, position="stacked") +
   scale_fill_brain("glasser", package = "ggsegExtra") +
-  labs(title="glasser-data set")
-kk <- cowplot::plot_grid(k1, k2)
-ggsave(filename = "png/ggseg_extra.png", plot = kk, device = "png")
+  labs(title="glasser-data-set")
 
-p <- ggseg3d(atlas = desterieux_3d) %>%
+ggsegs_p <- yeo7_p + glasser_p + plot_annotation(tag_levels = "A")
+
+desterieux_p <- ggseg3d(atlas = desterieux_3d) %>%
   pan_camera("right lateral") %>%
   remove_axes() %>%
   add_annotations(
-    text="icbm_3d data set",
+    text="desterieux_3d data-set",
     y = 1,
     yanchor = 'top',
     legendtitle=TRUE, showarrow=FALSE,
     font = list(family = 'sans serif',
                 size = 50))
-orca(p, file = "png/ggseg3d_extra1.png", format = "png")
 
-p <- ggseg3d(atlas = icbm_3d) %>%
+icbm_p <- ggseg3d(atlas = icbm_3d) %>%
   pan_camera("right lateral") %>%
   add_glassbrain("left") %>%
   remove_axes() %>%
   add_annotations(
-    text="icbm_3d data set",
+    text="icbm_3d data-set",
     y = 1,
     yanchor = 'top',
     legendtitle=TRUE, showarrow=FALSE,
     font = list(family = 'sans serif',
                 size = 50))
-orca(p, file = "png/ggseg3d_extra2.png", format = "png")
+
 ```
 
-(ref:ggsegExtra-cap) Four example data sets from the *ggsegExtra* library, plotted with the `ggseg()` and `ggseg3d()` functions.
+(ref:figure10-cap) Four example data-sets from the *ggsegExtra* library, plotted with the `ggseg()` and `ggseg3d()` functions.
 
-```{r "ggsegExtra", out.width=c('80%', '40%', '40%'), echo=FALSE, fig.show='hold', fig.ncol = 2, fig.cap='(ref:ggsegExtra-cap)'}
+```{r 'figure10', out.width=c('80%', '40%', '40%'), echo=FALSE, fig.show='hold', fig.ncol = 2, fig.cap='(ref:figure10-cap)'}
+
+invisible(ggsave(filename = "msc_ggseg_files/figure-latex/figure10ab.png", 
+                 plot = ggsegs_p, device = "png"))
+orca(desterieux_p, file = "msc_ggseg_files/figure-latex/figure10c.png", format = "png")
+orca(icbm_p, file = "msc_ggseg_files/figure-latex/figure10d.png", format = "png")
+
 include_graphics(c(
-  "png/ggseg_extra.png",
-  "png/ggseg3d_extra1.png",
-  "png/ggseg3d_extra2.png"
+  "msc_ggseg_files/figure-latex/figure10ab.png",
+  "msc_ggseg_files/figure-latex/figure10c.png",
+  "msc_ggseg_files/figure-latex/figure10d.png"
 ))
 ```
 
+### Creating custom atlases
+In many cases, users would like to create their own atlases based on existing parcellations or ones own imaging results.
+There are several functions in _ggsegExtra_ to aid creating ones own atlas compatible with either _ggseg_ or _ggseg3d_. 
+These processes depend on the origin of the segmentation (surface-based vs. volume-based), and what type of system you are working on. 
+In addition, one will need other software dependencies to create new ggseg-compatible atlases. 
+Therefore, we will not describe the process here, but refer the readers to the "Articles" sections of the [online documentation](https://lcbc-uio.github.io/ggsegExtra/index.html), for further explanations and guides. 
+We encourage users who successfully create new atlases, to contribute to the _ggsegExtra_ brain atlas repository by adding the repository containing the brain atlases to the repository-list.
 
 
 # Discussion
@@ -621,40 +651,39 @@ In this regard, we do not aim to compete with software-specific visualizations o
 After all, flattened 2D polygons do not rely on a meaningful brain coordinate system and the units of information in 3D meshes are limited to the number of parcellations.
 On the contrary, we believe the _ggseg_ niche among visualization tools resides in its simplicity and its ability to be combined with statistical analysis pipelines.
 The possibility to serve as an interactive tool for dissemination and reproducibility when combined with other technologies, such as Binder (@binder) or Shiny (@shiny), is an added benefit.
-This is exemplified in the online supplementary information of Vidal-Piñeiro et al. (-@vidal_2019).
+This is exemplified in the [online supplementary information](https://athanasiamo.shinyapps.io/Virtual_histology_2019/) of Vidal-Piñeiro et al. (-@vidal_2019).
 
-The three _ggseg_-packages contain three main features:
+The functions in the _ggseg_-packages provide users with the possibility of adapting the plots to their wishes, and also makes it possible to create and contribute to the atlas repository in _ggsegExtra_.
+The three _ggseg_-packages contain three main features:  
 
-**1)** a collection of 2D-polygon and 3D mesh brain parcellation atlases. The atlas data include the necessary coordinates for plotting, and include other information that should be recognizable for users.
-**2)** `ggseg()` and `ggseg3d()` functions for visualization. Both functions are flexible and well-adapted to their environment and can be combined with any additional argument from _ggplot2_ and _plotly_, respectively.
-    - `ggseg()` is a wrapper function for `geom_polygon` from _ggplot2_ and it can be built upon like any _ggplot2_ object.
-    - `ggseg3d()` is a _plotly_ wrapper function for tri-surface mesh plots which prints 3D atlases.
-**3)** Complimentary features – e.g. color scales - and functions such as `as_ggseg_atlas()` and `as_ggseg3d_atlas()` to convert data in the correct atlas format.
-
-These functions provide users with the possibility of adapting the plots to their wishes, and also makes it possible to create and contribute to the atlas repository in _ggsegExtra_.
+1. A collection of 2D-polygon and 3D mesh brain parcellation atlases. The atlas data include the necessary coordinates for plotting, and include other information that should be recognizable for users.  
+2. `ggseg()` and `ggseg3d()` functions for visualization. Both functions are flexible and well-adapted to their environment and can be combined with any additional argument from _ggplot2_ and _plotly_, respectively.
+`ggseg()` is a wrapper function for `geom_polygon` from _ggplot2_ and it can be built upon like any _ggplot2_ object. 
+`ggseg3d()` is a _plotly_ wrapper function for tri-surface mesh plots which prints 3D atlases.  
+3. Complimentary features, like color scales, and functions to convert compatible data frames to atlas-classes, read in likely data sources (like Freesurfer analysis output), and help create new atlases for use with _ggseg_ and _ggseg3d_.  
 
 The foundations of the _ggseg_-packages trace back to the necessity of visualizing and exploring the lifespan trajectories of cortical thickness across different brain regions (see supplementary information in Vidal-Piñeiro et al. (-@vidal_2019) ) .
 That is, _ggseg_ appears with the need to inspect and display brain information over time - i.e. including a spatial dimension and a time-varying factor - overcoming the constrains of printed journals and classical 2D plots (e.g. bar plots).
 The current state of science requires researches to share the results of studies in both high detail and in an intuitive manner, as it permits communication to wide audiences and facilitates reproducibility.
 Hence, we believe this tool conforms to the essence of open science and invite users to improve the code, provide examples, or tutorials, and contribute to the atlas collection according to their own interest and needs via the public [ggseg GitHub repository](https://github.com/LCBC-UiO/ggseg), [ggseg3d GitHub repository](https://github.com/LCBC-UiO/ggseg3d), and [ggsegExtra GitHub repository](https://github.com/LCBC-UiO/ggsegExtra).
 
+The ggseg-packages are based on _ggplot2_ and _plotly_, which are only two of several visualisation tools in R, in addition to base-R plotting. 
+While the functionality presented here could also be integrated into packages such as [lattice](https://www.rdocumentation.org/packages/lattice/versions/0.20-40), both _ggplot2_ and _plotly_ have become established tools in the R-community and have extensive online documentation.
+This makes them great packages to base further extensions and wrappers on.
+
 Finally - while the _ggseg_-packages are circumscribed to brain parcellations - we believe that the structure and functions of the package can be easily applied to any scientific field that benefits from data being displayed across the spatial dimension.
 We encourage readers to borrow the package functionalities and adapt it to their respective fields and structures of interest, such as has already been done with the _gganatogram_-package (@gganatogram).
 
 # Planned package improvements
-In the _ggsegExtra_ [github wiki](https://github.com/LCBC-UiO/ggsegExtra/wiki/Contributing%3A-polygon-atlases-new), we offer a pipeline to create and supply atlases for 2D plotting.
-At the moment, the creation of atlas for ggseg is convoluted and difficult and requires manual intervention.
-We are in the process of designing a simple, straightforward pipeline to facilitate the creation of new ggseg (2D) atlases.
-The aim is to create a set of functions that will call specialized tools like FSL(@fsl), Freesurfer(@fischl_99, @dale_99, @Fischl2000) and Imagemagick(@magick) to detect the polygon vectors or the mesh segments given an MRI image containing a parcellation specification, and organize these into valid _ggseg_ and _ggseg3d_ atlases.  
-Additionally, while `ggseg` works quite nicely as a `ggplot2` wrapper, ideally it should be a proper `geom` or `stat`, making it a `ggplot2` extension rather than a wrapper. 
-This would benefit the user as it would behave more like other `ggplot2` `geoms` and there would be less new functionality to learn.
-Furthermore, a `geom` would make the process of having to group data _before_ faceting become unnecessary, and as such also ease use.   
-We also hope to make it possible to colour each individual mesh triangle in `ggseg3d`, and as such provide the users with more flexibility in the plotting. 
-This should also improve the speed of `ggseg3d`, which currently is quite slow due to each parcellation region being loaded into `plotly` sequentially. 
-If the entire brain mesh is loaded once, and then the mesh triangles coloured, this would greatly improve speed. 
-Additionally, the current procedure makes it necessary to store the 3d-rendered mesh information directly in the package for all atlases, which also takes up a lot of disk space and makes it slow to download.
-When able to colour the mesh triangles directly, rather than each parcellation individually, only text data indexing mesh-locations would be necessary and thus reduce package size considerably. 
-We encourage users to contribute to the _ggsegExtra_ brain atlas repository by including additional brain atlases.
+In terms of planned _ggseg_ improvements, we are working on making a proper `geom` or `stat`.
+While `ggseg()` works quite nicely as a `ggplot` wrapper, it introduces some unexpected work for the user, like having to group data _before_ faceting. 
+A `geom` or `stat` would benefit the user as it would behave more like other _ggplot2_ `geoms` and there would be less new functionalities to learn.
+
+Concerning _ggseg3d_, we also hope to make it possible to colour each individual mesh triangle, and as such provide the users with more flexibility in the plotting. 
+This should also improve the speed of `ggseg3d()`, which currently is quite slow due to each parcellation region being loaded into `plotly` sequentially. 
+Loading the entire brain mesh at once, and then coloring mesh triangles would significiantly improve the speed of `ggseg3d()`. 
+When able to colour the mesh triangles directly, rather than each parcellation individually, only full brain representations of each surface (rather than each surface of each atlas) needs to be stored, in addition to text data indexing mesh-locations.
+This would reduce package size considerably, including package sizes of all atlas-repositories. 
 
 
 # Conclusion

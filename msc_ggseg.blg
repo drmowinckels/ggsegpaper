@@ -1,46 +1,46 @@
 This is BibTeX, Version 0.99d (TeX Live 2019)
-Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: msc_ggseg.aux
 The style file: plainnat.bst
 Database file #1: references.bib
-You've used 39 entries,
+You've used 37 entries,
             2773 wiz_defined-function locations,
-            868 strings with 15226 characters,
-and the built_in function-call counts, 24004 in all, are:
-= -- 2024
-> -- 2083
-< -- 19
-+ -- 706
-- -- 664
-* -- 2235
-:= -- 3913
-add.period$ -- 180
-call.type$ -- 39
-change.case$ -- 329
-chr.to.int$ -- 36
-cite$ -- 78
-duplicate$ -- 769
-empty$ -- 1429
-format.name$ -- 709
-if$ -- 4845
+            854 strings with 14755 characters,
+and the built_in function-call counts, 22860 in all, are:
+= -- 1924
+> -- 1989
+< -- 18
++ -- 674
+- -- 634
+* -- 2126
+:= -- 3726
+add.period$ -- 171
+call.type$ -- 37
+change.case$ -- 314
+chr.to.int$ -- 34
+cite$ -- 74
+duplicate$ -- 731
+empty$ -- 1361
+format.name$ -- 677
+if$ -- 4619
 int.to.chr$ -- 4
 int.to.str$ -- 1
-missing$ -- 27
-newline$ -- 266
-num.names$ -- 158
-pop$ -- 616
+missing$ -- 26
+newline$ -- 253
+num.names$ -- 150
+pop$ -- 590
 preamble$ -- 1
-purify$ -- 298
+purify$ -- 284
 quote$ -- 0
-skip$ -- 701
+skip$ -- 668
 stack$ -- 0
-substring$ -- 603
-swap$ -- 84
+substring$ -- 568
+swap$ -- 80
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 419
+type$ -- 397
 warning$ -- 0
-while$ -- 143
+while$ -- 135
 width$ -- 0
-write$ -- 623
+write$ -- 592

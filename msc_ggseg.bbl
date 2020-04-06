@@ -1,4 +1,4 @@
-\begin{thebibliography}{39}
+\begin{thebibliography}{37}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -57,7 +57,7 @@ Joseph Damiba.
 \newblock Accessed: 2019-04-01.
 
 \bibitem[Desikan et~al.(2006)Desikan, Ségonne, Fischl, Quinn, Dickerson,
-  Blacker, Buckner, Dale, Maguire, Hyman, Albert, and Killiany]{dkt}
+  Blacker, Buckner, Dale, Maguire, Hyman, Albert, and Killiany]{dk}
 Rahul~S. Desikan, Florent Ségonne, Bruce Fischl, Brian~T. Quinn, Bradford~C.
   Dickerson, Deborah Blacker, Randy~L. Buckner, Anders~M. Dale, R.~Paul
   Maguire, Bradley~T. Hyman, Marilyn~S. Albert, and Ronald~J. Killiany.
@@ -227,12 +227,6 @@ John Muschelli.
   'ggplot2'}, 2017.
 \newblock R package version 0.5.0.
 
-\bibitem[Ooms(2019)]{magick}
-Jeroen Ooms.
-\newblock \emph{magick: Advanced Graphics and Image-Processing in R}, 2019.
-\newblock URL \url{https://CRAN.R-project.org/package=magick}.
-\newblock R package version 2.2.
-
 \bibitem[Pizzagalli et~al.(2009)Pizzagalli, Holmes, Dillon, Goetz, Birk,
   Bogdan, Dougherty, Iosifescu, Rauch, and Fava]{Pizzagalli}
 Diego~A. Pizzagalli, Avram~J. Holmes, Daniel~G. Dillon, Elena~L. Goetz,
@@ -325,16 +319,6 @@ Hadley Wickham.
 \newblock Springer-Verlag New York, 2016.
 \newblock ISBN 978-3-319-24277-4.
 \newblock URL \url{https://ggplot2.tidyverse.org}.
-
-\bibitem[Woolrich et~al.(2009)Woolrich, Jbabdi, Patenaude, Chappell, Makni,
-  Behrens, Beckmann, Jenkinson, and Smith]{fsl}
-Mark~W. Woolrich, Saad Jbabdi, Brian Patenaude, Michael Chappell, Salima Makni,
-  Timothy Behrens, Christian Beckmann, Mark Jenkinson, and Stephen~M. Smith.
-\newblock Bayesian analysis of neuroimaging data in {FSL}.
-\newblock \emph{{NeuroImage}}, 45\penalty0 (1):\penalty0 S173--S186, March
-  2009.
-\newblock \doi{10.1016/j.neuroimage.2008.10.055}.
-\newblock URL \url{https://doi.org/10.1016/j.neuroimage.2008.10.055}.
 
 \bibitem[Yendiki et~al.(2011)Yendiki, Panneck, Srinivasan, Stevens, Zöllei,
   Augustinack, Wang, Salat, Ehrlich, Behrens, Jbabdi, Gollub, and
