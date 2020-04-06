@@ -1,0 +1,16 @@
+Type: Compendium
+Package: ggsegpaper
+Version: 0.1.0
+Depends: dplyr, tidyr, plotly, ggplot2, kableExtra, knitr , ggseg, ggseg3d,ggsegExtra
+Authors@R: c(person("Athanasia Mo", "Mowinckel", 
+                    email = "a.m.mowinckel@psykologi.uio.no", 
+                    role = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0002-5756-0223")),
+            person("Didac", "Vidal-Piñeiro", 
+                    email = "d.v.pineiro@psykologi.uio.no", 
+                    role = c("aut"),
+                    comment = c(ORCID = "0000-0001-9997-9156")))
+Remotes:
+  LCBC-UiO/ggseg,
+  LCBC-UiO/ggseg3d,
+  LCBC-UiO/ggsegExtra

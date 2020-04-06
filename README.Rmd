@@ -1,0 +1,24 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Visualisation of Brain Statistics with R-packages _ggseg_ and _ggseg3d_
+
+<!-- badges: start -->
+[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Athanasiamo/ggsegpaper/master?urlpath=rstudio)
+<!-- badges: end -->
+
+This is the repository for the tutorial "Visualisation of Brain Statistics with R-packages _ggseg_ and _ggseg3d_"
+
+Full [pdf](msc_ggseg.pdf), [Rmarkdown-file](msc_ggseg.Rmd), and latex files can be found directly in this repository.
+
+[arXiv](https://arxiv.org/abs/1912.08200)
