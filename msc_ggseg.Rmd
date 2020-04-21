@@ -43,7 +43,7 @@ library(kableExtra)
 library(knitr)
 
 include_plotly <- function(plot, file){
-  orca(plot, file = file, format = "png")
+  orca(plot, file = file, format = "pdf")
   knitr::include_graphics(file)
 }
 
@@ -420,13 +420,13 @@ fig7r
 ```
 
 ```{r "figure7", message=FALSE, echo=F, eval=TRUE, out.width='30%',fig.show='hold',fig.ncol = 3, fig.cap='(ref:figure7-cap)'}
-orca(fig7l, file = "msc_ggseg_files/figure-latex/figure7l.png", format = "png")
-orca(fig7m, file = "msc_ggseg_files/figure-latex/figure7m.png", format = "png")
-orca(fig7r, file = "msc_ggseg_files/figure-latex/figure7r.png", format = "png")
+orca(fig7l, file = "msc_ggseg_files/figure-latex/figure7l.pdf", format = "pdf")
+orca(fig7m, file = "msc_ggseg_files/figure-latex/figure7m.pdf", format = "pdf")
+orca(fig7r, file = "msc_ggseg_files/figure-latex/figure7r.pdf", format = "pdf")
 
-include_graphics(c("msc_ggseg_files/figure-latex/figure7l.png",
-                   "msc_ggseg_files/figure-latex/figure7m.png",
-                   "msc_ggseg_files/figure-latex/figure7r.png"))
+include_graphics(c("msc_ggseg_files/figure-latex/figure7l.pdf",
+                   "msc_ggseg_files/figure-latex/figure7m.pdf",
+                   "msc_ggseg_files/figure-latex/figure7r.pdf"))
 ```
 
 The 3D-atlas data is stored in nested tibbles.
@@ -487,14 +487,14 @@ fig8r
 (ref:figure8-cap) **Left:** Supplying data to `ggseg3d()` works similarly to `ggseg()`. Since `ggseg3d()` is based on *plotly* rather than *ggplot2*, most aesthetic adaptations must be set in the main function. Here we set the parcellation colours with the 'colour' column and accompanying mouse-hover text with the 'text' column. **Middle:** The palette for *ggseg3d* needs to be specified directly in the main plot call. The 'palette' option takes vectors of colours either as HEX-codes or R-colour names. **Right:** The colour of the `NA` values can also be changed through the option 'na.colour'.
 
 ```{r 'figure8', out.width='30%', echo=FALSE, fig.cap="(ref:figure8-cap)", fig.show='hold', fig.ncol = 3}
-orca(fig8l, file = "msc_ggseg_files/figure-latex/figure8l.png", format = "png")
-orca(fig8m, file = "msc_ggseg_files/figure-latex/figure8m.png", format = "png")
-orca(fig8r, file = "msc_ggseg_files/figure-latex/figure8r.png", format = "png")
+orca(fig8l, file = "msc_ggseg_files/figure-latex/figure8l.pdf", format = "pdf")
+orca(fig8m, file = "msc_ggseg_files/figure-latex/figure8m.pdf", format = "pdf")
+orca(fig8r, file = "msc_ggseg_files/figure-latex/figure8r.pdf", format = "pdf")
 
 include_graphics(c(
-  "msc_ggseg_files/figure-latex/figure8l.png",
-  "msc_ggseg_files/figure-latex/figure8m.png",
-  "msc_ggseg_files/figure-latex/figure8r.png"))
+  "msc_ggseg_files/figure-latex/figure8l.pdf",
+  "msc_ggseg_files/figure-latex/figure8m.pdf",
+  "msc_ggseg_files/figure-latex/figure8r.pdf"))
 
 ```
 
@@ -527,7 +527,7 @@ fig9
 (ref:figure9-cap) For subcortical structure visualization, one can add a glass brain to the plot. This will help with locating the structures relative to the cortex, and make the plot easier to interpret. The glass brain is controlled by three options: opacity, hemisphere, and colour.
 
 ```{r 'figure9', out.width='60%', echo=F, eval=T, fig.cap="(ref:figure9-cap)"}
-include_plotly(fig9, "msc_ggseg_files/figure-latex/figure9.png")
+include_plotly(fig9, "msc_ggseg_files/figure-latex/figure9.pdf")
 ```
 
 `ggsed3d()` is based on _plotly_ and thus additional _plotly_ functionalities can be used to modify and improve the 3D atlas representations.
@@ -621,15 +621,15 @@ icbm_p <- ggseg3d(atlas = icbm_3d) %>%
 
 ```{r 'figure10', out.width=c('80%', '40%', '40%'), echo=FALSE, fig.show='hold', fig.ncol = 2, fig.cap='(ref:figure10-cap)'}
 
-invisible(ggsave(filename = "msc_ggseg_files/figure-latex/figure10ab.png", 
-                 plot = ggsegs_p, device = "png"))
-orca(desterieux_p, file = "msc_ggseg_files/figure-latex/figure10c.png", format = "png")
-orca(icbm_p, file = "msc_ggseg_files/figure-latex/figure10d.png", format = "png")
+invisible(ggsave(filename = "msc_ggseg_files/figure-latex/figure10ab.pdf", 
+                 plot = ggsegs_p, device = "pdf"))
+orca(desterieux_p, file = "msc_ggseg_files/figure-latex/figure10c.pdf", format = "pdf")
+orca(icbm_p, file = "msc_ggseg_files/figure-latex/figure10d.pdf", format = "pdf")
 
 include_graphics(c(
-  "msc_ggseg_files/figure-latex/figure10ab.png",
-  "msc_ggseg_files/figure-latex/figure10c.png",
-  "msc_ggseg_files/figure-latex/figure10d.png"
+  "msc_ggseg_files/figure-latex/figure10ab.pdf",
+  "msc_ggseg_files/figure-latex/figure10c.pdf",
+  "msc_ggseg_files/figure-latex/figure10d.pdf"
 ))
 ```
 

@@ -2,6 +2,7 @@
 title: "Visualisation of Brain Statistics with R-packages _ggseg_ and _ggseg3d_"
 subtite: "code through"
 output: html_notebook
+bibliography: references.bib
 ---
 
 ```{r setup, include=F}
@@ -148,6 +149,7 @@ This file also contains extra metrics like intracranial volume and total grey ma
 These later measures do not map onto ggseg, and as such, one should filter them out of the data returned from `read_freesurfer_table)`. 
 
 ```{r, size='small'}
+library(dplyr)
 file_path <- "data/aparc.volume.table"
 
 someData <- read_freesurfer_table(file_path, measure = "volume") %>% 
@@ -295,6 +297,7 @@ All `[...]_3d` atlases include a `colour` column that is based on the color sche
 ```{r "figure7-show", out.width='30%',fig.show='hold',fig.ncol = 3}
 # remotes::install_github("LCBC-UiO/ggseg3d")
 library(ggseg3d)
+library(plotly)
 
 # Figure 7 left
 fig7l <- ggseg3d(surface = "white")  %>%
@@ -340,7 +343,7 @@ If the data is not already in the correct long format or uses similar naming as 
 # Select surface and hemisphere, and then unnest to inspect the atlas data
 dk_3d %>%
   filter(surf == "inflated" & hemi == "right") %>%
-  unnest(ggseg_3d) %>%
+  tidyr::unnest(ggseg_3d) %>%
   head(5)
 ```
 
@@ -409,7 +412,13 @@ fig9
 (ref:figure9-cap) For subcortical structure visualization, one can add a glass brain to the plot. This will help with locating the structures relative to the cortex, and make the plot easier to interpret. The glass brain is controlled by three options: opacity, hemisphere, and colour.
 
 ```{r 'figure9', out.width='60%', echo=F, eval=T, fig.cap="(ref:figure9-cap)"}
-include_plotly(fig9, "msc_ggseg_files/figure-latex/figure9.png")
+# Convenience function to easily add plotly images to rmarkdown
+include_plotly <- function(plot, file){
+  orca(plot, file = file, format = "pdf")
+  knitr::include_graphics(file)
+}
+
+include_plotly(fig9, "figure9.pdf")
 ```
 
 `ggsed3d()` is based on _plotly_ and thus additional _plotly_ functionalities can be used to modify and improve the 3D atlas representations.
@@ -503,15 +512,15 @@ icbm_p <- ggseg3d(atlas = icbm_3d) %>%
 
 ```{r 'figure10', out.width=c('80%', '40%', '40%'), echo=FALSE, fig.show='hold', fig.ncol = 2, fig.cap='(ref:figure10-cap)'}
 
-invisible(ggsave(filename = "msc_ggseg_files/figure-latex/figure10ab.png", 
-                 plot = ggsegs_p, device = "png"))
-orca(desterieux_p, file = "msc_ggseg_files/figure-latex/figure10c.png", format = "png")
-orca(icbm_p, file = "msc_ggseg_files/figure-latex/figure10d.png", format = "png")
+invisible(ggsave(filename = "figure10ab.pdf", 
+                 plot = ggsegs_p, device = "pdf"))
+orca(desterieux_p, file = "figure10c.pdf", format = "pdf")
+orca(icbm_p, file = "figure10d.pdf", format = "pdf")
 
-include_graphics(c(
-  "msc_ggseg_files/figure-latex/figure10ab.png",
-  "msc_ggseg_files/figure-latex/figure10c.png",
-  "msc_ggseg_files/figure-latex/figure10d.png"
+knitr::include_graphics(c(
+  "figure10ab.pdf",
+  "figure10c.pdf",
+  "figure10d.pdf"
 ))
 ```
 

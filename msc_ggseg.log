@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.6)  6 APR 2020 17:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.6)  21 APR 2020 08:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -911,72 +911,106 @@ put line 523.
 (pdftex.def)             Requested size: 361.34912pt x 325.2142pt.
 [10 <./msc_ggseg_files/figure-latex/figure5-1.pdf>] [11 <./msc_ggseg_files/figu
 re-latex/figure6-1.pdf>]
-<msc_ggseg_files/figure-latex/figure7l.png, id=331, 702.625pt x 501.875pt>
-File: msc_ggseg_files/figure-latex/figure7l.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure7l.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure7l.png  used on inp
+<msc_ggseg_files/figure-latex/figure7l.pdf, id=331, 530.94356pt x 380.38109pt>
+File: msc_ggseg_files/figure-latex/figure7l.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure7l.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure7l.pdf  used on inp
 ut line 577.
-(pdftex.def)             Requested size: 124.53897pt x 88.95515pt.
-<msc_ggseg_files/figure-latex/figure7m.png, id=333, 702.625pt x 501.875pt>
-File: msc_ggseg_files/figure-latex/figure7m.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure7m.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure7m.png  used on inp
+(pdftex.def)             Requested size: 124.53897pt x 89.22124pt.
+<msc_ggseg_files/figure-latex/figure7m.pdf, id=332, 530.94356pt x 380.38109pt>
+File: msc_ggseg_files/figure-latex/figure7m.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure7m.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure7m.pdf  used on inp
 ut line 577.
-(pdftex.def)             Requested size: 124.53897pt x 88.95515pt.
-<msc_ggseg_files/figure-latex/figure7r.png, id=334, 702.625pt x 501.875pt>
-File: msc_ggseg_files/figure-latex/figure7r.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure7r.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure7r.png  used on inp
+(pdftex.def)             Requested size: 124.53897pt x 89.22124pt.
+<msc_ggseg_files/figure-latex/figure7r.pdf, id=333, 530.94356pt x 380.38109pt>
+File: msc_ggseg_files/figure-latex/figure7r.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure7r.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure7r.pdf  used on inp
 ut line 577.
-(pdftex.def)             Requested size: 124.53897pt x 88.95515pt.
-[12 <./msc_ggseg_files/figure-latex/figure7l.png> <./msc_ggseg_files/figure-lat
-ex/figure7m.png> <./msc_ggseg_files/figure-latex/figure7r.png>]
-<msc_ggseg_files/figure-latex/figure8l.png, id=345, 702.625pt x 501.875pt>
-File: msc_ggseg_files/figure-latex/figure8l.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure8l.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure8l.png  used on inp
+(pdftex.def)             Requested size: 124.53897pt x 89.22124pt.
+[12 <./msc_ggseg_files/figure-latex/figure7l.pdf
+
+pdfTeX warning: pdflatex (file ./msc_ggseg_files/figure-latex/figure7l.pdf): PD
+F inclusion: invalid other resource which is no dict (key 'ProcSets', type <arr
+ay>); ignored.
+> <./msc_ggseg_files/figure-latex/figure7m.pdf
+
+pdfTeX warning: pdflatex (file ./msc_ggseg_files/figure-latex/figure7m.pdf): PD
+F inclusion: invalid other resource which is no dict (key 'ProcSets', type <arr
+ay>); ignored.
+> <./msc_ggseg_files/figure-latex/figure7r.pdf
+
+pdfTeX warning: pdflatex (file ./msc_ggseg_files/figure-latex/figure7r.pdf): PD
+F inclusion: invalid other resource which is no dict (key 'ProcSets', type <arr
+ay>); ignored.
+>]
+<msc_ggseg_files/figure-latex/figure8l.pdf, id=368, 530.94356pt x 380.38109pt>
+File: msc_ggseg_files/figure-latex/figure8l.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure8l.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure8l.pdf  used on inp
 ut line 629.
-(pdftex.def)             Requested size: 124.53897pt x 88.95515pt.
-<msc_ggseg_files/figure-latex/figure8m.png, id=346, 702.625pt x 501.875pt>
-File: msc_ggseg_files/figure-latex/figure8m.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure8m.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure8m.png  used on inp
+(pdftex.def)             Requested size: 124.53897pt x 89.22124pt.
+<msc_ggseg_files/figure-latex/figure8m.pdf, id=369, 530.94356pt x 380.38109pt>
+File: msc_ggseg_files/figure-latex/figure8m.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure8m.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure8m.pdf  used on inp
 ut line 629.
-(pdftex.def)             Requested size: 124.53897pt x 88.95515pt.
-<msc_ggseg_files/figure-latex/figure8r.png, id=347, 702.625pt x 501.875pt>
-File: msc_ggseg_files/figure-latex/figure8r.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure8r.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure8r.png  used on inp
+(pdftex.def)             Requested size: 124.53897pt x 89.22124pt.
+<msc_ggseg_files/figure-latex/figure8r.pdf, id=370, 530.94356pt x 380.38109pt>
+File: msc_ggseg_files/figure-latex/figure8r.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure8r.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure8r.pdf  used on inp
 ut line 629.
-(pdftex.def)             Requested size: 124.53897pt x 88.95515pt.
-[13 <./msc_ggseg_files/figure-latex/figure8l.png> <./msc_ggseg_files/figure-lat
-ex/figure8m.png> <./msc_ggseg_files/figure-latex/figure8r.png>]
-<msc_ggseg_files/figure-latex/figure9.png, id=363, 702.625pt x 501.875pt>
-File: msc_ggseg_files/figure-latex/figure9.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure9.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure9.png  used on inpu
+(pdftex.def)             Requested size: 124.53897pt x 89.22124pt.
+[13 <./msc_ggseg_files/figure-latex/figure8l.pdf
+
+pdfTeX warning: pdflatex (file ./msc_ggseg_files/figure-latex/figure8l.pdf): PD
+F inclusion: invalid other resource which is no dict (key 'ProcSets', type <arr
+ay>); ignored.
+> <./msc_ggseg_files/figure-latex/figure8m.pdf
+
+pdfTeX warning: pdflatex (file ./msc_ggseg_files/figure-latex/figure8m.pdf): PD
+F inclusion: invalid other resource which is no dict (key 'ProcSets', type <arr
+ay>); ignored.
+> <./msc_ggseg_files/figure-latex/figure8r.pdf
+
+pdfTeX warning: pdflatex (file ./msc_ggseg_files/figure-latex/figure8r.pdf): PD
+F inclusion: invalid other resource which is no dict (key 'ProcSets', type <arr
+ay>); ignored.
+>]
+<msc_ggseg_files/figure-latex/figure9.pdf, id=416, 530.94356pt x 380.38109pt>
+File: msc_ggseg_files/figure-latex/figure9.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure9.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure9.pdf  used on inpu
 t line 666.
-(pdftex.def)             Requested size: 249.07796pt x 177.91032pt.
-[14 <./msc_ggseg_files/figure-latex/figure9.png>] [15]
-<msc_ggseg_files/figure-latex/figure10ab.png, id=399, 1957.3125pt x 1354.05875p
-t>
-File: msc_ggseg_files/figure-latex/figure10ab.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure10ab.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure10ab.png  used on i
+(pdftex.def)             Requested size: 249.07796pt x 178.44249pt.
+[14 <./msc_ggseg_files/figure-latex/figure9.pdf
+
+pdfTeX warning: pdflatex (file ./msc_ggseg_files/figure-latex/figure9.pdf): PDF
+ inclusion: invalid other resource which is no dict (key 'ProcSets', type <arra
+y>); ignored.
+>] [15]
+<msc_ggseg_files/figure-latex/figure10ab.pdf, id=456, 469.755pt x 324.21124pt>
+File: msc_ggseg_files/figure-latex/figure10ab.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure10ab.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure10ab.pdf  used on i
 nput line 783.
-(pdftex.def)             Requested size: 332.10184pt x 229.73239pt.
-<msc_ggseg_files/figure-latex/figure10c.png, id=400, 702.625pt x 501.875pt>
-File: msc_ggseg_files/figure-latex/figure10c.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure10c.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure10c.png  used on in
+(pdftex.def)             Requested size: 332.10184pt x 229.20712pt.
+<msc_ggseg_files/figure-latex/figure10c.pdf, id=457, 530.94356pt x 380.38109pt>
+
+File: msc_ggseg_files/figure-latex/figure10c.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure10c.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure10c.pdf  used on in
 put line 783.
-(pdftex.def)             Requested size: 166.04774pt x 118.60687pt.
-<msc_ggseg_files/figure-latex/figure10d.png, id=401, 702.625pt x 501.875pt>
-File: msc_ggseg_files/figure-latex/figure10d.png Graphic file (type png)
-<use msc_ggseg_files/figure-latex/figure10d.png>
-Package pdftex.def Info: msc_ggseg_files/figure-latex/figure10d.png  used on in
+(pdftex.def)             Requested size: 166.04774pt x 118.96165pt.
+<msc_ggseg_files/figure-latex/figure10d.pdf, id=458, 530.94356pt x 380.38109pt>
+
+File: msc_ggseg_files/figure-latex/figure10d.pdf Graphic file (type pdf)
+<use msc_ggseg_files/figure-latex/figure10d.pdf>
+Package pdftex.def Info: msc_ggseg_files/figure-latex/figure10d.pdf  used on in
 put line 783.
-(pdftex.def)             Requested size: 166.04774pt x 118.60687pt.
+(pdftex.def)             Requested size: 166.04774pt x 118.96165pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 783--783
 [][]
@@ -985,8 +1019,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 783--783
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[16] [17 <./msc_ggseg_files/figure-latex/figure10ab.png> <./msc_ggseg_files/fig
-ure-latex/figure10c.png> <./msc_ggseg_files/figure-latex/figure10d.png>]
+[16] [17 <./msc_ggseg_files/figure-latex/figure10ab.pdf> <./msc_ggseg_files/fig
+ure-latex/figure10c.pdf
+
+pdfTeX warning: pdflatex (file ./msc_ggseg_files/figure-latex/figure10c.pdf): P
+DF inclusion: invalid other resource which is no dict (key 'ProcSets', type <ar
+ray>); ignored.
+> <./msc_ggseg_files/figure-latex/figure10d.pdf
+
+pdfTeX warning: pdflatex (file ./msc_ggseg_files/figure-latex/figure10d.pdf): P
+DF inclusion: invalid other resource which is no dict (key 'ProcSets', type <ar
+ray>); ignored.
+>]
 Underfull \hbox (badness 10000) in paragraph at lines 815--817
 
  []
@@ -1039,10 +1083,10 @@ Package rerunfilecheck Info: File `msc_ggseg.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 897.
  ) 
 Here is how much of TeX's memory you used:
- 18463 strings out of 482913
- 283118 string characters out of 5958317
+ 18452 strings out of 482913
+ 282941 string characters out of 5958317
  685547 words of memory out of 5000000
- 32968 multiletter control sequences out of 15000+600000
+ 32958 multiletter control sequences out of 15000+600000
  593053 words of font info for 296 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  49i,11n,49p,1211b,539s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1060,10 +1104,10 @@ tic/uhvro8a.pfb></Users/athanasm/Library/TinyTeX/texmf-dist/fonts/type1/urw/tim
 es/utmb8a.pfb></Users/athanasm/Library/TinyTeX/texmf-dist/fonts/type1/urw/times
 /utmr8a.pfb></Users/athanasm/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/u
 tmri8a.pfb>
-Output written on msc_ggseg.pdf (22 pages, 1410828 bytes).
+Output written on msc_ggseg.pdf (22 pages, 2103160 bytes).
 PDF statistics:
- 610 PDF objects out of 1000 (max. 8388607)
- 534 compressed objects within 6 object streams
+ 686 PDF objects out of 1000 (max. 8388607)
+ 585 compressed objects within 6 object streams
  117 named destinations out of 1000 (max. 500000)
  47857 words of extra memory for PDF output out of 51595 (max. 10000000)
 
