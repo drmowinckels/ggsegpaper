@@ -35,7 +35,7 @@ The two-dimensional functionality in _ggseg_ is based on polygons and _ggplot2_-
 The _ggseg_ and _ggseg3d_ packages present compiled data-sets, tailored functions that allow brain data integration and plotting, and other minor features such as custom colour palettes.
 The data featured in the packages are derived from two well-known parcellations: the Desikan-Killany cortical atlas (DK; @dk), which covers the cortical surface of the brain, and the Automatic Segmentation of Subcortical Structures (aseg; @aseg), which covers the subcortical structures.
 Both atlases are implemented in several neuroimaging softwares, such as FreeSurfer (@fischl_99, @dale_99, @Fischl2000), and are commonly used in relation to developmental changes, disease biomarkers, genomic data, and cognition (@amlien_elaboration_2019, @WALHOVD20051261, @Pizzagalli).
-The _ggsegExtra_ package contains a list of online repositories of pre-compiled atlases (currently `r sum(!grepl("None", dt$Polygon))-1` additional polygon atlases and `r sum(!grepl("None", dt$Mesh))-1` mesh atlases) and it is frequently updated.
+The _ggsegExtra_ package contains a list of online repositories of pre-compiled atlases and it is frequently updated.
 
 # Tutorial
 This tutorial will introduce the _ggseg_, _ggseg3d_, and _ggsegExtra_ packages and familiarize the reader with the main functions and the general use of the packages.
